@@ -1,0 +1,122 @@
+//@import 'bower_components/semantic.gs/stylesheets/less/grid.less';
+@import 'bower_components/fluidable/fluidable.less';
+
+@highlight-color: #FF6138;
+@user-color: #00A388;
+@black-color: #4a4a4a;
+
+//@desktop: ~"only screen and (min-width: 960px)";
+//@tablet: ~"only screen and (min-width: 720px) and (max-width: 959px)";
+//@phone: ~"only screen and (max-width: 719px)";
+
+// The gutter of 6 is so that iphone <= 5s can have a page width = 300, with
+// a reasonable page gutter.
+//@column-width: 55;
+//@gutter-width: 6;
+
+@columns: 10;
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+h2, h3 {
+  font-weight: 300;
+  color: @highlight-color;
+  text-transform: uppercase;
+}
+
+h2, h3, .col-group {
+  margin-bottom: 0.67em;
+}
+
+h3 {
+  font-size: 1em;
+}
+
+p {
+  line-height: 1.5em;
+}
+
+p, label {
+  color: @black-color;
+}
+
+
+// Forms
+
+.labelDescription {
+  display: block;
+  font-size: 0.82em;
+  margin-top: 5px;
+  margin-left: 26px;
+  font-weight: 300;
+  line-height: 1.2em;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label {
+  cursor: pointer;
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="radio"] + label::before {
+  content: '';
+  border-radius: 50%;
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  margin-right: 6px;
+  margin-top: -4px;
+  border: 1px solid @black-color;
+  vertical-align: middle;
+  background: url(./checkmark.svg) no-repeat;
+  background-position: 100px 100px;
+}
+
+input[type="radio"]:checked + label::before {
+  border-color: @user-color;
+  background-position: center;
+}
+
+input[type="radio"]:checked + label {
+  color: @user-color;
+}
+
+input[type="radio"]:checked + label .labelDescription {
+  color: @black-color;
+}
+
+pre, code {
+  font-family: 'Source Code Pro', monospace;
+}
+
+// I think this is a bug in fluidable
+@media (max-width: (@screenTablet - 1px)) {
+  .col-group .col-group [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+button {
+  width: 100%;
+  max-width: 400px;
+  background: @highlight-color;
+  color: white;
+  text-transform: uppercase;
+  padding: 12px;
+  border: 0;
+  border-radius: 2px;
+  font-weight: 300;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.1);
+}
+
+input.numeric {
+  width: 30px;
+  text-align: right;
+}
