@@ -122,7 +122,6 @@ var ContentComponent = React.createClass({
   },
 
 	render(): ?ReactElement {
-    console.log(this.getContentOptions());
 		return (
       <div>
         <h2>Content</h2>

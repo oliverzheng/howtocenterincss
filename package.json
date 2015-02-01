@@ -7,7 +7,8 @@
     "watch": "npm run js-watch & npm run css-watch",
     "js-watch": "watchify -o build/bundle.js -v -d .",
     "js-minify": "NODE_ENV=production browserify . | uglifyjs -cm > build/bundle.min.js",
-    "css-watch": "catw -c 'lessc -' 'bower_components/normalize.css/normalize.css' 'css/*.less' -o build/bundle.css -v"
+    "css-watch": "catw -c 'lessc -' 'bower_components/normalize.css/normalize.css' 'css/*.less' -o build/bundle.css -v",
+    "html": "cat html/index.html.pre > build/index.html; node js/renderedHTML.js >> build/index.html; cat html/index.html.post >> build/index.html;"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +19,8 @@
     "uglify-js": "^2.4.16",
     "watchify": "^2.2.1",
     "catw": "^0.2.0",
-    "less": "^2.3.1"
+    "less": "^2.3.1",
+    "node-jsx": "^0.12.4"
   },
   "browserify": {
     "transform": [
