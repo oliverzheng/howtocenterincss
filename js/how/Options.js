@@ -120,4 +120,5 @@ module.exports = {
   content,
   text,
   container,
+  LengthTypes,
 };

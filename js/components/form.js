@@ -23,7 +23,7 @@ var RadioComponent = React.createClass({
         </div>;
     }
 		return (
-      <div>
+      <div className="radioOption">
         <input
           type="radio"
           name={this.props.name}
@@ -42,6 +42,13 @@ var RadioComponent = React.createClass({
 var RadioListComponent = React.createClass({
   propTypes: {
     onChange: React.PropTypes.func,
+    direction: React.PropTypes.oneOf(['vertical', 'horizontal']),
+  },
+
+  getDefaultProps() {
+    return {
+      direction: 'vertical',
+    };
   },
 
   getInitialState(): {name: string; selectedValue: ?string} {
@@ -89,7 +96,18 @@ var RadioListComponent = React.createClass({
         return child;
       }
     });
-    return <div onChange={this.onChange}>{children}</div>;
+    var classes = ReactAddons.classSet({
+      'radioList': true,
+      'horizontal': this.props.direction === 'horizontal',
+    });
+    if (this.props.className) {
+      classes += ' ' + this.props.className;
+    }
+    return (
+      <div onChange={this.onChange} className={classes}>
+        {children}
+      </div>
+    );
   },
 });
 

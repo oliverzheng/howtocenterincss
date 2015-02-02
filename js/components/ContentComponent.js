@@ -5,6 +5,7 @@ var {
   RadioComponent,
   RadioListComponent,
 } = require('./form');
+var LengthComponent = require('./LengthComponent');
 
 var Options = require('../how/Options');
 
@@ -26,7 +27,10 @@ var ContentComponent = React.createClass({
 
   getContentOptions() {
     if (this.state.contentIsText) {
-      return Options.text(this.state.contentTextLines, null);
+      return Options.text(
+        this.state.contentTextLines,
+        this.state.contentTextLineHeight
+      );
     }
       
     if (this.state.contentIsImage) {
@@ -39,7 +43,7 @@ var ContentComponent = React.createClass({
     return null;
   },
 
-  handleContentTypeChange(type: string) {
+  handleTypeChange(type: string) {
     this.setState({
       contentIsText: type === 'text',
       contentIsImage: type === 'image',
@@ -47,7 +51,7 @@ var ContentComponent = React.createClass({
     });
   },
 
-  handleContentTextChange(isText: bool) {
+  handleTextLinesKnownChange(isText: bool) {
     if (!isText) {
       this.setState({
         contentTextLines: null,
@@ -59,17 +63,24 @@ var ContentComponent = React.createClass({
     }
   },
 
-  handleContentTextLinesChange() {
+  handleTextLinesChange() {
     var string = this.refs.textLines.getDOMNode().value;
     this.setState({
       contentTextLines: string ? parseInt(string, 10) : null,
     });
   },
 
-  handleContentTextLineHeightChange() {
-    var string = this.refs.textLineHeight.getDOMNode().value;
+  handleLineHeightKnownChange(known) {
+    if (!known) {
+      this.setState({
+        contentTextLineHeight: null,
+      });
+    }
+  },
+
+  handleLineHeightChange(lineHeight) {
     this.setState({
-      contentTextLineHeight: string ? parseInt(string, 10) : null,
+      contentTextLineHeight: lineHeight,
     });
   },
 
@@ -78,13 +89,13 @@ var ContentComponent = React.createClass({
       return (
         <div>
           <p>Do you know how many lines of text it'll be?</p>
-          <RadioListComponent onChange={this.handleContentTextChange}>
+          <RadioListComponent onChange={this.handleTextLinesKnownChange}>
             <RadioComponent label="Yes" value={true}>
               <input
                 type="text"
                 className="numeric"
                 ref="textLines"
-                onChange={this.handleContentTextLinesChange}
+                onChange={this.handleTextLinesChange}
                 value={this.state.contentTextLines}
               /> lines
             </RadioComponent>
@@ -100,19 +111,9 @@ var ContentComponent = React.createClass({
       return (
         <div>
           <p>Do you know the <code>line-height</code> of each line?</p>
-          <RadioListComponent onChange={this.handleContentTextLineHeightChange}>
+          <RadioListComponent onChange={this.handleLineHeightKnownChange}>
             <RadioComponent label="Yes" value={true}>
-              <input
-                type="text"
-                className="numeric"
-                ref="textLineHeight"
-                onChange={this.handleContentTextLineHeightChange}
-                value={this.state.contentTextLineHeight}
-              />
-              <select>
-                <option value="px">px</option>
-                <option value="em">em</option>
-              </select>
+              <LengthComponent onChange={this.handleLineHeightChange} />
             </RadioComponent>
             <RadioComponent label="No" value={false}/>
           </RadioListComponent>
@@ -126,7 +127,7 @@ var ContentComponent = React.createClass({
       <div>
         <h2>Content</h2>
         <p>What do you want to center?</p>
-        <RadioListComponent onChange={this.handleContentTypeChange}>
+        <RadioListComponent onChange={this.handleTypeChange}>
           <RadioComponent label="Text" value="text">
             Just text, or an inline-level block of text and images.
           </RadioComponent>
