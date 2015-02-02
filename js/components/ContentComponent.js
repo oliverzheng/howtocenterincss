@@ -6,6 +6,7 @@ var {
   RadioListComponent,
 } = require('./form');
 var LengthComponent = require('./LengthComponent');
+var DivSizeComponent = require('./DivSizeComponent');
 
 var Options = require('../how/Options');
 
@@ -22,6 +23,8 @@ var ContentComponent = React.createClass({
       contentIsDiv: false,
       contentTextLines: null,
       contentTextLineHeight: null,
+      contentDivWidth: null,
+      contentDivHeight: null,
     };
   },
 
@@ -122,6 +125,17 @@ var ContentComponent = React.createClass({
     }
   },
 
+  renderContentDivSize(): ?ReactElement {
+    if (this.state.contentIsDiv) {
+      return (
+        <DivSizeComponent
+          onWidthChange={(width) => this.setState({contentDivWidth: width})}
+          onHeightChange={(height) => this.setState({contentDivHeight: height})}
+        />
+      );
+    }
+  },
+
 	render(): ?ReactElement {
 		return (
       <div>
@@ -140,6 +154,7 @@ var ContentComponent = React.createClass({
         </RadioListComponent>
         {this.renderContentText()}
         {this.renderContentTextLineHeight()}
+        {this.renderContentDivSize()}
       </div>
     );
 	},

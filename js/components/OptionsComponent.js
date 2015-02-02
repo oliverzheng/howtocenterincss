@@ -8,6 +8,7 @@ var {
 var AlignmentComponent = require('./AlignmentComponent');
 var BrowserSupportComponent = require('./BrowserSupportComponent');
 var ContentComponent = require('./ContentComponent');
+var ContainerComponent = require('./ContainerComponent');
 
 var Options = require('../how/Options');
 
@@ -25,6 +26,7 @@ var OptionsComponent = React.createClass({
 		return (
       <div>
         <ContentComponent />
+        <ContainerComponent />
         <AlignmentComponent />
         <BrowserSupportComponent />
       </div>
