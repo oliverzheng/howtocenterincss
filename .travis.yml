@@ -3,3 +3,13 @@ node_js:
   - "0.10"
 before_install: npm install -g bower && bower install
 before_script: npm run build
+deploy:
+  provider: s3
+  access_key_id: $AWS_KEY_ID
+  secret_access_key: $AWS_ACCESS_KEY
+  bucket: howtocenterincss.com
+  endpoint: howtocenterincss.com.s3-website-us-west-2.amazonaws.com
+  region: us-west-2
+  local_dir: build
+  on:
+    repo: oliverzheng/howtocenterincss
