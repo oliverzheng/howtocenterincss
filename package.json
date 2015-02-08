@@ -4,10 +4,13 @@
   "description": "",
   "main": "js/app.js",
   "scripts": {
+    "build": "npm run js-build && npm run css-build && npm run html",
     "watch": "npm run js-watch & npm run css-watch",
     "js-watch": "watchify -o build/bundle.js -v -d .",
+    "js-build": "browserify . > build/bundle.js",
     "js-minify": "NODE_ENV=production browserify . | uglifyjs -cm > build/bundle.min.js",
     "css-watch": "catw -c 'lessc -' 'bower_components/normalize.css/normalize.css' 'css/*.less' -o build/bundle.css -v",
+    "css-build": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - build/bundle.css",
     "html": "cat html/index.html.pre > build/index.html; node js/renderedHTML.js >> build/index.html; cat html/index.html.post >> build/index.html;"
   },
   "author": "",
