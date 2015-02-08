@@ -11,5 +11,6 @@ deploy:
   endpoint: howtocenterincss.com.s3-website-us-west-2.amazonaws.com
   region: us-west-2
   local_dir: build
+  skip_cleanup: true
   on:
     repo: oliverzheng/howtocenterincss
