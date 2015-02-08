@@ -12,5 +12,6 @@ deploy:
   region: us-west-2
   local_dir: build
   skip_cleanup: true
+  acl: public_read
   on:
     repo: oliverzheng/howtocenterincss
