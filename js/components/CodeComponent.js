@@ -2,10 +2,10 @@
 
 var React = require('react');
 
-var CodeComponent = React.createClass({
+class CodeComponent extends React.Component {
 
   setOptions(options: Object) {
-  },
+  }
 
 	render(): ?ReactElement {
 		return (
@@ -17,7 +17,7 @@ var CodeComponent = React.createClass({
         </pre>
       </div>
     );
-	},
-});
+	}
+}
 
 module.exports = CodeComponent;

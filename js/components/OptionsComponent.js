@@ -1,37 +1,31 @@
 /** @flow */
 
 var React = require('react');
-var {
-  RadioComponent,
-  RadioListComponent,
-} = require('./form');
 var AlignmentComponent = require('./AlignmentComponent');
 var BrowserSupportComponent = require('./BrowserSupportComponent');
 var ContentComponent = require('./ContentComponent');
 var ContainerComponent = require('./ContainerComponent');
+var RadioComponent = require('./RadioComponent');
+var RadioListComponent = require('./RadioListComponent');
 
 var Options = require('../how/Options');
 
-var OptionsComponent = React.createClass({
-  getOptions(): Object {
-    return {
-      content: Options.content(null, null, null),
-      container: Options.container(null, null),
-      horizontalAlignment: Options.HorizontalAlignments.LEFT,
-      verticalAlignment: Options.VerticalAlignments.MIDDLE,
-    };
-  },
+class OptionsComponent extends React.Component {
+  _content: ContentComponent;
+  _container: ContainerComponent;
+  _alignment: AlignmentComponent;
+  _browserSupport: BrowserSupportComponent;
 
 	render(): ?ReactElement {
 		return (
       <div>
-        <ContentComponent />
-        <ContainerComponent />
-        <AlignmentComponent />
-        <BrowserSupportComponent />
+        <ContentComponent ref={(c) => this._content = c} />
+        <ContainerComponent ref={(c) => this._container = c} />
+        <AlignmentComponent ref={(c) => this._alignment = c} />
+        <BrowserSupportComponent ref={(c) => this._browserSupport = c} />
       </div>
     );
-	},
-});
+	}
+}
 
 module.exports = OptionsComponent;

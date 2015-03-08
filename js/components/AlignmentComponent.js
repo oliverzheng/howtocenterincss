@@ -1,45 +1,32 @@
 /** @flow */
 
 var React = require('react');
-var {
-  RadioComponent,
-  RadioListComponent,
-} = require('./form');
+var RadioComponent = require('./RadioComponent');
+var RadioListComponent = require('./RadioListComponent');
 
 var Options = require('../how/Options');
 
-var AlignmentComponent = React.createClass({
-  getInitialState(): {
-    horizontalAlignment: ?string;
-    verticalAlignment: ?string;
-  } {
-    return {
-      horizontalAlignment: null,
-      verticalAlignment: null,
-    };
-  },
+class AlignmentComponent extends React.Component {
+  state: {
+    horizontalAlignment: ?Options.HorizontalAlignment;
+    verticalAlignment: ?Options.VerticalAlignment;
+  };
 
-  getOptions(): Object {
-    if (!this.state.horizontalAlignment && !this.state.verticalAlignment) {
-      return null;
-    }
-    return {
-      horizontalAlignment: Options.HorizontalAlignments.LEFT,
-      verticalAlignment: Options.VerticalAlignments.MIDDLE,
-    };
-  },
+  getHorizontalAlignment(): ?Options.HorizontalAlignment {
+    return this.state.horizontalAlignment;
+  }
 
-  handleHorizontalAlignmentChange(alignment: string) {
-    this.setState({
-      horizontalAlignment: alignment,
-    });
-  },
+  getVerticalAlignment(): ?Options.VerticalAlignment {
+    return this.state.verticalAlignment;
+  }
 
-  handleVerticalAlignmentChange(alignment: string) {
-    this.setState({
-      verticalAlignment: alignment,
-    });
-  },
+  _handleHorizontalAlignmentChange(horizontalAlignment: Options.HorizontalAlignment) {
+    this.setState({horizontalAlignment});
+  }
+
+  _handleVerticalAlignmentChange(verticalAlignment: Options.VerticalAlignment) {
+    this.setState({verticalAlignment});
+  }
 
 	render(): ?ReactElement {
 		return (
@@ -49,42 +36,42 @@ var AlignmentComponent = React.createClass({
         <div className="col-group">
           <div className="col-5 col-mb-5">
             <h3>Horizontally</h3>
-            <RadioListComponent onChange={this.handleHorizontalAlignmentChange}>
+            <RadioListComponent onChange={this._handleHorizontalAlignmentChange.bind(this)}>
               <RadioComponent
-                label="Left"
-                value={Options.HorizontalAlignments.LEFT}
+                labelText="Left"
+                value={Options.HorizontalAlignment.LEFT}
               />
               <RadioComponent
-                label="Center"
-                value={Options.HorizontalAlignments.CENTER}
+                labelText="Center"
+                value={Options.HorizontalAlignment.CENTER}
               />
               <RadioComponent
-                label="Right"
-                value={Options.HorizontalAlignments.RIGHT}
+                labelText="Right"
+                value={Options.HorizontalAlignment.RIGHT}
               />
             </RadioListComponent>
           </div>
           <div className="col-5 col-mb-5">
             <h3>Vertically</h3>
-            <RadioListComponent>
+            <RadioListComponent onChange={this._handleVerticalAlignmentChange.bind(this)}>
               <RadioComponent
-                label="Top"
-                value={Options.HorizontalAlignments.TOP}
+                labelText="Top"
+                value={Options.VerticalAlignment.TOP}
               />
               <RadioComponent
-                label="Middle"
-                value={Options.HorizontalAlignments.MIDDLE}
+                labelText="Middle"
+                value={Options.VerticalAlignment.MIDDLE}
               />
               <RadioComponent
-                label="Bottom"
-                value={Options.HorizontalAlignments.BOTTOM}
+                labelText="Bottom"
+                value={Options.VerticalAlignment.BOTTOM}
               />
             </RadioListComponent>
           </div>
         </div>
       </div>
     );
-	},
-});
+	}
+}
 
 module.exports = AlignmentComponent;

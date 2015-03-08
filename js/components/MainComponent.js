@@ -4,11 +4,12 @@ var React = require('react');
 var OptionsComponent = require('./OptionsComponent');
 var CodeComponent = require('./CodeComponent');
 
-var MainComponent = React.createClass({
+class MainComponent extends React.Component {
+  _options: OptionsComponent;
+  _code: CodeComponent;
+
   handleGenerate() {
-    var options = this.refs.options.getOptions();
-    this.refs.code.setOptions(options);
-  },
+  }
 
 	render(): ?ReactElement {
 		return (
@@ -29,17 +30,17 @@ var MainComponent = React.createClass({
             Select the type of content you want to center in a
             parent <code>&lt;div&gt;</code> and the size of the parent.
           </p>
-          <OptionsComponent ref="options" />
+          <OptionsComponent ref={(c) => this._options = c} />
           <p>
             <button className="generate" onClick={this.handleGenerate}>
               Generate Code
             </button>
           </p>
-          <CodeComponent ref="code" />
+          <CodeComponent ref={(c) => this._code = c} />
         </div>
       </div>
     );
-	},
-});
+	}
+}
 
 module.exports = MainComponent;

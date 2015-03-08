@@ -36,35 +36,22 @@ h3 {
 
 p {
   line-height: 1.5em;
-}
-
-p, label {
   color: @black-color;
 }
 
 
 // Forms
 
-.labelDescription {
-  display: block;
-  font-size: 0.82em;
-  margin-top: 5px;
-  margin-left: 26px;
-  font-weight: 300;
-  line-height: 1.2em;
-}
-
-input[type="radio"] {
-  display: none;
-}
-
-input[type="radio"] + label {
+.radioOption {
   cursor: pointer;
-  display: block;
   margin: 10px 0;
 }
 
-input[type="radio"] + label::before {
+.label {
+  color: @black-color;
+}
+
+.radioOption .label::before {
   content: '';
   border-radius: 50%;
   display: inline-block;
@@ -78,16 +65,24 @@ input[type="radio"] + label::before {
   background-position: 100px 100px;
 }
 
-input[type="radio"]:checked + label::before {
+.radioOption .labelDescription {
+  font-size: 0.82em;
+  margin-top: 5px;
+  margin-left: 26px;
+  font-weight: 300;
+  line-height: 1.2em;
+}
+
+.radioOptionSelected > .label::before {
   border-color: @user-color;
   background-position: center;
 }
 
-input[type="radio"]:checked + label {
+.radioOptionSelected > .label {
   color: @user-color;
 }
 
-input[type="radio"]:checked + label .labelDescription {
+.radioOptionSelected > .labelDescription {
   color: @black-color;
 }
 

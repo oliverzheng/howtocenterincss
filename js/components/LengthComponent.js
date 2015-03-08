@@ -2,43 +2,49 @@
 
 var React = require('react');
 var Options = require('../how/Options');
-var {
-  RadioComponent,
-  RadioListComponent,
-} = require('./form');
+var RadioComponent = require('./RadioComponent');
+var RadioListComponent = require('./RadioListComponent');
 
-var LengthComponent = React.createClass({
-  propTypes: {
-    onChange: React.PropTypes.func,
-  },
+class LengthComponent extends React.Component {
+  state: {
+    value: ?number;
+    type: ?Options.LengthType;
+  };
+  _valueInput: React.Component;
+  _radioList: RadioListComponent;
 
-  getInitialState() {
-    return {
-      value: null,
-      type: null,
-    };
-  },
+  constructor(props) {
+    super(props);
+    this.state = { value: null, type: null };
+  }
 
-  handleValueChange() {
-    var string = this.refs.valueInput.getDOMNode().value;
+  _handleValueChange() {
+    var string = this._valueInput.getDOMNode().value;
     this.setState({
       value: string ? parseInt(string, 10) : null,
-    }, this.callback);
-  },
+    }, this._callback);
+  }
 
-  handleUnitChange(type: string) {
-    this.setState({type}, this.callback);
-  },
+  _handleTypeChange(type: Options.LengthType) {
+    this.setState({type}, this._callback);
+  }
 
-  callback() {
-    if (this.state.value != null && this.state.type) {
-      var length: Options.Length = {
-        lengthType: this.state.type,
-        value: this.state.value,
-      };
-      this.props.onChange(length);
+  _callback() {
+    var length;
+    if (this.state.value != null && this.state.type != null) {
+      length = new Options.Length(this.state.value, this.state.type);
     }
-  },
+    if (this.props.onLengthChange) {
+      this.props.onLengthChange(length);
+    }
+  }
+
+  clear() {
+    this.setState({
+      value: null,
+    });
+    this._radioList.clearSelection();
+  }
 
 	render(): ?ReactElement {
     return (
@@ -46,21 +52,26 @@ var LengthComponent = React.createClass({
         <input
           type="text"
           className="numeric"
-          ref="valueInput"
-          onChange={this.handleValueChange}
+          ref={(c) => this._valueInput = c}
+          onChange={this._handleValueChange.bind(this)}
           value={this.state.value}
         />
         <RadioListComponent
           className="lengthUnit"
           direction="horizontal"
-          onChange={this.handleUnitChange}>
-          <RadioComponent value={Options.LengthTypes.PIXEL} label="px" />
-          <RadioComponent value={Options.LengthTypes.EM} label="em" />
-          <RadioComponent value={Options.LengthTypes.PERCENTAGE} label="%" />
+          onChange={this._handleTypeChange.bind(this)}
+          ref={(c) => this._radioList = c}>
+          <RadioComponent value={Options.LengthType.PIXEL} labelText="px" />
+          <RadioComponent value={Options.LengthType.EM} labelText="em" />
+          <RadioComponent value={Options.LengthType.PERCENTAGE} labelText="%" />
         </RadioListComponent>
       </div>
     );
-	},
-});
+	}
+}
+LengthComponent.propTypes = {
+  onLengthChange: React.PropTypes.func,
+  onLengthEdit: React.PropTypes.func,
+};
 
 module.exports = LengthComponent;

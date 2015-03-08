@@ -2,22 +2,39 @@
 
 var keyMirror = require('keymirror');
 
-var LengthTypes = keyMirror({
-  PIXEL: null,
-  PERCENTAGE: null,
-  EM: null,
-});
+class LengthType {}
 
-type LengthType = $Enum<{
-  PIXEL: number;
-  PERCENTAGE: number;
-  EM: number;
-}>;
+LengthType.PIXEL = new LengthType();
+LengthType.PERCENTAGE = new LengthType();
+LengthType.EM = new LengthType();
 
-type Length = {
+LengthType.AllTypes = [
+  LengthType.PIXEL,
+  LengthType.PERCENTAGE,
+  LengthType.EM,
+];
+
+class Length {
+  value: number;
   lengthType: LengthType;
-	value: number;
-};
+
+  constructor(value: number, lengthType: LengthType) {
+    this.value = value;
+    this.lengthType = lengthType;
+  }
+
+  static px(value: number): Length {
+    return new Length(value, LengthType.PIXEL);
+  }
+
+  static pct(value: number): Length {
+    return new Length(value, LengthType.PERCENTAGE);
+  }
+
+  static em(value: number): Length {
+    return new Length(value, LengthType.EM);
+  }
+}
 
 // The outer parent container is always of block container. It makes no sense to
 // center within an inline container - the container would just shrink to the
@@ -66,59 +83,22 @@ function container(width: ?Length, height: ?Length): Container {
   };
 }
 
-var HorizontalAlignments = keyMirror({
-  LEFT: null,
-  CENTER: null,
-  RIGHT: null,
-});
+class HorizontalAlignment {}
+HorizontalAlignment.LEFT = new HorizontalAlignment();
+HorizontalAlignment.CENTER = new HorizontalAlignment();
+HorizontalAlignment.RIGHT = new HorizontalAlignment();
 
-type HorizontalAlignment = $Enum<{
-  LEFT: number;
-  CENTER: number;
-  RIGHT: number;
-}>;
-
-var VerticalAlignments = keyMirror({
-  TOP: null,
-  MIDDLE: null,
-  BOTTOM: null,
-});
-
-type VerticalAlignment = $Enum<{
-  TOP: number;
-  MIDDLE: number;
-  BOTTOM: number;
-}>;
-
-function px(value: number): Length {
-	return {
-    lengthType: LengthTypes.PIXEL,
-		value: value,
-	};
-}
-
-function percentage(value: number): Length {
-	return {
-    lengthType: LengthTypes.PERCENTAGE,
-		value: value,
-	};
-}
-
-function em(value: number): Length {
-	return {
-    lengthType: LengthTypes.EM,
-		value: value,
-	};
-}
+class VerticalAlignment {}
+VerticalAlignment.TOP = new VerticalAlignment();
+VerticalAlignment.MIDDLE = new VerticalAlignment();
+VerticalAlignment.BOTTOM = new VerticalAlignment();
 
 module.exports = {
-  px,
-  percentage,
-  em,
-  HorizontalAlignments,
-  VerticalAlignments,
+  Length,
+  LengthType,
+  HorizontalAlignment,
+  VerticalAlignment,
   content,
   text,
   container,
-  LengthTypes,
 };

@@ -2,55 +2,67 @@
 
 var React = require('react');
 var Options = require('../how/Options');
-var {
-  RadioComponent,
-  RadioListComponent,
-} = require('./form');
 var LengthComponent = require('./LengthComponent');
+var RadioComponent = require('./RadioComponent');
+var RadioListComponent = require('./RadioListComponent');
 
-var DivSizeComponent = React.createClass({
-  propTypes: {
-    onWidthChange: React.PropTypes.func,
-    onHeightChange: React.PropTypes.func,
-  },
+class DivSizeComponent extends React.Component {
+  _width: LengthComponent;
+  _height: LengthComponent;
 
-  handleWidthKnown(known) {
+  _handleWidthKnown(known) {
     if (!known) {
-      this.props.onWidthChange(null);
+      if (this.props.onWidthChange) {
+        this.props.onWidthChange(null);
+      }
+      this._width.clear();
     }
-  },
+  }
 
-  handleHeightKnown(known) {
+  _handleHeightKnown(known) {
     if (!known) {
-      this.props.onHeightChange(null);
+      if (this.props.onHeightChange) {
+        this.props.onHeightChange(null);
+      }
+      this._height.clear();
     }
-  },
+  }
 
 	render(): ?ReactElement {
     return (
       <div>
         <h3>Width</h3>
-        <RadioListComponent onChange={this.handleWidthKnown}>
-          <RadioComponent label="Known" value={true}>
-            <LengthComponent onChange={this.props.onWidthChange} />
+        <RadioListComponent onChange={this._handleWidthKnown.bind(this)}>
+          <RadioComponent labelText="Known" value={true}>
+            <LengthComponent
+              onChange={this.props.onWidthChange}
+              ref={(c) => this._width = c}
+            />
           </RadioComponent>
-          <RadioComponent label="Unknown" value={false}>
+          <RadioComponent labelText="Unknown" value={false}>
             The width is not known until runtime, or needs to be set dynamically.
           </RadioComponent>
         </RadioListComponent>
 
         <h3>Height</h3>
-        <RadioListComponent onChange={this.handleHeightKnown}>
-          <RadioComponent label="Known" value={true}>
-            <LengthComponent onChange={this.props.onHeightChange} />
+        <RadioListComponent onChange={this._handleHeightKnown.bind(this)}>
+          <RadioComponent labelText="Known" value={true}>
+            <LengthComponent
+              onChange={this.props.onHeightChange}
+              ref={(c) => this._height = c}
+            />
           </RadioComponent>
-          <RadioComponent label="Unknown" value={false}>
+          <RadioComponent labelText="Unknown" value={false}>
             The height is not known until runtime, or needs to be set dynamically.
           </RadioComponent>
         </RadioListComponent>
       </div>
     );
-	},
-});
+	}
+}
+DivSizeComponent.propTypes = {
+  onWidthChange: React.PropTypes.func,
+  onHeightChange: React.PropTypes.func,
+};
 
 module.exports = DivSizeComponent;

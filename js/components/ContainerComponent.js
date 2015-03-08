@@ -5,30 +5,18 @@ var DivSizeComponent = require('./DivSizeComponent');
 
 var Options = require('../how/Options');
 
-var ContainerComponent = React.createClass({
-  getInitialState() {
-    return {
-      width: null,
-      height: null,
-    };
-  },
-
-  getContainerOptions() {
-    return null;
-  },
+class ContainerComponent extends React.Component {
+  _divSize: DivSizeComponent;
 
 	render(): ?ReactElement {
 		return (
       <div>
         <h2>Container</h2>
         <p>How big is your container <code>&lt;div&gt;</code>?</p>
-        <DivSizeComponent
-          onWidthChange={(width) => this.setState({width})}
-          onHeightChange={(height) => this.setState({height})}
-        />
+        <DivSizeComponent ref={(c) => this._divSize = c} />
       </div>
     );
-	},
-});
+	}
+}
 
 module.exports = ContainerComponent;
