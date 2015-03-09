@@ -50,8 +50,9 @@ class LengthComponent extends React.Component {
     return (
       <div>
         <input
-          type="text"
           className="numeric"
+          type="number"
+          pattern="[0-9]*"
           ref={(c) => this._valueInput = c}
           onChange={this._handleValueChange.bind(this)}
           value={this.state.value}

@@ -41,8 +41,9 @@ class TextLinesComponent extends React.Component {
         <RadioListComponent onChange={this._handleTextLinesKnownChange.bind(this)}>
           <RadioComponent labelText="Yes" value={true}>
             <input
-              type="text"
               className="numeric"
+              type="number"
+              pattern="[0-9]*"
               ref={(c) => this._linesInput = c}
               onChange={this._handleTextLinesChange.bind(this)}
               value={this.state.lines}

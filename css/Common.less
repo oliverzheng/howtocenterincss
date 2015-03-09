@@ -114,6 +114,17 @@ button {
 input.numeric {
   width: 30px;
   text-align: right;
+  -webkit-appearance: none;
+  border: 1px solid #666;
+  padding: 2px;
+  border-radius: 0;
+}
+
+/* Remove those arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .radioList.horizontal {
