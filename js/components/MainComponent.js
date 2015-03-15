@@ -4,11 +4,29 @@ var React = require('react');
 var OptionsComponent = require('./OptionsComponent');
 var CodeComponent = require('./CodeComponent');
 
+var findMethod = require('../how/findMethod');
+
 class MainComponent extends React.Component {
   _options: OptionsComponent;
   _code: CodeComponent;
 
-  handleGenerate() {
+  _handleGenerateClick() {
+    var content = this._options.getContent();
+    var container = this._options.getContainer();
+    var horizontalAlignment = this._options.getHorizontalAlignment();
+    var verticalAlignment = this._options.getVerticalAlignment();
+    var method = findMethod(content, container, horizontalAlignment, verticalAlignment);
+    if (method) {
+      var code = method.getCode(
+        content,
+        container,
+        horizontalAlignment,
+        verticalAlignment
+      );
+      this._code.setMethod(method, code);
+    } else {
+      this._code.setNoMethod();
+    }
   }
 
 	render(): ?ReactElement {
@@ -32,7 +50,7 @@ class MainComponent extends React.Component {
           </p>
           <OptionsComponent ref={(c) => this._options = c} />
           <p>
-            <button className="generate" onClick={this.handleGenerate}>
+            <button className="generate" onClick={this._handleGenerateClick.bind(this)}>
               Generate Code
             </button>
           </p>

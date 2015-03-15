@@ -10,6 +10,14 @@ class DivSizeComponent extends React.Component {
   _width: LengthComponent;
   _height: LengthComponent;
 
+  getWidth(): ?Options.Length {
+    return this._width.getLength();
+  }
+
+  getHeight(): ?Options.Length {
+    return this._height.getLength();
+  }
+
   _handleWidthKnown(known) {
     if (!known) {
       if (this.props.onWidthChange) {

@@ -32,6 +32,26 @@ class ContentComponent extends React.Component {
     };
   }
 
+  getContent(): ?Options.Content {
+    var textLines = this._textLines;
+    var divSize = this._divSize;
+    if (textLines) {
+      var lineHeight =
+        this._textLineHeight ? this._textLineHeight.getLineHeight() : null;
+      return Options.Content.text(textLines.getLines(), lineHeight);
+    } else if (divSize) {
+      return new Options.Content(
+        divSize.getWidth(),
+        divSize.getHeight(),
+        null
+      );
+    } else if (this.state.contentType === ContentType.IMAGE) {
+      // TODO
+      return null;
+    }
+    return null;
+  }
+
   _handleTypeChange(contentType: ContentType) {
     this.setState({contentType});
   }

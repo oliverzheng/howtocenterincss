@@ -17,6 +17,13 @@ class RadioListComponent extends React.Component {
     };
   }
 
+  getValue(): ?mixed {
+    if (this.state.selectedOption) {
+      return this.state.selectedOption.props.value;
+    }
+    return null;
+  }
+
   _handleClick(e: any) {
     var childrenRefKeys = Object.keys(this.refs);
     for (var i = 0; i < childrenRefKeys.length; i++) {

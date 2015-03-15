@@ -23,7 +23,8 @@
     "watchify": "^2.2.1",
     "catw": "^0.2.0",
     "less": "^2.3.1",
-    "node-jsx": "^0.12.4"
+    "node-jsx": "^0.12.4",
+    "html": "0.0.7"
   },
   "browserify": {
     "transform": [

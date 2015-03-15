@@ -18,6 +18,10 @@ class TextLinesComponent extends React.Component {
     };
   }
 
+  getLines(): ?number {
+    return this.state.lines;
+  }
+
   _handleTextLinesKnownChange(known: bool) {
     this._setLines(known ? 1 : null);
   }

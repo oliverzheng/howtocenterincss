@@ -16,6 +16,22 @@ class OptionsComponent extends React.Component {
   _alignment: AlignmentComponent;
   _browserSupport: BrowserSupportComponent;
 
+  getContent(): Options.Content {
+    return this._content.getContent();
+  }
+
+  getContainer(): Options.Container {
+    return this._container.getContainer();
+  }
+
+  getHorizontalAlignment(): Options.HorizontalAlignment {
+    return this._alignment.getHorizontalAlignment();
+  }
+
+  getVerticalAlignment(): Options.VerticalAlignment {
+    return this._alignment.getVerticalAlignment();
+  }
+
 	render(): ?ReactElement {
 		return (
       <div>

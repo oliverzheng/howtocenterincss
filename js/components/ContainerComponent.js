@@ -8,6 +8,13 @@ var Options = require('../how/Options');
 class ContainerComponent extends React.Component {
   _divSize: DivSizeComponent;
 
+  getContainer(): Options.Container {
+    return new Options.Container(
+      this._divSize.getWidth(),
+      this._divSize.getHeight()
+    );
+  }
+
 	render(): ?ReactElement {
 		return (
       <div>

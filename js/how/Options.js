@@ -2,11 +2,21 @@
 
 var keyMirror = require('keymirror');
 
-class LengthType {}
+class LengthType {
+  cssUnit: string;
 
-LengthType.PIXEL = new LengthType();
-LengthType.PERCENTAGE = new LengthType();
-LengthType.EM = new LengthType();
+  constructor(cssUnit: string) {
+    this.cssUnit = cssUnit;
+  }
+
+  toString(): string {
+    return this.cssUnit;
+  }
+}
+
+LengthType.PIXEL = new LengthType('px');
+LengthType.PERCENTAGE = new LengthType('%');
+LengthType.EM = new LengthType('em');
 
 LengthType.AllTypes = [
   LengthType.PIXEL,
@@ -21,6 +31,28 @@ class Length {
   constructor(value: number, lengthType: LengthType) {
     this.value = value;
     this.lengthType = lengthType;
+  }
+
+  multiple(multiplier: number): Length {
+    return new Length(this.value * multiplier, this.lengthType);
+  }
+
+  add(length: Length): Length {
+    if (length.lengthType !== this.lengthType) {
+      throw new Error('Length types have to be the same');
+    }
+    return new Length(this.value + length.value, this.lengthType);
+  }
+
+  subtract(length: Length): Length {
+    if (length.lengthType !== this.lengthType) {
+      throw new Error('Length types have to be the same');
+    }
+    return new Length(this.value - length.value, this.lengthType);
+  }
+
+  toString(): string {
+    return this.value.toString() + this.lengthType.toString();
   }
 
   static px(value: number): Length {
@@ -42,45 +74,39 @@ class Length {
 //
 // The inner container is either inline-block or block. If a paragraph of text
 // is to be centered, it should be put into an inline-block first.
-type Content = {
-	width: ?Length;
-	height: ?Length;
-  text: ?{ lines: ?number; lineHeight: ?Length };
+type Text = {
+  lines: ?number;
+  lineHeight: ?Length;
 };
 
-function content(
-  width: ?Length,
-  height: ?Length,
-  text: ?{ lines: ?number; lineHeight: ?Length }
-): Content {
-  return {
-    width,
-    height,
-    text,
-  };
-}
+class Content {
+  width: ?Length;
+  height: ?Length;
+  text: ?Text;
 
-function text(lines: ?number, lineHeight: ?Length): Content {
-  var height = null;
-  if (lines && lineHeight) {
-    height = {
-      lengthType: lineHeight.lengthType,
-      value: lineHeight.value * lines,
-    };
+  constructor(width: ?Length, height: ?Length, text: ?Text) {
+    this.width = width;
+    this.height = height;
+    this.text = text;
   }
-  return content(null, height, {lines, lineHeight});
+
+  static text(lines: ?number, lineHeight: ?Length): Content {
+    var height = null;
+    if (lines && lineHeight) {
+      height = new Length(lineHeight.value * lines, lineHeight.lengthType);
+    }
+    return new Content(null, height, {lines, lineHeight});
+  }
 }
 
-type Container = {
-	width: ?Length;
-	height: ?Length;
-};
+class Container {
+  width: ?Length;
+  height: ?Length;
 
-function container(width: ?Length, height: ?Length): Container {
-  return {
-    width,
-    height,
-  };
+  constructor(width: ?Length, height: ?Length) {
+    this.width = width;
+    this.height = height;
+  }
 }
 
 class HorizontalAlignment {}
@@ -98,7 +124,6 @@ module.exports = {
   LengthType,
   HorizontalAlignment,
   VerticalAlignment,
-  content,
-  text,
-  container,
+  Content,
+  Container,
 };

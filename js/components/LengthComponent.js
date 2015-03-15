@@ -18,6 +18,13 @@ class LengthComponent extends React.Component {
     this.state = { value: null, type: null };
   }
 
+  getLength(): ?Options.Length {
+    if (!this.state.value || !this.state.type) {
+      return null;
+    }
+    return new Options.Length(this.state.value, this.state.type);
+  }
+
   _handleValueChange() {
     var string = this._valueInput.getDOMNode().value;
     this.setState({

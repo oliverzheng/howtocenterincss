@@ -9,6 +9,10 @@ var RadioListComponent = require('./RadioListComponent');
 class TextLineHeightComponent extends React.Component {
   _lineHeight: LengthComponent;
 
+  getLineHeight(): ?Options.Length {
+    return this._lineHeight.getLength();
+  }
+
   _handleLineHeightKnownChange(known: bool) {
     if (!known) {
       if (this.props.onChange) {
