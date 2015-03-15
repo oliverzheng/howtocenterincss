@@ -7,6 +7,8 @@ var SingleLineTextLineHeightMethod =
 var PixelHeightContainerContentPaddingMethod =
   require('./methods/PixelHeightContainerContentPaddingMethod');
 
+// This list is in order of preference. The first applicable method should be
+// used, as it's probably simpler.
 var methods = [
   new SingleLineTextLineHeightMethod(),
   new PixelHeightContainerContentPaddingMethod(),
