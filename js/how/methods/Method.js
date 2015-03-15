@@ -57,6 +57,10 @@ class Method {
     );
     return formattedCode;
   }
+
+  getTextContent(): string {
+    return 'Text Content';
+  }
 }
 
 module.exports = Method;

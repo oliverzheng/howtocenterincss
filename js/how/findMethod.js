@@ -4,9 +4,12 @@ var Method = require('./methods/Method');
 var Options = require('./Options');
 var SingleLineTextLineHeightMethod =
   require('./methods/SingleLineTextLineHeightMethod');
+var PixelHeightContainerContentPaddingMethod =
+  require('./methods/PixelHeightContainerContentPaddingMethod');
 
 var methods = [
   new SingleLineTextLineHeightMethod(),
+  new PixelHeightContainerContentPaddingMethod(),
 ];
 
 function findMethod(

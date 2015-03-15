@@ -48,7 +48,7 @@ class SingleLineTextLineHeightMethod extends Method {
     }
     return (
       <div style={styles}>
-        Text
+        {this.getTextContent()}
       </div>
     );
   }

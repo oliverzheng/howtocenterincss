@@ -33,7 +33,7 @@ class Length {
     this.lengthType = lengthType;
   }
 
-  multiple(multiplier: number): Length {
+  multiply(multiplier: number): Length {
     return new Length(this.value * multiplier, this.lengthType);
   }
 
