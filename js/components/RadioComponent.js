@@ -1,7 +1,7 @@
 /** @flow */
 
 var React = require('react');
-var ReactAddons = require('react/addons');
+var classnames = require('classnames');
 
 class RadioComponent extends React.Component {
   isSelected: bool;
@@ -25,7 +25,7 @@ class RadioComponent extends React.Component {
           {this.props.children}
         </div>;
     }
-    var classes = ReactAddons.classSet({
+    var classes = classnames({
       'radioOption': true,
       'radioOptionSelected': this.state.isSelected,
     });

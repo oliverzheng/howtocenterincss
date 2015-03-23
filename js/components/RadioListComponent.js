@@ -1,8 +1,8 @@
 /** @flow */
 
 var React = require('react');
-var ReactAddons = require('react/addons');
 var RadioComponent = require('./RadioComponent');
+var classnames = require('classnames');
 
 class RadioListComponent extends React.Component {
   state: {
@@ -57,7 +57,7 @@ class RadioListComponent extends React.Component {
   }
 
   render(): ?ReactElement {
-    var classes = ReactAddons.classSet({
+    var classes = classnames({
       'radioList': true,
       'horizontal': this.props.direction === 'horizontal',
     });
