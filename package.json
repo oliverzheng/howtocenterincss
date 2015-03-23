@@ -11,21 +11,24 @@
     "js-minify": "NODE_ENV=production browserify . | uglifyjs -cm > build/bundle.min.js",
     "css-watch": "catw -c 'lessc -' 'bower_components/normalize.css/normalize.css' 'css/*.less' -o build/bundle.css -v",
     "css-build": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - build/bundle.css",
-    "html": "cat html/index.html.pre > build/index.html; node js/renderedHTML.js >> build/index.html; cat html/index.html.post >> build/index.html;"
+    "html": "node js/renderedHTML.js > build/index.html"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "browserify": "^8.1.1",
+    "catw": "^0.2.0",
     "envify": "^3.2.0",
+    "html": "0.0.7",
+    "invariant": "^2.0.0",
+    "less": "^2.3.1",
+    "mustache": "^1.1.0",
+    "node-jsx": "^0.12.4",
+    "react": "^0.13.1",
+    "react-router": "^0.13.1",
     "reactify": "^1.0.0",
     "uglify-js": "^2.4.16",
-    "watchify": "^2.2.1",
-    "catw": "^0.2.0",
-    "less": "^2.3.1",
-    "node-jsx": "^0.12.4",
-    "html": "0.0.7",
-    "invariant": "^2.0.0"
+    "watchify": "^2.2.1"
   },
   "browserify": {
     "transform": [
@@ -43,8 +46,6 @@
   "dependencies": {
     "fastclick": "^1.0.3",
     "keymirror": "^0.1.1",
-    "react": "0.13.0-rc1",
-    "react-addons": "^0.9.0",
     "shortid": "^2.1.3"
   }
 }

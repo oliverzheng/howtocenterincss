@@ -1,13 +1,19 @@
+var fs = require('fs');
+var mustache = require('mustache');
 var React = require('react/addons');
 var nodeJSX = require('node-jsx');
+
 nodeJSX.install({
   harmony: true,
   stripTypes: true,
 });
 
-var MainComponent = require('./components/MainComponent');
-var MainComponentFactory = React.createFactory(MainComponent);
+var html = require('./HTML');
 
-var renderedHTML = React.renderToString(MainComponentFactory({}));
+var template = fs.readFileSync(__dirname + '/../html/index.html', 'utf8');
+var rendered = mustache.render(template, {
+  appHTML: html,
+  googleAnalyticsID: process.env['googleAnalyticsID'],
+});
 
-console.log(renderedHTML);
+console.log(rendered);
