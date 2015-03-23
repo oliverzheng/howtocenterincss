@@ -1,7 +1,7 @@
 /** @flow */
 
 var React = require('react');
-var ReactAddons = require('react-addons');
+var ReactAddons = require('react/addons');
 
 class RadioComponent extends React.Component {
   isSelected: bool;

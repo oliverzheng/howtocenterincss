@@ -1,7 +1,7 @@
 /** @flow */
 
 var React = require('react');
-var ReactAddons = require('react-addons');
+var ReactAddons = require('react/addons');
 var RadioComponent = require('./RadioComponent');
 
 class RadioListComponent extends React.Component {
