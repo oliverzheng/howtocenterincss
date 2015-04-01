@@ -12,8 +12,8 @@ class SingleLineTextLineHeightMethod extends Method {
     return 'Single line text using line height';
   }
 
-  getRequirements(): Array<Requirement> {
-    return [
+  getRequirement(): Requirement {
+    return Requirement.all([
       new Requirement(
         'Container height is set',
         c.checkContainer(c.requireHeightExists)
@@ -22,7 +22,7 @@ class SingleLineTextLineHeightMethod extends Method {
         'Content has single line of text',
         c.checkContent((content) => content.text && content.text.lines === 1)
       ),
-    ];
+    ]);
   }
 
   getCodeElement(

@@ -11,18 +11,7 @@ class Method {
     throw new Error('Must implement method');
   }
 
-  isApplicable(
-    content: Options.Content,
-    container: Options.Container,
-    horizontalAlignment: Options.HorizontalAlignment,
-    verticalAlignment: Options.VerticalAlignment
-  ): bool {
-    return this.getRequirements().every(
-      (r) => r.check(content, container, horizontalAlignment, verticalAlignment)
-    );
-  }
-
-  getRequirements(): Array<Requirement> {
+  getRequirement(): Requirement {
     throw new Error('Must implement method');
   }
 

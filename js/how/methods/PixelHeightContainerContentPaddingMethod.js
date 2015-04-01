@@ -14,8 +14,8 @@ class PixelHeightContainerContentPaddingMethod extends Method {
     return 'Content and container have known pixel heights; use padding for alignment';
   }
 
-  getRequirements(): Array<Requirement> {
-    return [
+  getRequirement(): Requirement {
+    return Requirement.all([
       new Requirement(
         'Container height is known in pixels',
         c.checkContainer(c.requireHeight(c.requireIsPixel))
@@ -24,7 +24,7 @@ class PixelHeightContainerContentPaddingMethod extends Method {
         'Content height is known in pixels',
         c.checkContent(c.requireHeight(c.requireIsPixel))
       ),
-    ];
+    ]);
   }
 
   getCodeElement(

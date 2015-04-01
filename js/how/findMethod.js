@@ -6,12 +6,14 @@ var SingleLineTextLineHeightMethod =
   require('./methods/SingleLineTextLineHeightMethod');
 var PixelHeightContainerContentPaddingMethod =
   require('./methods/PixelHeightContainerContentPaddingMethod');
+var AbsolutePositionMethod = require('./methods/AbsolutePositionMethod');
 
 // This list is in order of preference. The first applicable method should be
 // used, as it's probably simpler.
 var methods = [
   new SingleLineTextLineHeightMethod(),
   new PixelHeightContainerContentPaddingMethod(),
+  new AbsolutePositionMethod,
 ];
 
 function findMethod(
@@ -22,9 +24,7 @@ function findMethod(
 ): ?Method {
   for (var i = 0; i < methods.length; i++) {
     var method = methods[i];
-    if (method.getRequirements().every(
-          (r) => r.check(content, container, horizontalAlignment, verticalAlignment)
-        )) {
+    if (method.getRequirement().check(content, container, horizontalAlignment, verticalAlignment)) {
       return method;
     }
   }
