@@ -22,7 +22,10 @@ class AlignmentComponent extends React.Component {
 		return (
       <div>
         <h2>Alignment</h2>
-        <p>How do you want to align the content?</p>
+        <p>
+          Surprise! This site isn't just for centering.
+          How do you want to align the content?
+        </p>
         <div className="col-group">
           <div className="col-5 col-mb-5">
             <h3>Horizontally</h3>
