@@ -12,6 +12,12 @@
   margin-right: auto;
 }
 
+@media (min-width: @screenDesktop) {
+  .logo {
+    position: fixed;
+  }
+}
+
 .logo-center {
   color: @highlight-color;
   font-weight: 700;
@@ -23,21 +29,30 @@
   font-size: 0.72em;
 }
 
-.social {
-  list-style: none;
-  margin-left: 0;
-  padding-left: 0;
-  font-size: 13px;
-  font-weight: 300;
+@media (min-width: @screenDesktop) {
+  .socialLogos {
+    width: 150px;
+    margin-top: 220px;
+    position: fixed;
+  }
+}
 
-  img {
-    width: 15px;
-    vertical-align: baseline;
-    position: relative;
-    top: 2px;
-    margin: 0 3px;
-  }
-  img.twitter {
-    top: 0;
-  }
+.socialLogos {
+  text-align: center;
+}
+
+.socialLogos a {
+  margin-right: 10px;
+  opacity: 0.2;
+}
+.socialLogos a:last-child {
+  margin-right: 0;
+}
+
+.socialLogos a:hover {
+  opacity: 0.4;
+}
+
+img.socialLogo {
+  height: 20px;
 }
