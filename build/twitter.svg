@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="274px" height="223px" viewBox="0 0 274 223" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>Slice 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path id="path-1" d="M0.06,0.822 L273.39,0.822 L273.39,222.94 L0.06,222.94"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Twitter_logo_blue" sketch:type="MSLayerGroup">
+            <mask id="mask-2" sketch:name="Clip 2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Clip-2"></g>
+            <path d="M85.98,223 C54.305,223 24.822,213.715 0,197.801 C4.388,198.319 8.853,198.584 13.38,198.584 C39.658,198.584 63.843,189.617 83.039,174.574 C58.495,174.121 37.781,157.905 30.644,135.621 C34.068,136.276 37.582,136.627 41.196,136.627 C46.312,136.627 51.267,135.942 55.974,134.66 C30.314,129.508 10.981,106.838 10.981,79.662 C10.981,79.426 10.981,79.191 10.985,78.957 C18.548,83.158 27.196,85.681 36.391,85.972 C21.341,75.914 11.438,58.746 11.438,39.287 C11.438,29.008 14.204,19.373 19.032,11.089 C46.696,45.023 88.025,67.353 134.641,69.692 C133.685,65.587 133.188,61.306 133.188,56.91 C133.188,25.935 158.302,0.822 189.279,0.822 C205.411,0.822 219.988,7.634 230.22,18.535 C242.996,16.019 255,11.351 265.837,4.924 C261.649,18.021 252.756,29.013 241.175,35.955 C252.521,34.599 263.331,31.584 273.39,27.123 C265.87,38.371 256.36,48.25 245.402,56.158 C245.51,58.563 245.564,60.982 245.564,63.414 C245.564,137.533 189.148,223 85.98,223" id="Fill-1" fill="#000000" sketch:type="MSShapeGroup" mask="url(#mask-2)"></path>
+        </g>
+    </g>
+</svg>

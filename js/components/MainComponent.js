@@ -36,6 +36,17 @@ class MainComponent extends React.Component {
           <h1 className="logo">
             How to <span className="logo-center">Center</span> in CSS
           </h1>
+          <p className="socialLogos">
+            <a href="http://twitter.com/oliverzheng">
+              <img src="./twitter.svg" className="socialLogo" />
+            </a>
+            <a href="http://facebook.com/oliverzheng">
+              <img src="./facebook.svg" className="socialLogo" />
+            </a>
+            <a href="http://github.com/oliverzheng/howtocenterincss">
+              <img src="./github.svg" className="socialLogo" />
+            </a>
+          </p>
         </div>
         <div className="options col-6 col-offset-1">
           <h2>Wat</h2>
