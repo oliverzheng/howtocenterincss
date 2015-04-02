@@ -88,16 +88,14 @@ class ContentComponent extends React.Component {
   }
 
 	render(): ?ReactElement {
-		return (
+    // TODO add back in image if it matters.
+    return (
       <div>
         <h2>Content</h2>
         <p>What do you want to center?</p>
         <RadioListComponent onChange={this._handleTypeChange.bind(this)}>
           <RadioComponent labelText="Text" value={ContentType.TEXT}>
             Just text, or an inline-level block of text and images.
-          </RadioComponent>
-          <RadioComponent labelText="Image" value={ContentType.IMAGE}>
-            A single image.
           </RadioComponent>
           <RadioComponent labelText="Div" value={ContentType.DIV}>
             Any block-level element.
