@@ -2,6 +2,7 @@
 
 var Method = require('./methods/Method');
 var Options = require('./Options');
+var DoNothingMethod = require('./methods/DoNothingMethod');
 var SingleLineTextLineHeightMethod =
   require('./methods/SingleLineTextLineHeightMethod');
 var PixelHeightContainerContentPaddingMethod =
@@ -11,6 +12,7 @@ var AbsolutePositionMethod = require('./methods/AbsolutePositionMethod');
 // This list is in order of preference. The first applicable method should be
 // used, as it's probably simpler.
 var methods = [
+  new DoNothingMethod,
   new SingleLineTextLineHeightMethod(),
   new PixelHeightContainerContentPaddingMethod(),
   new AbsolutePositionMethod,
