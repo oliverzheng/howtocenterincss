@@ -33,12 +33,12 @@ class OptionsComponent extends React.Component {
   }
 
 	render(): ?ReactElement {
-		return (
+    // TODO add browser support back in when we need it.
+    return (
       <div>
         <ContentComponent ref={(c) => this._content = c} />
         <ContainerComponent ref={(c) => this._container = c} />
         <AlignmentComponent ref={(c) => this._alignment = c} />
-        <BrowserSupportComponent ref={(c) => this._browserSupport = c} />
       </div>
     );
 	}
