@@ -32,7 +32,7 @@ class OptionsComponent extends React.Component {
     return this._alignment.getVerticalAlignment();
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     // TODO add browser support back in when we need it.
     return (
       <div>
@@ -41,7 +41,7 @@ class OptionsComponent extends React.Component {
         <AlignmentComponent ref={(c) => this._alignment = c} />
       </div>
     );
-	}
+  }
 }
 
 module.exports = OptionsComponent;

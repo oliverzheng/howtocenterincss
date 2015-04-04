@@ -17,7 +17,7 @@ class RadioComponent extends React.Component {
     this.setState({isSelected});
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     var children;
     if (React.Children.count(this.props.children)) {
       children =
@@ -29,13 +29,13 @@ class RadioComponent extends React.Component {
       'radioOption': true,
       'radioOptionSelected': this.state.isSelected,
     });
-		return (
+    return (
       <div className={classes}>
         <div className="label">{this.props.labelText}</div>
         {children}
       </div>
     );
-	}
+  }
 }
 RadioComponent.propTypes = {
   labelText: React.PropTypes.string.isRequired,

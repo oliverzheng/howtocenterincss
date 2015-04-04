@@ -5,22 +5,22 @@ var Options = require('./Options');
 var invariant = require('invariant');
 
 type Check = (
-	content: Options.Content,
+  content: Options.Content,
   container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
   verticalAlignment: Options.VerticalAlignment
 ) => bool;
 
 function checkContent(check: (content: Options.Content) => bool): Check {
-	return (content, container, horizontalAlignment, verticalAlignment) => {
-		return check(content);
-	};
+  return (content, container, horizontalAlignment, verticalAlignment) => {
+    return check(content);
+  };
 }
 
 function checkContainer(check: (container: Options.Container) => bool): Check {
-	return (content, container, horizontalAlignment, verticalAlignment) => {
-		return check(container);
-	};
+  return (content, container, horizontalAlignment, verticalAlignment) => {
+    return check(container);
+  };
 }
 
 function requireHeight(
@@ -40,21 +40,21 @@ function requireWidth(
 var requireWidthExists = requireWidth((w) => true);
 
 function requireIsPixel(length: Options.Length): bool {
-	return length.lengthType === Options.LengthType.PIXEL;
+  return length.lengthType === Options.LengthType.PIXEL;
 }
 
 function requireIsPercentage(length: Options.Length): bool {
-	return length.lengthType === Options.LengthType.PERCENTAGE;
+  return length.lengthType === Options.LengthType.PERCENTAGE;
 }
 
 function requireIsEm(length: Options.Length): bool {
-	return length.lengthType === Options.LengthType.EM;
+  return length.lengthType === Options.LengthType.EM;
 }
 
 function checkAnyHorizontalAlignment(
   alignments: Array<Options.HorizontalAlignment>
 ): Check {
-	return (content, container, horizontalAlignment, verticalAlignment) => {
+  return (content, container, horizontalAlignment, verticalAlignment) => {
     return alignments.indexOf(horizontalAlignment) !== -1;
   };
 }
@@ -68,7 +68,7 @@ function checkHorizontalAlignment(
 function checkAnyVerticalAlignment(
   alignments: Array<Options.VerticalAlignment>
 ): Check {
-	return (content, container, horizontalAlignment, verticalAlignment) => {
+  return (content, container, horizontalAlignment, verticalAlignment) => {
     return alignments.indexOf(verticalAlignment) !== -1;
   };
 }

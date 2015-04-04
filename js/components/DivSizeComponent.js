@@ -36,7 +36,7 @@ class DivSizeComponent extends React.Component {
     }
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     return (
       <div>
         <h3>Width</h3>
@@ -66,7 +66,7 @@ class DivSizeComponent extends React.Component {
         </RadioListComponent>
       </div>
     );
-	}
+  }
 }
 DivSizeComponent.propTypes = {
   onWidthChange: React.PropTypes.func,

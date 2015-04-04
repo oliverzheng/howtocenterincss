@@ -7,8 +7,8 @@ var RadioListComponent = require('./RadioListComponent');
 var Options = require('../how/Options');
 
 class BrowserSupportComponent extends React.Component {
-	render(): ?ReactElement {
-		return (
+  render(): ?ReactElement {
+    return (
       <div>
         <h2>IE Support</h2>
         <p>Which versions of IE care about?</p>
@@ -22,7 +22,7 @@ class BrowserSupportComponent extends React.Component {
         </RadioListComponent>
       </div>
     );
-	}
+  }
 }
 
 module.exports = BrowserSupportComponent;

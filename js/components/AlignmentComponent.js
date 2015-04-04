@@ -18,8 +18,8 @@ class AlignmentComponent extends React.Component {
     return this._vertical.getValue();
   }
 
-	render(): ?ReactElement {
-		return (
+  render(): ?ReactElement {
+    return (
       <div>
         <h2>Alignment</h2>
         <p>
@@ -64,7 +64,7 @@ class AlignmentComponent extends React.Component {
         </div>
       </div>
     );
-	}
+  }
 }
 
 module.exports = AlignmentComponent;

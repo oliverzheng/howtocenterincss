@@ -22,7 +22,7 @@ class TextLineHeightComponent extends React.Component {
     }
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     return (
       <div>
         <p>Do you know the <code>line-height</code> of each line?</p>
@@ -37,7 +37,7 @@ class TextLineHeightComponent extends React.Component {
         </RadioListComponent>
       </div>
     );
-	}
+  }
 }
 TextLineHeightComponent.propTypes = {
   onChange: React.PropTypes.func,

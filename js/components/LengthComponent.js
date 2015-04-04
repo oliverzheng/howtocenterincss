@@ -53,7 +53,7 @@ class LengthComponent extends React.Component {
     this._radioList.clearSelection();
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     return (
       <div>
         <input
@@ -75,7 +75,7 @@ class LengthComponent extends React.Component {
         </RadioListComponent>
       </div>
     );
-	}
+  }
 }
 LengthComponent.propTypes = {
   onLengthChange: React.PropTypes.func,

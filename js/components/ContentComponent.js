@@ -87,7 +87,7 @@ class ContentComponent extends React.Component {
     }
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     // TODO add back in image if it matters.
     return (
       <div>
@@ -105,7 +105,7 @@ class ContentComponent extends React.Component {
         {this._renderContentDivSize()}
       </div>
     );
-	}
+  }
 }
 
 module.exports = ContentComponent;

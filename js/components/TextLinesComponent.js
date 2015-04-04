@@ -38,7 +38,7 @@ class TextLinesComponent extends React.Component {
     }
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     return (
       <div>
         <p>Do you know how many lines of text it'll be?</p>
@@ -57,7 +57,7 @@ class TextLinesComponent extends React.Component {
         </RadioListComponent>
       </div>
     );
-	}
+  }
 }
 TextLinesComponent.propTypes = {
   onChange: React.PropTypes.func,

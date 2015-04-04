@@ -29,8 +29,8 @@ class MainComponent extends React.Component {
     }
   }
 
-	render(): ?ReactElement {
-		return (
+  render(): ?ReactElement {
+    return (
       <div className="col-group">
         <div className="header col-2">
           <h1 className="logo">
@@ -69,7 +69,7 @@ class MainComponent extends React.Component {
         </div>
       </div>
     );
-	}
+  }
 }
 
 module.exports = MainComponent;

@@ -35,7 +35,7 @@ class CodeComponent extends React.Component {
     });
   }
 
-	render(): ?ReactElement {
+  render(): ?ReactElement {
     if (this.state.noMethod) {
       return <p>No method found. :(</p>;
     }
@@ -44,7 +44,7 @@ class CodeComponent extends React.Component {
     if (!method || !code) {
       return null;
     }
-		return (
+    return (
       <div>
         <h2>Code</h2>
         <p>Method: {method.getName()}</p>
@@ -53,7 +53,7 @@ class CodeComponent extends React.Component {
         </pre>
       </div>
     );
-	}
+  }
 }
 
 CodeComponent.propTypes = {

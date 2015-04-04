@@ -15,15 +15,15 @@ class ContainerComponent extends React.Component {
     );
   }
 
-	render(): ?ReactElement {
-		return (
+  render(): ?ReactElement {
+    return (
       <div>
         <h2>Container</h2>
         <p>How big is your container <code>&lt;div&gt;</code>?</p>
         <DivSizeComponent ref={(c) => this._divSize = c} />
       </div>
     );
-	}
+  }
 }
 
 module.exports = ContainerComponent;

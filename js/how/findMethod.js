@@ -22,7 +22,7 @@ var methods = [
 
 function findMethod(
   content: Options.Content,
-	container: Options.Container,
+  container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
   verticalAlignment: Options.VerticalAlignment
 ): ?Method {
