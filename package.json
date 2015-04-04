@@ -5,13 +5,15 @@
   "main": "js/app.js",
   "scripts": {
     "build": "npm run js-build && npm run css-build && npm run html",
+    "build-minify": "npm run js-minify && npm run css-build && npm run html-minify",
     "watch": "npm run js-watch & npm run css-watch",
     "js-watch": "watchify -o build/bundle.js -v -d .",
     "js-build": "browserify . > build/bundle.js",
     "js-minify": "NODE_ENV=production browserify . | uglifyjs -cm > build/bundle.min.js",
     "css-watch": "catw -c 'lessc -' 'bower_components/normalize.css/normalize.css' 'css/*.less' -o build/bundle.css -v",
     "css-build": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - build/bundle.css",
-    "html": "node js/renderedHTML.js > build/index.html"
+    "html": "node js/renderedHTML.js > build/index.html",
+    "html-minify": "NODE_ENV=production node js/renderedHTML.js > build/index.html"
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +30,7 @@
     "react": "^0.13.1",
     "react-router": "^0.13.1",
     "reactify": "^1.0.0",
-    "uglify-js": "^2.4.16",
+    "uglify-js": "^2.4.19",
     "watchify": "^2.2.1"
   },
   "browserify": {

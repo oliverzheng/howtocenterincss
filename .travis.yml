@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "0.10"
 before_install: npm install -g bower && bower install
-before_script: npm run build
+before_script: npm run build-minify
 deploy:
   provider: s3
   access_key_id: $AWS_KEY_ID

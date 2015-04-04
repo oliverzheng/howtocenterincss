@@ -13,6 +13,7 @@ var html = require('./HTML');
 var template = fs.readFileSync(__dirname + '/../html/index.html', 'utf8');
 var rendered = mustache.render(template, {
   appHTML: html,
+  scriptPostfix: process.env.NODE_ENV === 'production' ? '.min' : '',
   googleAnalyticsID: process.env['googleAnalyticsID'],
 });
 
