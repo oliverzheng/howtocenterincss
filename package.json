@@ -5,13 +5,14 @@
   "main": "js/app.js",
   "scripts": {
     "build": "npm run js-build && npm run css-build && npm run html",
-    "build-minify": "npm run js-minify && npm run css-build && npm run html-minify",
+    "build-minify": "npm run js-minify && npm run css-minify && npm run html-minify",
     "watch": "npm run js-watch & npm run css-watch",
     "js-watch": "watchify -o build/bundle.js -v -d .",
     "js-build": "browserify . > build/bundle.js",
     "js-minify": "NODE_ENV=production browserify . | uglifyjs -cm > build/bundle.min.js",
     "css-watch": "catw -c 'lessc -' 'bower_components/normalize.css/normalize.css' 'css/*.less' -o build/bundle.css -v",
     "css-build": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - build/bundle.css",
+    "css-minify": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - | uglifycss > build/bundle.css",
     "html": "node js/renderedHTML.js > build/index.html",
     "html-minify": "NODE_ENV=production node js/renderedHTML.js > build/index.html"
   },
@@ -54,6 +55,7 @@
     "fastclick": "^1.0.3",
     "keymirror": "^0.1.1",
     "shortid": "^2.1.3",
-    "browserify-shim": "^3.8.3"
+    "browserify-shim": "^3.8.3",
+    "uglifycss": "0.0.13"
   }
 }
