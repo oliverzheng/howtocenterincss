@@ -12,7 +12,7 @@
     "js-minify": "NODE_ENV=production browserify . | uglifyjs -cm > build/bundle.min.js",
     "css-watch": "catw -c 'lessc -' 'bower_components/normalize.css/normalize.css' 'css/*.less' -o build/bundle.css -v",
     "css-build": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - build/bundle.css",
-    "css-minify": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - | uglifycss > build/bundle.css",
+    "css-minify": "cat bower_components/normalize.css/normalize.css css/*.less | lessc - | uglifycss > build/bundle.min.css",
     "html": "node js/renderedHTML.js > build/index.html",
     "html-minify": "NODE_ENV=production node js/renderedHTML.js > build/index.html"
   },
