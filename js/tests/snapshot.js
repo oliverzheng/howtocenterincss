@@ -1,8 +1,16 @@
 require('colors');
 var assert = require('assert');
 var wd = require('wd');
-var wdScreenshot = require('wd-screenshot');
+var wdScreenshot = require('wd-screenshot')({
+  tolerance: 0,
+});
 var jsStringEscape = require('js-string-escape')
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+
+chai.use(chaiAsPromised);
+chai.should();
+chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
 var testMatrix = require('./testMatrix');
 
@@ -14,6 +22,7 @@ wd.configureHttp({
   retryDelay: 15000,
   retries: 5
 });
+wdScreenshot.addFunctions(wd);
 
 testMatrix.browsers.forEach(browser => {
 
@@ -45,15 +54,31 @@ testMatrix.browsers.forEach(browser => {
         .nodeify(done);
     });
 
-    testMatrix.allTests.filter(t => t.browser === browser).forEach(t => {
+    setup(done => {
+      b
+        .get('about:blank')
+        .setWindowSize(400, 400)
+        .nodeify(done);
+    });
 
+    // Create snapshot
+    testMatrix.allTests.filter(t => t.browser === browser).forEach(t => {
       var testName = testMatrix.getTestName(t);
-      test(testName, (done) => {
+      test.skip('Snapshot ' + testName, (done) => {
         b
-          .get('about:blank')
-          .setWindowSize(400, 400)
           .execute('document.body.innerHTML = "' + jsStringEscape(html) + '"')
           .saveScreenshot(SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(t) + '.png')
+          .nodeify(done);
+      });
+    });
+
+    // Compare snapshots
+    testMatrix.allTests.filter(t => t.browser === browser).forEach(t => {
+      var testName = testMatrix.getTestName(t);
+      test('Compare snapshot ' + testName, (done) => {
+        b
+          .execute('document.body.innerHTML = "' + jsStringEscape(html) + '"')
+          .compareWithReferenceScreenshot(SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(t) + '.png')
           .nodeify(done);
       });
     });
