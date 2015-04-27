@@ -16,7 +16,8 @@
     "html": "node js/renderedHTML.js > build/index.html",
     "html-minify": "NODE_ENV=production node js/renderedHTML.js > build/index.html",
     "test-build": "jsx --harmony --strip-types js buildtest",
-    "snapshot": "npm run test-build && mocha -u tdd -t 5000 buildtest/tests/"
+    "snapshot-create": "npm run test-build && CREATE_SNAPSHOTS=1 mocha -u tdd -t 60000 buildtest/tests/",
+    "snapshot-compare": "npm run test-build && mocha -u tdd -t 60000 buildtest/tests/"
   },
   "author": "",
   "license": "ISC",

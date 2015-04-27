@@ -2,7 +2,7 @@ require('colors');
 var assert = require('assert');
 var wd = require('wd');
 var wdScreenshot = require('wd-screenshot')({
-  tolerance: 0,
+  tolerance: 0.0001, // browser text rendering variances
 });
 var jsStringEscape = require('js-string-escape')
 var chai = require('chai');
@@ -15,7 +15,11 @@ chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 var testMatrix = require('./testMatrix');
 
 var html = '<div>hi</div>';
-var SCREENSHOTS_DIR = __dirname + '/../../screenshots';
+
+function getReferenceFilename(test) {
+  var SCREENSHOTS_DIR = __dirname + '/../../screenshots';
+  return SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(test) + '.png';
+}
 
 wd.configureHttp({
   timeout: 60000,
@@ -24,14 +28,32 @@ wd.configureHttp({
 });
 wdScreenshot.addFunctions(wd);
 
-testMatrix.browsers.forEach(browser => {
+var remoteConfig = undefined;
+var browsers;
+if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
+  remoteConfig = {
+    hostname: 'ondemand.saucelabs.com',
+    port: 80,
+    username: process.env.SAUCE_USERNAME,
+    accessKey: process.env.SAUCE_ACCESS_KEY,
+  };
+  browsers = testMatrix.browsers;
+} else {
+  browsers = [testMatrix.localBrowser];
+}
+
+var allTests = testMatrix.generateTests(browsers);
+
+var isCreatingSnapshots = !!process.env.CREATE_SNAPSHOTS;
+
+browsers.forEach(browser => {
 
   suite('snapshotting ' + browser.browserName, () => {
     var b;
     var allPassed = true;
 
     suiteSetup(done => {
-      b = wd.promiseChainRemote();
+      b = wd.promiseChainRemote(remoteConfig);
 
       b.on('status', function(info) {
           console.log(info.cyan);
@@ -45,6 +67,14 @@ testMatrix.browsers.forEach(browser => {
 
       b
         .init(browser)
+        .setWindowSize(400, 400)
+        .elementByTagName('html')
+        .getSize()
+        .then(size => {
+          // Browser titles/bars short change you, so set it so the document's
+          // 400x400.
+          return b.setWindowSize(400 + (400 - size.width), 400 + (400 - size.height));
+        })
         .nodeify(done);
     });
 
@@ -57,28 +87,29 @@ testMatrix.browsers.forEach(browser => {
     setup(done => {
       b
         .get('about:blank')
-        .setWindowSize(400, 400)
         .nodeify(done);
     });
 
     // Create snapshot
-    testMatrix.allTests.filter(t => t.browser === browser).forEach(t => {
+    var createSnapshot = isCreatingSnapshots ? test : test.skip;
+    allTests.filter(t => t.browser === browser).forEach(t => {
       var testName = testMatrix.getTestName(t);
-      test.skip('Snapshot ' + testName, (done) => {
+      createSnapshot('Snapshot ' + testName, (done) => {
         b
           .execute('document.body.innerHTML = "' + jsStringEscape(html) + '"')
-          .saveScreenshot(SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(t) + '.png')
+          .saveScreenshot(getReferenceFilename(t))
           .nodeify(done);
       });
     });
 
     // Compare snapshots
-    testMatrix.allTests.filter(t => t.browser === browser).forEach(t => {
+    var compareSnapshot = isCreatingSnapshots ? test.skip : test;
+    allTests.filter(t => t.browser === browser).forEach(t => {
       var testName = testMatrix.getTestName(t);
-      test('Compare snapshot ' + testName, (done) => {
+      compareSnapshot('Compare snapshot ' + testName, (done) => {
         b
           .execute('document.body.innerHTML = "' + jsStringEscape(html) + '"')
-          .compareWithReferenceScreenshot(SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(t) + '.png')
+          .compareWithReferenceScreenshot(getReferenceFilename(t))
           .nodeify(done);
       });
     });

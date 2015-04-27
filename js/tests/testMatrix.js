@@ -14,7 +14,8 @@ var containers: Array<Options.Container> = [
 
 var browsers = [
   {
-    browserName: 'chrome'
+    browserName: 'chrome',
+    platform: 'Windows 8',
   },
   /*
   {
@@ -31,23 +32,28 @@ var browsers = [
   },
   */
 ];
-var defaultBrowser = browsers[0];
 
-var allTests = Combinatorics.cartesianProduct(
-  contents,
-  containers,
-  [Options.HorizontalAlignment.LEFT, Options.HorizontalAlignment.CENTER, Options.HorizontalAlignment.RIGHT], 
-  [Options.VerticalAlignment.TOP, Options.VerticalAlignment.MIDDLE, Options.VerticalAlignment.BOTTOM], 
-  browsers
-).toArray().map(test => {
-  return {
-    content: test[0],
-    container: test[1],
-    horizontal: test[2],
-    vertical: test[3],
-    browser: test[4],
-  }
-});
+var localBrowser = {
+  browserName: 'chrome',
+};
+
+function generateTests(browsers) {
+  return Combinatorics.cartesianProduct(
+    contents,
+    containers,
+    [Options.HorizontalAlignment.LEFT, Options.HorizontalAlignment.CENTER, Options.HorizontalAlignment.RIGHT], 
+    [Options.VerticalAlignment.TOP, Options.VerticalAlignment.MIDDLE, Options.VerticalAlignment.BOTTOM], 
+    browsers
+  ).toArray().map(test => {
+    return {
+      content: test[0],
+      container: test[1],
+      horizontal: test[2],
+      vertical: test[3],
+      browser: test[4],
+    }
+  });
+}
 
 function getHorizontalText(alignment) {
   if (alignment === Options.HorizontalAlignment.LEFT) {
@@ -100,20 +106,16 @@ function getSnapshotName(test): string {
     browser,
   } = test;
 
-  name += getHorizontalText(horizontal) + '_' + getVerticalText(vertical) + '_';
+  name += getHorizontalText(horizontal) + '_' + getVerticalText(vertical);
 
-  name += browser.browserName;
-  if (browser.version) {
-    name += '_v' + version;
-  }
   return name;
 }
 
 module.exports = {
   browsers: browsers,
-  defaultBrowser: defaultBrowser,
+  localBrowser: localBrowser,
   getTestName: getTestName,
   getSnapshotName: getSnapshotName,
 
-  allTests: allTests,
+  generateTests: generateTests,
 };
