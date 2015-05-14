@@ -4,12 +4,14 @@ var assert = require('assert');
 var Combinatorics = require('js-combinatorics').Combinatorics;
 var Options = require('../how/Options');
 
+var FONT_SIZE = 30; // px
+
 var contents: Array<Options.Content> = [
-  Options.Content.text(1),
+  Options.Content.text(1, Options.Length.px(FONT_SIZE)),
 ];
 
 var containers: Array<Options.Container> = [
-  new Options.Container(Options.Length.px(100), Options.Length.px(100)),
+  new Options.Container(Options.Length.px(200), Options.Length.px(200)),
 ];
 
 var browsers = [
@@ -17,20 +19,14 @@ var browsers = [
     browserName: 'chrome',
     platform: 'Windows 8',
   },
-  /*
   {
     browserName: 'firefox',
+    platform: 'Windows 8',
   },
   {
     browserName: 'internet explorer',
+    platform: 'Windows 8',
   },
-  {
-    browserName: 'safari',
-  },
-  {
-    browserName: 'opera',
-  },
-  */
 ];
 
 var localBrowser = {
@@ -106,6 +102,46 @@ function getSnapshotName(test): string {
     browser,
   } = test;
 
+  name += 'content_';
+  if (content.text) {
+    name += 'text_';
+    if (content.text.lines != null) {
+      name += content.text.lines + '_lines_';
+    }
+    if (content.text.lineHeight) {
+      name += content.text.lineHeight.toString() + '_lineHeight_';
+    }
+  } else {
+    name += 'width_';
+    if (content.width) {
+      name += content.width.toString() + '_';
+    } else {
+      name += 'unknown_';
+    }
+
+    name += 'height_';
+    if (content.height) {
+      name += content.height.toString() + '_';
+    } else {
+      name += 'unknown_';
+    }
+  }
+
+  name += 'container_';
+  name += 'width_';
+  if (container.width) {
+    name += container.width.toString() + '_';
+  } else {
+    name += 'unknown_';
+  }
+
+  name += 'height_';
+  if (container.height) {
+    name += container.height.toString() + '_';
+  } else {
+    name += 'unknown_';
+  }
+
   name += getHorizontalText(horizontal) + '_' + getVerticalText(vertical);
 
   return name;
@@ -118,4 +154,6 @@ module.exports = {
   getSnapshotName: getSnapshotName,
 
   generateTests: generateTests,
+
+  fontSize: FONT_SIZE,
 };

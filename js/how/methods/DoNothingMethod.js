@@ -3,6 +3,7 @@
 var Method = require('./Method');
 var Requirement = require('./Requirement');
 var Options = require('../Options');
+var React = require('react');
 
 var invariant = require('invariant');
 

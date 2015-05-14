@@ -23,6 +23,20 @@ function checkContainer(check: (container: Options.Container) => bool): Check {
   };
 }
 
+function checkContentText(check: (text: Options.Text) => bool): Check {
+  return (content, container, horizontalAlignment, verticalAlignment) => {
+    return check(content.text);
+  };
+}
+
+function requireLineHeight(
+  requirement: (text: Options.Text) => bool
+): (obj: Options.Text) => bool {
+  return (obj) => obj.lineHeight && requirement(obj.lineHeight);
+}
+
+var requireLineHeightExists = requireLineHeight((l) => true);
+
 function requireHeight(
   requirement: (length: Options.Length) => bool
 ): (obj: Options.Content | Options.Container) => bool {
@@ -81,6 +95,9 @@ function checkVerticalAlignment(
 
 module.exports.checkContent = checkContent;
 module.exports.checkContainer = checkContainer;
+module.exports.checkContentText = checkContentText;
+module.exports.requireLineHeight = requireLineHeight;
+module.exports.requireLineHeightExists = requireLineHeightExists;
 module.exports.requireHeight = requireHeight;
 module.exports.requireHeightExists = requireHeightExists;
 module.exports.requireWidth = requireWidth;

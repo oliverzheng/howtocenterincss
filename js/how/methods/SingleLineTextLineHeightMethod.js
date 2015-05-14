@@ -3,6 +3,7 @@
 var Method = require('./Method');
 var Requirement = require('./Requirement');
 var Options = require('../Options');
+var React = require('react');
 
 var c = require('../checks');
 
@@ -22,6 +23,25 @@ class SingleLineTextLineHeightMethod extends Method {
         'Content has single line of text',
         c.checkContent((content) => content.text && content.text.lines === 1)
       ),
+      Requirement.any([
+        new Requirement(
+          'Content is aligned at the top or middle',
+          c.checkAnyVerticalAlignment([
+            Options.VerticalAlignment.TOP,
+            Options.VerticalAlignment.MIDDLE,
+          ])
+        ),
+        Requirement.all([
+          new Requirement(
+            'Content is aligned at the bottom',
+            c.checkVerticalAlignment(Options.VerticalAlignment.BOTTOM)
+          ),
+          new Requirement(
+            'Content has line height',
+            c.checkContentText(c.requireLineHeightExists)
+          ),
+        ]),
+      ]),
     ]);
   }
 
@@ -39,11 +59,13 @@ class SingleLineTextLineHeightMethod extends Method {
     }
 
     if (verticalAlignment !== Options.VerticalAlignment.TOP) {
-      styles.lineHeight = container.height.toString();
       if (verticalAlignment === Options.VerticalAlignment.MIDDLE) {
-        // Default vertical alignment is middle
+        styles.lineHeight = container.height.toString();
       } else if (verticalAlignment === Options.VerticalAlignment.BOTTOM) {
-        styles.verticalAlign = 'bottom';
+        styles.lineHeight =
+          container.height.multiply(2).
+          subtract(content.text.lineHeight);
+        styles.height = container.height.toString();
       }
     }
     return (
