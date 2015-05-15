@@ -67,15 +67,17 @@ browsers.forEach(browser => {
     suiteSetup(done => {
       b = wd.promiseChainRemote(remoteConfig);
 
-      b.on('status', function(info) {
-          console.log(info.cyan);
-      });
-      b.on('command', function(eventType, command, response) {
-          console.log(' > ' + eventType.cyan, command, (response || '').grey);
-      });
-      b.on('http', function(meth, path, data) {
-          console.log(' > ' + meth.magenta, path, (data || '').grey);
-      });
+      if (process.env.SNAPSHOT_DEBUG) {
+        b.on('status', function(info) {
+            console.log(info.cyan);
+        });
+        b.on('command', function(eventType, command, response) {
+            console.log(' > ' + eventType.cyan, command, (response || '').grey);
+        });
+        b.on('http', function(meth, path, data) {
+            console.log(' > ' + meth.magenta, path, (data || '').grey);
+        });
+      }
 
       b
         .init(browser)
