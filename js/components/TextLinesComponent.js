@@ -11,7 +11,7 @@ class TextLinesComponent extends React.Component {
   };
   _linesInput: React.Component;
 
-  constructor(props) {
+  constructor(props: mixed) {
     super(props);
     this.state = {
       lines: null,

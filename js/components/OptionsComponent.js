@@ -1,5 +1,7 @@
 /** @flow */
 
+var invariant = require('invariant');
+
 var React = require('react');
 var AlignmentComponent = require('./AlignmentComponent');
 var BrowserSupportComponent = require('./BrowserSupportComponent');
@@ -17,19 +19,27 @@ class OptionsComponent extends React.Component {
   _browserSupport: BrowserSupportComponent;
 
   getContent(): Options.Content {
-    return this._content.getContent();
+    var content = this._content.getContent();
+    invariant(content, 'No content');
+    return content;
   }
 
   getContainer(): Options.Container {
-    return this._container.getContainer();
+    var container = this._container.getContainer();
+    invariant(container, 'No container');
+    return container;
   }
 
   getHorizontalAlignment(): Options.HorizontalAlignment {
-    return this._alignment.getHorizontalAlignment();
+    var alignment = this._alignment.getHorizontalAlignment();
+    invariant(alignment, 'No horizontal alignment');
+    return alignment;
   }
 
   getVerticalAlignment(): Options.VerticalAlignment {
-    return this._alignment.getVerticalAlignment();
+    var alignment = this._alignment.getVerticalAlignment();
+    invariant(alignment, 'No vertical alignment');
+    return alignment;
   }
 
   render(): ?ReactElement {

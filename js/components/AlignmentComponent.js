@@ -7,8 +7,8 @@ var RadioListComponent = require('./RadioListComponent');
 var Options = require('../how/Options');
 
 class AlignmentComponent extends React.Component {
-  _horizontal: RadioListComponent;
-  _vertical: RadioListComponent;
+  _horizontal: RadioListComponent<Options.HorizontalAlignment>;
+  _vertical: RadioListComponent<Options.VerticalAlignment>;
 
   getHorizontalAlignment(): ?Options.HorizontalAlignment {
     return this._horizontal.getValue();

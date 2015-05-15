@@ -1,5 +1,6 @@
 [ignore]
 .*/build/.*
+.*/buildtest/.*
 
 [options]
 module.system=node

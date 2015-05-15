@@ -6,7 +6,7 @@ var classnames = require('classnames');
 class RadioComponent extends React.Component {
   isSelected: bool;
 
-  constructor(props) {
+  constructor(props: mixed) {
     super(props);
     this.state = {
       isSelected: false,

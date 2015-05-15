@@ -11,7 +11,11 @@ var RadioListComponent = require('./RadioListComponent');
 
 var Options = require('../how/Options');
 
-class ContentType {}
+class ContentType {
+  static TEXT: ContentType;
+  static IMAGE: ContentType;
+  static DIV: ContentType;
+}
 ContentType.TEXT = new ContentType();
 ContentType.IMAGE = new ContentType();
 ContentType.DIV = new ContentType();
@@ -19,14 +23,14 @@ ContentType.DIV = new ContentType();
 class ContentComponent extends React.Component {
   state: {
     contentType: ?ContentType;
-    textLinesKnown: bool;
+    textLines: ?number;
   };
   _divSize: ?DivSizeComponent;
   _textLines: ?TextLinesComponent;
   _textFontSize: ?TextFontSizeComponent;
   _textLineHeight: ?TextLineHeightComponent;
 
-  constructor(props) {
+  constructor(props: mixed) {
     super(props);
     this.state = {
       contentType: null,
@@ -78,7 +82,7 @@ class ContentComponent extends React.Component {
       if (this.state.textLines === 1) {
         textFontSize =
           <TextFontSizeComponent ref={(c) => this._textFontSize = c} />;
-      } else if (this.state.textLines > 1) {
+      } else if (this.state.textLines != null && this.state.textLines > 1) {
         textLineHeight =
           <TextLineHeightComponent ref={(c) => this._textLineHeight = c} />;
       }

@@ -50,6 +50,7 @@ class PixelHeightContainerContentPaddingMethod extends Method {
       } else if (verticalAlignment === Options.VerticalAlignment.BOTTOM) {
         paddingTop = heightDiff;
       }
+      invariant(paddingTop, 'typechecker');
       parentStyles.paddingTop = paddingTop.toString();
     }
 

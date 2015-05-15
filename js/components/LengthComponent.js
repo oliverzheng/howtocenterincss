@@ -13,7 +13,7 @@ class LengthComponent extends React.Component {
   _valueInput: React.Component;
   _radioList: RadioListComponent;
 
-  constructor(props) {
+  constructor(props: mixed) {
     super(props);
     this.state = { value: null, type: null };
   }

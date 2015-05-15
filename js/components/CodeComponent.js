@@ -10,7 +10,7 @@ class CodeComponent extends React.Component {
     noMethod: bool;
   };
 
-  constructor(props) {
+  constructor(props: mixed) {
     super(props);
     this.state = {
       method: null,

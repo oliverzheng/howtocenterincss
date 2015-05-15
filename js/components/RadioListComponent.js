@@ -4,12 +4,12 @@ var React = require('react');
 var RadioComponent = require('./RadioComponent');
 var classnames = require('classnames');
 
-class RadioListComponent extends React.Component {
+class RadioListComponent<T> extends React.Component {
   state: {
     selectedOption: ?RadioComponent;
   };
 
-  constructor(props) {
+  constructor(props: mixed) {
     super(props);
 
     this.state = {
@@ -17,7 +17,7 @@ class RadioListComponent extends React.Component {
     };
   }
 
-  getValue(): ?mixed {
+  getValue(): ?T {
     if (this.state.selectedOption) {
       return this.state.selectedOption.props.value;
     }
@@ -56,7 +56,7 @@ class RadioListComponent extends React.Component {
     this._selectOption(null);
   }
 
-  select(value) {
+  select(value: T) {
     var childrenRefKeys = Object.keys(this.refs);
     for (var i = 0; i < childrenRefKeys.length; i++) {
       var child = this.refs[childrenRefKeys[i]];

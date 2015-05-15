@@ -1,5 +1,7 @@
 /* @flow */
 
+var invariant = require('invariant');
+
 var Method = require('./Method');
 var Requirement = require('./Requirement');
 var Options = require('../Options');
@@ -21,7 +23,7 @@ class SingleLineTextLineHeightMethod extends Method {
       ),
       new Requirement(
         'Content has single line of text',
-        c.checkContent((content) => content.text && content.text.lines === 1)
+        c.checkContentText((text) => text.lines === 1)
       ),
       Requirement.any([
         new Requirement(
@@ -59,13 +61,21 @@ class SingleLineTextLineHeightMethod extends Method {
     }
 
     if (verticalAlignment !== Options.VerticalAlignment.TOP) {
+      var containerHeight = container.height;
+      invariant(containerHeight, 'Must have container height');
+
       if (verticalAlignment === Options.VerticalAlignment.MIDDLE) {
-        styles.lineHeight = container.height.toString();
+        styles.lineHeight = containerHeight.toString();
       } else if (verticalAlignment === Options.VerticalAlignment.BOTTOM) {
+        var text = content.text;
+        invariant(text, 'Must have content text');
+        var fontSize = text.fontSize;
+        invariant(fontSize, 'Must have content text font size');
+
         styles.lineHeight =
-          container.height.multiply(2).
-          subtract(content.text.fontSize);
-        styles.height = container.height.toString();
+          containerHeight.multiply(2).
+          subtract(fontSize);
+        styles.height = containerHeight.toString();
       }
     }
     return (

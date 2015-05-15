@@ -5,6 +5,11 @@ var keyMirror = require('keymirror');
 class LengthType {
   cssUnit: string;
 
+  static PIXEL: LengthType;
+  static PERCENTAGE: LengthType;
+  static EM: LengthType;
+  static AllTypes: Array<LengthType>;
+
   constructor(cssUnit: string) {
     this.cssUnit = cssUnit;
   }
@@ -74,11 +79,17 @@ class Length {
 //
 // The inner container is either inline-block or block. If a paragraph of text
 // is to be centered, it should be put into an inline-block first.
-type Text = {
+class Text {
   fontSize: ?Length;
   lines: ?number;
   lineHeight: ?Length;
-};
+
+  constructor(fontSize: ?Length, lines: ?number, lineHeight: ?Length) {
+    this.fontSize = fontSize;
+    this.lines = lines;
+    this.lineHeight = lineHeight;
+  }
+}
 
 class Content {
   width: ?Length;
@@ -95,10 +106,10 @@ class Content {
     var height = null;
     if (lines === 1 && fontSize) {
       height = new Length(fontSize.value, fontSize.lengthType);
-    } else if (lines > 1 && lineHeight) {
+    } else if (lines && lines > 1 && lineHeight) {
       height = new Length(lineHeight.value * lines, lineHeight.lengthType);
     }
-    return new Content(null, height, {fontSize, lines, lineHeight});
+    return new Content(null, height, new Text(fontSize, lines, lineHeight));
   }
 }
 
@@ -112,12 +123,20 @@ class Container {
   }
 }
 
-class HorizontalAlignment {}
+class HorizontalAlignment {
+  static LEFT: HorizontalAlignment;
+  static CENTER: HorizontalAlignment;
+  static RIGHT: HorizontalAlignment;
+}
 HorizontalAlignment.LEFT = new HorizontalAlignment();
 HorizontalAlignment.CENTER = new HorizontalAlignment();
 HorizontalAlignment.RIGHT = new HorizontalAlignment();
 
-class VerticalAlignment {}
+class VerticalAlignment {
+  static TOP: VerticalAlignment;
+  static MIDDLE: VerticalAlignment;
+  static BOTTOM: VerticalAlignment;
+}
 VerticalAlignment.TOP = new VerticalAlignment();
 VerticalAlignment.MIDDLE = new VerticalAlignment();
 VerticalAlignment.BOTTOM = new VerticalAlignment();
@@ -129,4 +148,5 @@ module.exports = {
   VerticalAlignment,
   Content,
   Container,
+  Text,
 };

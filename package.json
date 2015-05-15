@@ -55,21 +55,21 @@
     "react": "global:React"
   },
   "dependencies": {
-    "fastclick": "^1.0.3",
-    "keymirror": "^0.1.1",
-    "shortid": "^2.1.3",
     "browserify-shim": "^3.8.3",
-    "uglifycss": "0.0.13",
-    "wd": "^0.3.11",
-    "wd-screenshot": "^0.1.0",
-    "colors": "^1.0.3",
-    "js-string-escape": "^1.0.0",
-    "mocha": "^2.2.4",
-    "js-combinatorics": "^0.4.0",
-    "q": "^1.3.0",
-    "react-tools": "^0.13.2",
     "chai": "^2.3.0",
     "chai-as-promised": "^5.0.0",
-    "gm": "^1.17.0"
+    "colors": "^1.0.3",
+    "fastclick": "^1.0.3",
+    "gm": "^1.17.0",
+    "js-combinatorics": "^0.4.0",
+    "js-string-escape": "^1.0.0",
+    "keymirror": "^0.1.1",
+    "mocha": "^2.2.4",
+    "q": "^1.3.0",
+    "react-tools": "^0.13.2",
+    "shortid": "^2.1.3",
+    "uglifycss": "0.0.13",
+    "wd": "^0.3.11",
+    "wd-screenshot": "^0.1.0"
   }
 }

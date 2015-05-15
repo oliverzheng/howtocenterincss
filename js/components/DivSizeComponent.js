@@ -18,7 +18,7 @@ class DivSizeComponent extends React.Component {
     return this._height.getLength();
   }
 
-  _handleWidthKnown(known) {
+  _handleWidthKnown(known: bool) {
     if (!known) {
       if (this.props.onWidthChange) {
         this.props.onWidthChange(null);
@@ -29,7 +29,7 @@ class DivSizeComponent extends React.Component {
     }
   }
 
-  _handleHeightKnown(known) {
+  _handleHeightKnown(known: bool) {
     if (!known) {
       if (this.props.onHeightChange) {
         this.props.onHeightChange(null);

@@ -25,22 +25,22 @@ function checkContainer(check: (container: Options.Container) => bool): Check {
 
 function checkContentText(check: (text: Options.Text) => bool): Check {
   return (content, container, horizontalAlignment, verticalAlignment) => {
-    return check(content.text);
+    return content.text != null && check(content.text);
   };
 }
 
 function requireLineHeight(
-  requirement: (text: Options.Text) => bool
+  requirement: (text: Options.Length) => bool
 ): (obj: Options.Text) => bool {
-  return (obj) => obj.lineHeight && requirement(obj.lineHeight);
+  return (obj) => obj.lineHeight != null && requirement(obj.lineHeight);
 }
 
 var requireLineHeightExists = requireLineHeight((l) => true);
 
 function requireFontSize(
-  requirement: (text: Options.Text) => bool
+  requirement: (text: Options.Length) => bool
 ): (obj: Options.Text) => bool {
-  return (obj) => obj.fontSize && requirement(obj.fontSize);
+  return (obj) => obj.fontSize != null && requirement(obj.fontSize);
 }
 
 var requireFontSizeExists = requireFontSize((l) => true);
@@ -48,7 +48,7 @@ var requireFontSizeExists = requireFontSize((l) => true);
 function requireHeight(
   requirement: (length: Options.Length) => bool
 ): (obj: Options.Content | Options.Container) => bool {
-  return (obj) => obj.height && requirement(obj.height);
+  return (obj) => obj.height != null && requirement(obj.height);
 }
 
 var requireHeightExists = requireHeight((l) => true);
@@ -56,7 +56,7 @@ var requireHeightExists = requireHeight((l) => true);
 function requireWidth(
   requirement: (length: Options.Length) => bool
 ): (obj: Options.Content | Options.Container) => bool {
-  return (obj) => obj.width && requirement(obj.width);
+  return (obj) => obj.width != null && requirement(obj.width);
 }
 
 var requireWidthExists = requireWidth((w) => true);

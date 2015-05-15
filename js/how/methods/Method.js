@@ -77,7 +77,7 @@ class Method {
     return content;
   }
 
-  getTextContent(): ?ReactElement {
+  getTextContent(): mixed {
     if (this._addIDs) {
       // TODO rename addIDs to "isTest" or something
       // These IIs have the least variance in font rendering. Even if the fonts
