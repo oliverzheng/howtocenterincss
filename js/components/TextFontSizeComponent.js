@@ -19,6 +19,8 @@ class TextFontSizeComponent extends React.Component {
         this.props.onChange(null);
       }
       this._fontSize.clear();
+    } else {
+      this._fontSize.selectDefaultType();
     }
   }
 

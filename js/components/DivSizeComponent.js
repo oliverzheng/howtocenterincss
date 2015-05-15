@@ -24,6 +24,8 @@ class DivSizeComponent extends React.Component {
         this.props.onWidthChange(null);
       }
       this._width.clear();
+    } else {
+      this._width.selectDefaultType();
     }
   }
 
@@ -33,6 +35,8 @@ class DivSizeComponent extends React.Component {
         this.props.onHeightChange(null);
       }
       this._height.clear();
+    } else {
+      this._height.selectDefaultType();
     }
   }
 

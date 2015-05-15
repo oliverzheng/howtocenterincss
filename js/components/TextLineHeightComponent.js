@@ -19,6 +19,8 @@ class TextLineHeightComponent extends React.Component {
         this.props.onChange(null);
       }
       this._lineHeight.clear();
+    } else {
+      this._lineHeight.selectDefaultType();
     }
   }
 

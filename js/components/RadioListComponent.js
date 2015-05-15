@@ -56,6 +56,20 @@ class RadioListComponent extends React.Component {
     this._selectOption(null);
   }
 
+  select(value) {
+    var childrenRefKeys = Object.keys(this.refs);
+    for (var i = 0; i < childrenRefKeys.length; i++) {
+      var child = this.refs[childrenRefKeys[i]];
+      if (child instanceof RadioComponent) {
+        if (child.props.value === value) {
+          this._selectOption(child);
+          return;
+        }
+      }
+    }
+    throw new Error('No value found for ' + value);
+  }
+
   render(): ?ReactElement {
     var classes = classnames({
       'radioList': true,
