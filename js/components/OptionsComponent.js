@@ -42,6 +42,10 @@ class OptionsComponent extends React.Component {
     return alignment;
   }
 
+  getBrowserSupport(): Array<Options.BrowserSupport> {
+    return this._browserSupport.getBrowserSupport();
+  }
+
   render(): ?ReactElement {
     // TODO add browser support back in when we need it.
     return (
@@ -49,6 +53,7 @@ class OptionsComponent extends React.Component {
         <ContentComponent ref={(c) => this._content = c} />
         <ContainerComponent ref={(c) => this._container = c} />
         <AlignmentComponent ref={(c) => this._alignment = c} />
+        <BrowserSupportComponent ref={(c) => this._browserSupport = c} />
       </div>
     );
   }

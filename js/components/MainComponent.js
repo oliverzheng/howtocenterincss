@@ -15,6 +15,7 @@ class MainComponent extends React.Component {
     var container = this._options.getContainer();
     var horizontalAlignment = this._options.getHorizontalAlignment();
     var verticalAlignment = this._options.getVerticalAlignment();
+    var browserSupport = this._options.getBrowserSupport();
     var method = findMethod(content, container, horizontalAlignment, verticalAlignment);
     if (method) {
       var code = method.getCode(

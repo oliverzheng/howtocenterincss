@@ -1,6 +1,6 @@
 /* @flow */
 
-var keyMirror = require('keymirror');
+var invariant = require('invariant');
 
 class LengthType {
   cssUnit: string;
@@ -141,6 +141,51 @@ VerticalAlignment.TOP = new VerticalAlignment();
 VerticalAlignment.MIDDLE = new VerticalAlignment();
 VerticalAlignment.BOTTOM = new VerticalAlignment();
 
+
+class Browser {
+  name: string;
+  shortName: string;
+  versions: Array<string>;
+
+  constructor(name: string, shortName: string, versions: Array<string>) {
+    this.name = name;
+    this.shortName = shortName;
+    this.versions = versions;
+  }
+
+  static IE: Browser;
+}
+Browser.IE = new Browser(
+  'Internet Explorer',
+  'IE',
+  [
+    '5.5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+  ]
+);
+
+class BrowserSupport {
+  browser: Browser;
+  minVersion: string;
+
+  constructor(browser: Browser, minVersion: string) {
+    invariant(
+      browser.versions.indexOf(minVersion) != -1,
+      'Invalid version %s for browser %s',
+      minVersion,
+      browser.name
+    );
+
+    this.browser = browser;
+    this.minVersion = minVersion;
+  }
+}
+
 module.exports = {
   Length,
   LengthType,
@@ -149,4 +194,6 @@ module.exports = {
   Content,
   Container,
   Text,
+  Browser,
+  BrowserSupport,
 };
