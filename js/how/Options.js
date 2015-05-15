@@ -75,6 +75,7 @@ class Length {
 // The inner container is either inline-block or block. If a paragraph of text
 // is to be centered, it should be put into an inline-block first.
 type Text = {
+  fontSize: ?Length;
   lines: ?number;
   lineHeight: ?Length;
 };
@@ -90,12 +91,14 @@ class Content {
     this.text = text;
   }
 
-  static text(lines: ?number, lineHeight: ?Length): Content {
+  static text(fontSize: ?Length, lines: ?number, lineHeight: ?Length): Content {
     var height = null;
-    if (lines && lineHeight) {
+    if (lines === 1 && fontSize) {
+      height = new Length(fontSize.value, fontSize.lengthType);
+    } else if (lines > 1 && lineHeight) {
       height = new Length(lineHeight.value * lines, lineHeight.lengthType);
     }
-    return new Content(null, height, {lines, lineHeight});
+    return new Content(null, height, {fontSize, lines, lineHeight});
   }
 }
 

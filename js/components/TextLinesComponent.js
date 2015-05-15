@@ -23,7 +23,9 @@ class TextLinesComponent extends React.Component {
   }
 
   _handleTextLinesKnownChange(known: bool) {
-    this._setLines(known ? 1 : null);
+    if (!known) {
+      this._setLines(null);
+    }
   }
 
   _handleTextLinesChange() {

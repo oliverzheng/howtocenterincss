@@ -37,8 +37,8 @@ class SingleLineTextLineHeightMethod extends Method {
             c.checkVerticalAlignment(Options.VerticalAlignment.BOTTOM)
           ),
           new Requirement(
-            'Content has line height',
-            c.checkContentText(c.requireLineHeightExists)
+            'Content has font-size',
+            c.checkContentText(c.requireFontSizeExists)
           ),
         ]),
       ]),
@@ -64,7 +64,7 @@ class SingleLineTextLineHeightMethod extends Method {
       } else if (verticalAlignment === Options.VerticalAlignment.BOTTOM) {
         styles.lineHeight =
           container.height.multiply(2).
-          subtract(content.text.lineHeight);
+          subtract(content.text.fontSize);
         styles.height = container.height.toString();
       }
     }

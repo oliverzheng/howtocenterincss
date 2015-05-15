@@ -37,6 +37,14 @@ function requireLineHeight(
 
 var requireLineHeightExists = requireLineHeight((l) => true);
 
+function requireFontSize(
+  requirement: (text: Options.Text) => bool
+): (obj: Options.Text) => bool {
+  return (obj) => obj.fontSize && requirement(obj.fontSize);
+}
+
+var requireFontSizeExists = requireFontSize((l) => true);
+
 function requireHeight(
   requirement: (length: Options.Length) => bool
 ): (obj: Options.Content | Options.Container) => bool {
@@ -98,6 +106,8 @@ module.exports.checkContainer = checkContainer;
 module.exports.checkContentText = checkContentText;
 module.exports.requireLineHeight = requireLineHeight;
 module.exports.requireLineHeightExists = requireLineHeightExists;
+module.exports.requireFontSize = requireFontSize;
+module.exports.requireFontSizeExists = requireFontSizeExists;
 module.exports.requireHeight = requireHeight;
 module.exports.requireHeightExists = requireHeightExists;
 module.exports.requireWidth = requireWidth;

@@ -3,6 +3,7 @@
 var React = require('react');
 var LengthComponent = require('./LengthComponent');
 var DivSizeComponent = require('./DivSizeComponent');
+var TextFontSizeComponent = require('./TextFontSizeComponent');
 var TextLinesComponent = require('./TextLinesComponent');
 var TextLineHeightComponent = require('./TextLineHeightComponent');
 var RadioComponent = require('./RadioComponent');
@@ -22,13 +23,14 @@ class ContentComponent extends React.Component {
   };
   _divSize: ?DivSizeComponent;
   _textLines: ?TextLinesComponent;
+  _textFontSize: ?TextFontSizeComponent;
   _textLineHeight: ?TextLineHeightComponent;
 
   constructor(props) {
     super(props);
     this.state = {
       contentType: null,
-      textLinesKnown: false,
+      textLines: null,
     };
   }
 
@@ -36,9 +38,16 @@ class ContentComponent extends React.Component {
     var textLines = this._textLines;
     var divSize = this._divSize;
     if (textLines) {
-      var lineHeight =
-        this._textLineHeight ? this._textLineHeight.getLineHeight() : null;
-      return Options.Content.text(textLines.getLines(), lineHeight);
+      var lines = textLines.getLines();
+      if (lines === 1) {
+        var fontSize =
+          this._textFontSize ? this._textFontSize.getFontSize() : null;
+        return Options.Content.text(fontSize, lines, null);
+      } else {
+        var lineHeight =
+          this._textLineHeight ? this._textLineHeight.getLineHeight() : null;
+        return Options.Content.text(null, lines, lineHeight);
+      }
     } else if (divSize) {
       return new Options.Content(
         divSize.getWidth(),
@@ -58,14 +67,18 @@ class ContentComponent extends React.Component {
 
   _handleTextLinesChange(lines: ?number) {
     this.setState({
-      textLinesKnown: lines != null,
+      textLines: lines,
     });
   }
 
   _renderContentText(): ?ReactElement {
     if (this.state.contentType === ContentType.TEXT) {
       var textLineHeight;
-      if (this.state.textLinesKnown) {
+      var textFontSize;
+      if (this.state.textLines === 1) {
+        textFontSize =
+          <TextFontSizeComponent ref={(c) => this._textFontSize = c} />;
+      } else if (this.state.textLines > 1) {
         textLineHeight =
           <TextLineHeightComponent ref={(c) => this._textLineHeight = c} />;
       }
@@ -75,6 +88,7 @@ class ContentComponent extends React.Component {
             onChange={this._handleTextLinesChange.bind(this)}
             ref={(c) => this._textLines = c}
           />
+          {textFontSize}
           {textLineHeight}
         </div>
       );
