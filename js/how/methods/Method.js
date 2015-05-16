@@ -21,7 +21,8 @@ class Method {
     content: Options.Content,
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
-    verticalAlignment: Options.VerticalAlignment
+    verticalAlignment: Options.VerticalAlignment,
+    browserSupport: Array<Options.BrowserSupport>
   ): ReactElement {
     throw new Error('Must implement method');
   }
@@ -30,13 +31,15 @@ class Method {
     content: Options.Content,
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
-    verticalAlignment: Options.VerticalAlignment
+    verticalAlignment: Options.VerticalAlignment,
+    browserSupport: Array<Options.BrowserSupport>
   ): string {
     var element = this.getCodeElement(
       content,
       container,
       horizontalAlignment,
-      verticalAlignment
+      verticalAlignment,
+      browserSupport
     );
     var styles = element.props.style;
     if (!styles) {

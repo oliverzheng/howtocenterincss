@@ -1,22 +1,28 @@
 /* @flow */
 
+var invariant = require('invariant');
+
 var Method = require('./Method');
 var Requirement = require('./Requirement');
 var Options = require('../Options');
 var React = require('react');
 
-var invariant = require('invariant');
-
 var c = require('../checks');
 
-class TableCellMethod extends Method {
+var ie11 = new Options.BrowserSupport(Options.Browser.IE, '11');
+
+class FlexMethod extends Method {
 
   getName(): string {
-    return 'Table cell';
+    return 'Flexbox';
   }
 
   getRequirement(): Requirement {
     return Requirement.all([
+      new Requirement(
+        'IE11 and above',
+        c.checkBrowserSupport(ie11)
+      ),
     ]);
   }
 
@@ -27,35 +33,27 @@ class TableCellMethod extends Method {
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Array<Options.BrowserSupport>
   ): ReactElement {
-    var tableCellStyles = {};
-    tableCellStyles.display = 'table-cell';
-    var childStyles = {};
+    var styles = {};
 
+    styles.display = 'flex';
     if (horizontalAlignment === Options.HorizontalAlignment.CENTER) {
-      childStyles.marginLeft = 'auto';
-      childStyles.marginRight = 'auto';
+      styles.justifyContent = 'center';
     } else if (horizontalAlignment === Options.HorizontalAlignment.RIGHT) {
-      childStyles.marginLeft = 'auto';
+      styles.justifyContent = 'flex-end';
     }
 
     if (verticalAlignment === Options.VerticalAlignment.MIDDLE) {
-      tableCellStyles.verticalAlign = 'middle';
+      styles.alignItems = 'center';
     } else if (verticalAlignment === Options.VerticalAlignment.BOTTOM) {
-      tableCellStyles.verticalAlign = 'bottom';
+      styles.alignItems = 'flex-end';
     }
 
-    var child;
-    if (content.text) {
-      child = <div style={childStyles}>{this.getTextContent()}</div>;
-    } else {
-      child = <div style={childStyles}/>;
-    }
     return (
-      <div style={tableCellStyles}>
-        {child}
+      <div style={styles}>
+        {content.text ? this.getTextContent() : this.getContent()}
       </div>
     );
   }
 }
 
-module.exports = TableCellMethod;
+module.exports = FlexMethod;

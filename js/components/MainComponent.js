@@ -16,13 +16,20 @@ class MainComponent extends React.Component {
     var horizontalAlignment = this._options.getHorizontalAlignment();
     var verticalAlignment = this._options.getVerticalAlignment();
     var browserSupport = this._options.getBrowserSupport();
-    var method = findMethod(content, container, horizontalAlignment, verticalAlignment);
+    var method = findMethod(
+      content,
+      container,
+      horizontalAlignment,
+      verticalAlignment,
+      browserSupport
+    );
     if (method) {
       var code = method.getCode(
         content,
         container,
         horizontalAlignment,
-        verticalAlignment
+        verticalAlignment,
+        browserSupport
       );
       this._code.setMethod(method, code);
     } else {

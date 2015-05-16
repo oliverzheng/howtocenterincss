@@ -9,6 +9,7 @@ var PixelHeightContainerContentPaddingMethod =
   require('./methods/PixelHeightContainerContentPaddingMethod');
 var AbsolutePositionMethod = require('./methods/AbsolutePositionMethod');
 var TableCellMethod = require('./methods/TableCellMethod');
+var FlexMethod = require('./methods/FlexMethod');
 
 // This list is in order of preference. The first applicable method should be
 // used, as it's probably simpler.
@@ -16,6 +17,7 @@ var methods = [
   new DoNothingMethod,
   new SingleLineTextLineHeightMethod(),
   new PixelHeightContainerContentPaddingMethod(),
+  new FlexMethod,
   new AbsolutePositionMethod,
   new TableCellMethod,
 ];
@@ -24,11 +26,12 @@ function findMethod(
   content: Options.Content,
   container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
-  verticalAlignment: Options.VerticalAlignment
+  verticalAlignment: Options.VerticalAlignment,
+  browserSupport: Array<Options.BrowserSupport>
 ): ?Method {
   for (var i = 0; i < methods.length; i++) {
     var method = methods[i];
-    if (method.getRequirement().check(content, container, horizontalAlignment, verticalAlignment)) {
+    if (method.getRequirement().check(content, container, horizontalAlignment, verticalAlignment, browserSupport)) {
       return method;
     }
   }

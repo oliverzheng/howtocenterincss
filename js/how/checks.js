@@ -8,23 +8,24 @@ type Check = (
   content: Options.Content,
   container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
-  verticalAlignment: Options.VerticalAlignment
+  verticalAlignment: Options.VerticalAlignment,
+  browserSupport: Array<Options.BrowserSupport>
 ) => bool;
 
 function checkContent(check: (content: Options.Content) => bool): Check {
-  return (content, container, horizontalAlignment, verticalAlignment) => {
+  return (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
     return check(content);
   };
 }
 
 function checkContainer(check: (container: Options.Container) => bool): Check {
-  return (content, container, horizontalAlignment, verticalAlignment) => {
+  return (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
     return check(container);
   };
 }
 
 function checkContentText(check: (text: Options.Text) => bool): Check {
-  return (content, container, horizontalAlignment, verticalAlignment) => {
+  return (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
     return content.text != null && check(content.text);
   };
 }
@@ -76,7 +77,7 @@ function requireIsEm(length: Options.Length): bool {
 function checkAnyHorizontalAlignment(
   alignments: Array<Options.HorizontalAlignment>
 ): Check {
-  return (content, container, horizontalAlignment, verticalAlignment) => {
+  return (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
     return alignments.indexOf(horizontalAlignment) !== -1;
   };
 }
@@ -90,7 +91,7 @@ function checkHorizontalAlignment(
 function checkAnyVerticalAlignment(
   alignments: Array<Options.VerticalAlignment>
 ): Check {
-  return (content, container, horizontalAlignment, verticalAlignment) => {
+  return (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
     return alignments.indexOf(verticalAlignment) !== -1;
   };
 }
@@ -99,6 +100,24 @@ function checkVerticalAlignment(
   alignment: Options.VerticalAlignment
 ): Check {
   return checkAnyVerticalAlignment([alignment]);
+}
+
+function checkBrowserSupport(methodSupport: Options.BrowserSupport): Check {
+  return (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
+    return browserSupport.every(s => {
+      if (s.browser === methodSupport.browser) {
+        if (s.minVersion === null) {
+          return true;
+        }
+        var browser = s.browser;
+        var minVersionUserNeeds = browser.versions.indexOf(s.minVersion);
+        var minVersionMethodNeeds =
+          browser.versions.indexOf(methodSupport.minVersion);
+        return minVersionUserNeeds >= minVersionMethodNeeds;
+      }
+      return true;
+    });
+  };
 }
 
 module.exports.checkContent = checkContent;
@@ -119,3 +138,4 @@ module.exports.checkAnyHorizontalAlignment = checkAnyHorizontalAlignment;
 module.exports.checkHorizontalAlignment = checkHorizontalAlignment;
 module.exports.checkAnyVerticalAlignment = checkAnyVerticalAlignment;
 module.exports.checkVerticalAlignment = checkVerticalAlignment;
+module.exports.checkBrowserSupport = checkBrowserSupport;

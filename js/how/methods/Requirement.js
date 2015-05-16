@@ -6,7 +6,8 @@ type Check = (
   content: Options.Content,
   container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
-  verticalAlignment: Options.VerticalAlignment
+  verticalAlignment: Options.VerticalAlignment,
+  browserSupport: Array<Options.BrowserSupport>
 ) => bool;
 
 class Requirement {
@@ -21,9 +22,9 @@ class Requirement {
   static all(requirements: Array<Requirement>): Requirement {
     return new Requirement(
       null,
-      (content, container, horizontalAlignment, verticalAlignment) => {
+      (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
         return requirements.every(
-          (requirement) => requirement.check(content, container, horizontalAlignment, verticalAlignment)
+          (requirement) => requirement.check(content, container, horizontalAlignment, verticalAlignment, browserSupport)
         );
       }
     );
@@ -32,9 +33,9 @@ class Requirement {
   static any(requirements: Array<Requirement>): Requirement {
     return new Requirement(
       null,
-      (content, container, horizontalAlignment, verticalAlignment) => {
+      (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
         return requirements.some(
-          (requirement) => requirement.check(content, container, horizontalAlignment, verticalAlignment)
+          (requirement) => requirement.check(content, container, horizontalAlignment, verticalAlignment, browserSupport)
         );
       }
     );
