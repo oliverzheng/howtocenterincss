@@ -27,7 +27,7 @@ function findMethod(
   container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
   verticalAlignment: Options.VerticalAlignment,
-  browserSupport: Array<Options.BrowserSupport>
+  browserSupport: Options.BrowserSupport
 ): ?Method {
   for (var i = 0; i < methods.length; i++) {
     var method = methods[i];

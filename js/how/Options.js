@@ -159,7 +159,6 @@ Browser.IE = new Browser(
   'Internet Explorer',
   'IE',
   [
-    '5.5',
     '6',
     '7',
     '8',
@@ -169,7 +168,7 @@ Browser.IE = new Browser(
   ]
 );
 
-class BrowserSupport {
+class BrowserVersionRequired {
   browser: Browser;
   minVersion: string;
 
@@ -184,6 +183,75 @@ class BrowserSupport {
     this.browser = browser;
     this.minVersion = minVersion;
   }
+
+  getVersionsNeededForSupport(): Array<string> {
+    var requiredSupportIndex = this.browser.versions.indexOf(
+      this.minVersion
+    );
+    return this.browser.versions.slice(requiredSupportIndex);
+  }
+
+  // Does this browser version requirement imply requiring a later version?
+  requiresBrowserVersion(other: BrowserVersionRequired): bool {
+    invariant(other.browser === this.browser, 'Must compare the same browser');
+    var versions = this.browser.versions;
+    return versions.indexOf(this.minVersion) <= versions.indexOf(other.minVersion);
+  }
+
+  static generateAllBrowserVersionsRequired(browser: Browser): Array<BrowserVersionRequired> {
+    return browser.versions.map(
+      version => new BrowserVersionRequired(browser, version)
+    );
+  }
+}
+
+class BrowserSupport {
+  browserVersionsRequired: Array<BrowserVersionRequired>;
+
+  constructor(browserVersionsRequired: Array<BrowserVersionRequired>) {
+    this.browserVersionsRequired = browserVersionsRequired;
+  }
+
+  // It is assumed that we support a browser if it's not specified.
+  requiresBrowserVersion(browserVersion: BrowserVersionRequired): bool {
+    return this.browserVersionsRequired.every(b => {
+      if (b.browser !== browserVersion.browser) {
+        return true;
+      }
+      return b.requiresBrowserVersion(browserVersion);
+    });
+  }
+
+  addBrowserVersionRequired(required: BrowserVersionRequired) {
+    this.removeBrowserRequired(required.browser);
+    this.browserVersionsRequired.push(required);
+  }
+
+  removeBrowserRequired(browser: Browser) {
+    for (var i = 0; i < this.browserVersionsRequired.length; ++i) {
+      var required = this.browserVersionsRequired[i];
+      if (required.browser === browser) {
+        this.browserVersionsRequired.splice(i, 1);
+        return;
+      }
+    }
+  }
+
+  // If every one of the required versions here is required by another
+  requiresBrowserSupport(other: BrowserSupport): bool {
+    return other.browserVersionsRequired.every(
+      browserVersion => this.requiresBrowserVersion(browserVersion)
+    );
+  }
+
+  static generateAllBrowserSupports(): Array<BrowserSupport> {
+    // TODO Only care about IE for now
+    var versionsRequired = BrowserVersionRequired.generateAllBrowserVersionsRequired(Browser.IE)
+    var supports = versionsRequired.map(versionRequired => new BrowserSupport([versionRequired]));
+    // We want a catch all
+    supports.push(new BrowserSupport([]));
+    return supports;
+  }
 }
 
 module.exports = {
@@ -195,5 +263,6 @@ module.exports = {
   Container,
   Text,
   Browser,
+  BrowserVersionRequired,
   BrowserSupport,
 };

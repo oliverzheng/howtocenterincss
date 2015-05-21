@@ -42,7 +42,7 @@ class OptionsComponent extends React.Component {
     return alignment;
   }
 
-  getBrowserSupport(): Array<Options.BrowserSupport> {
+  getBrowserSupport(): Options.BrowserSupport {
     return this._browserSupport.getBrowserSupport();
   }
 

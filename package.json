@@ -17,7 +17,8 @@
     "html-minify": "NODE_ENV=production node js/renderedHTML.js > build/index.html",
     "test-build": "jsx --harmony --strip-types js buildtest",
     "snapshot-record": "npm run test-build && CREATE_SNAPSHOTS=1 mocha -u tdd -t 60000 buildtest/tests/",
-    "snapshot-test": "npm run test-build && mocha -u tdd -t 60000 buildtest/tests/"
+    "snapshot-test": "npm run test-build && mocha -u tdd -t 60000 buildtest/tests/",
+    "snapshot-test-fast": "npm run test-build && FAST_TEST=1 mocha -u tdd -t 60000 buildtest/tests/"
   },
   "author": "",
   "license": "ISC",
@@ -69,6 +70,7 @@
     "react-tools": "^0.13.2",
     "shortid": "^2.1.3",
     "uglifycss": "0.0.13",
+    "underscore": "^1.8.3",
     "wd": "^0.3.11",
     "wd-screenshot": "^0.1.0"
   }

@@ -1,5 +1,7 @@
+/* @flow */
+
 require('colors');
-var assert = require('assert');
+var _ = require('underscore');
 var fs = require('fs');
 var wd = require('wd');
 var wdScreenshot = require('wd-screenshot')({
@@ -7,6 +9,7 @@ var wdScreenshot = require('wd-screenshot')({
 });
 var jsStringEscape = require('js-string-escape')
 var chai = require('chai');
+var invariant = require('invariant');
 var chaiAsPromised = require('chai-as-promised');
 var findMethod = require('../how/findMethod');
 
@@ -34,7 +37,7 @@ wd.configureHttp({
 wdScreenshot.addFunctions(wd);
 
 var remoteConfig = undefined;
-var browsers;
+var browserMappings;
 if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
   remoteConfig = {
     hostname: 'ondemand.saucelabs.com',
@@ -42,14 +45,18 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
     username: process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
   };
-  browsers = testMatrix.browsers;
+  browserMappings = testMatrix.sauceLabsBrowserMappings;
 } else {
-  browsers = [testMatrix.localBrowser];
+  browserMappings = testMatrix.localBrowserMappings;
 }
 
-var allTests = testMatrix.generateTests(browsers);
-
 var isCreatingSnapshots = !!process.env.CREATE_SNAPSHOTS;
+var fastTest = !!process.env.FAST_TEST;
+var enumerateAllBrowserSupports = !isCreatingSnapshots && !fastTest;
+var allTests = testMatrix.generateTestsForSeleniumBrowsers(
+  browserMappings,
+  enumerateAllBrowserSupports
+);
 
 var css = '<style>' +
 'body, html { margin: 0; padding: 0; }' +
@@ -58,13 +65,16 @@ var css = '<style>' +
 '#container { background: #0ff; }' +
 '</style>';
 
-browsers.forEach(browser => {
+allTests.forEach(seleniumTests => {
 
-  suite('snapshotting ' + browser.browserName, () => {
+  var browser = seleniumTests.seleniumBrowser;
+  var tests = seleniumTests.tests;
+
+  global.suite('using ' + browser.getDisplayName(), () => {
     var b;
     var allPassed = true;
 
-    suiteSetup(done => {
+    global.suiteSetup(done => {
       b = wd.promiseChainRemote(remoteConfig);
 
       if (process.env.SNAPSHOT_DEBUG) {
@@ -80,11 +90,12 @@ browsers.forEach(browser => {
       }
 
       b
-        .init(browser)
+        .init(browser.toSeleniumJSON())
         .setWindowSize(400, 400)
         .elementByTagName('html')
         .getSize()
         .then(size => {
+          invariant(b, 'flow');
           // Browser titles/bars short change you, so set it so the document's
           // 400x400.
           return b.setWindowSize(400 + (400 - size.width), 400 + (400 - size.height));
@@ -92,27 +103,31 @@ browsers.forEach(browser => {
         .nodeify(done);
     });
 
-    suiteTeardown(done => {
+    global.suiteTeardown(done => {
+      invariant(b, 'flow');
       b
         .quit()
         .nodeify(done);
     });
 
-    setup(done => {
+    global.setup(done => {
+      invariant(b, 'flow');
       b
         .get('about:blank')
         .nodeify(done);
     });
 
-    allTests.filter(t => t.browser === browser).forEach(t => {
+    tests.forEach(t => {
       var testName = testMatrix.getTestName(t);
       var mochaTestName =
         (isCreatingSnapshots ? 'Snapshot ' : 'Compare snapshot ') + testName;
 
-      test(mochaTestName, (done) => {
-        var method = findMethod(t.content, t.container, t.horizontal, t.vertical);
+      global.test(mochaTestName, (done) => {
+        var method = findMethod(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
+        invariant(method, 'flow');
         method.addIDs();
-        var html = method.getCode(t.content, t.container, t.horizontal, t.vertical);
+        var html = method.getCode(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
+        invariant(b, 'flow');
         var res =
           b.execute('document.body.innerHTML = "' + jsStringEscape(css + html) + '"');
 

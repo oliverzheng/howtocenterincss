@@ -25,7 +25,7 @@ class TableCellMethod extends Method {
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
-    browserSupport: Array<Options.BrowserSupport>
+    browserSupport: Options.BrowserSupport
   ): ReactElement {
     var tableCellStyles = {};
     tableCellStyles.display = 'table-cell';

@@ -10,40 +10,29 @@ class BrowserSupportComponent extends React.Component {
   constructor(props: mixed) {
     super(props);
     this.state = {
-      browserSupport: [],
+      browserSupport: new Options.BrowserSupport([]),
     };
   }
 
   state: {
-    browserSupport: Array<Options.BrowserSupport>;
+    browserSupport: Options.BrowserSupport;
   };
 
-  getBrowserSupport(): Array<Options.BrowserSupport> {
+  getBrowserSupport(): Options.BrowserSupport {
     return this.state.browserSupport;
   }
 
   _handleBrowserSupportChange(
     support: { browser: Options.Browser; version: ?string; }
   ) {
-    for (var i = 0; i < this.state.browserSupport.length; ++i) {
-      var browserSupport = this.state.browserSupport[i];
-      if (browserSupport.browser === support.browser) {
-        if (support.version == null) {
-          this.state.browserSupport.splice(i, 1);
-        } else {
-          browserSupport.minVersion = support.version;
-        }
-        this.setState({browserSupport: this.state.browserSupport});
-        return;
-      }
-    }
-
-    if (support.version != null) {
-      this.state.browserSupport.push(
-        new Options.BrowserSupport(support.browser, support.version)
+    if (!support.version) {
+      this.state.browserSupport.removeBrowserRequired(support.browser);
+    } else {
+      this.state.browserSupport.addBrowserVersionRequired(
+        new Options.BrowserVersionRequired(support.browser, support.version)
       );
-      this.setState({browserSupport: this.state.browserSupport});
     }
+    this.setState({browserSupport: this.state.browserSupport});
   }
 
   render(): ?ReactElement {

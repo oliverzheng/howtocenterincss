@@ -7,7 +7,7 @@ type Check = (
   container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
   verticalAlignment: Options.VerticalAlignment,
-  browserSupport: Array<Options.BrowserSupport>
+  browserSupport: Options.BrowserSupport
 ) => bool;
 
 class Requirement {

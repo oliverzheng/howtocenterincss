@@ -9,7 +9,7 @@ type Check = (
   container: Options.Container,
   horizontalAlignment: Options.HorizontalAlignment,
   verticalAlignment: Options.VerticalAlignment,
-  browserSupport: Array<Options.BrowserSupport>
+  browserSupport: Options.BrowserSupport
 ) => bool;
 
 function checkContent(check: (content: Options.Content) => bool): Check {
@@ -102,21 +102,9 @@ function checkVerticalAlignment(
   return checkAnyVerticalAlignment([alignment]);
 }
 
-function checkBrowserSupport(methodSupport: Options.BrowserSupport): Check {
-  return (content, container, horizontalAlignment, verticalAlignment, browserSupport) => {
-    return browserSupport.every(s => {
-      if (s.browser === methodSupport.browser) {
-        if (s.minVersion === null) {
-          return true;
-        }
-        var browser = s.browser;
-        var minVersionUserNeeds = browser.versions.indexOf(s.minVersion);
-        var minVersionMethodNeeds =
-          browser.versions.indexOf(methodSupport.minVersion);
-        return minVersionUserNeeds >= minVersionMethodNeeds;
-      }
-      return true;
-    });
+function checkBrowserSupport(requirementBrowserSupport: Options.BrowserSupport): Check {
+  return (content, container, horizontalAlignment, verticalAlignment, userBrowserSupport) => {
+    return requirementBrowserSupport.requiresBrowserSupport(userBrowserSupport);
   };
 }
 

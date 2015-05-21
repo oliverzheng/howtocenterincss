@@ -52,7 +52,7 @@ class SingleLineTextLineHeightMethod extends Method {
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
-    browserSupport: Array<Options.BrowserSupport>
+    browserSupport: Options.BrowserSupport
   ): ReactElement {
     var styles = {};
     if (horizontalAlignment === Options.HorizontalAlignment.CENTER) {

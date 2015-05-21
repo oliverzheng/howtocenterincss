@@ -33,7 +33,7 @@ class PixelHeightContainerContentPaddingMethod extends Method {
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
-    browserSupport: Array<Options.BrowserSupport>
+    browserSupport: Options.BrowserSupport
   ): ReactElement {
     var containerHeight = container.height;
     invariant(containerHeight, 'Require container height');

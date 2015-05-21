@@ -22,7 +22,7 @@ class Method {
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
-    browserSupport: Array<Options.BrowserSupport>
+    browserSupport: Options.BrowserSupport
   ): ReactElement {
     throw new Error('Must implement method');
   }
@@ -32,7 +32,7 @@ class Method {
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
-    browserSupport: Array<Options.BrowserSupport>
+    browserSupport: Options.BrowserSupport
   ): string {
     var element = this.getCodeElement(
       content,

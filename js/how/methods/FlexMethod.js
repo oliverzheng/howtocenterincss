@@ -9,7 +9,9 @@ var React = require('react');
 
 var c = require('../checks');
 
-var ie11 = new Options.BrowserSupport(Options.Browser.IE, '11');
+var browserSupport = new Options.BrowserSupport([
+  new Options.BrowserVersionRequired(Options.Browser.IE, '11'),
+]);
 
 class FlexMethod extends Method {
 
@@ -21,7 +23,7 @@ class FlexMethod extends Method {
     return Requirement.all([
       new Requirement(
         'IE11 and above',
-        c.checkBrowserSupport(ie11)
+        c.checkBrowserSupport(browserSupport)
       ),
     ]);
   }
@@ -31,7 +33,7 @@ class FlexMethod extends Method {
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
-    browserSupport: Array<Options.BrowserSupport>
+    browserSupport: Options.BrowserSupport
   ): ReactElement {
     var styles = {};
 
