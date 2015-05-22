@@ -58,12 +58,31 @@ var allTests = testMatrix.generateTestsForSeleniumBrowsers(
   enumerateAllBrowserSupports
 );
 
-var css = '<style>' +
-'body, html { margin: 0; padding: 0; }' +
+var WINDOW_WIDTH = 400;
+var WINDOW_HEIGHT = 400;
+
+var css =
+'body, html { margin: 0; padding: 0; overflow: hidden; border: 0; }' +
 'body { font-size: ' + testMatrix.fontSize + 'px; font-family: arial; }' +
+// For some reason, IE screenshots disregard the height of the body if there is
+// nothing in it. We need a div to be opaquely white.
+'#testOuterDiv { background: white; width: ' + WINDOW_WIDTH + 'px; height: ' + WINDOW_HEIGHT + 'px; }' +
 '#content { background: #f00; }' +
-'#container { background: #0ff; }' +
-'</style>';
+'#container { background: #0ff; }';
+
+// http://www.phpied.com/dynamic-script-and-style-elements-in-ie/
+var cssJS =
+'var ss1 = document.createElement("style");' +
+'var def = "' + jsStringEscape(css) + '";' +
+'ss1.setAttribute("type", "text/css");' +
+'var hh1 = document.getElementsByTagName("head")[0];' +
+'hh1.appendChild(ss1);' +
+'if (ss1.styleSheet) {' /*IE*/ +
+'  ss1.styleSheet.cssText = def;' +
+'} else {' /* errbody else */ +
+'  var tt1 = document.createTextNode(def);' +
+'  ss1.appendChild(tt1);' +
+'}';
 
 allTests.forEach(seleniumTests => {
 
@@ -91,14 +110,14 @@ allTests.forEach(seleniumTests => {
 
       b
         .init(browser.toSeleniumJSON())
-        .setWindowSize(400, 400)
+        .setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         .elementByTagName('html')
         .getSize()
         .then(size => {
           invariant(b, 'flow');
           // Browser titles/bars short change you, so set it so the document's
           // 400x400.
-          return b.setWindowSize(400 + (400 - size.width), 400 + (400 - size.height));
+          return b.setWindowSize(WINDOW_WIDTH + (WINDOW_WIDTH - size.width), WINDOW_HEIGHT + (WINDOW_HEIGHT - size.height));
         })
         .nodeify(done);
     });
@@ -113,7 +132,7 @@ allTests.forEach(seleniumTests => {
     global.setup(done => {
       invariant(b, 'flow');
       b
-        .get('about:blank')
+        .get(browser.startingPage)
         .nodeify(done);
     });
 
@@ -128,8 +147,10 @@ allTests.forEach(seleniumTests => {
         method.addIDs();
         var html = method.getCode(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
         invariant(b, 'flow');
+        var insertJS =
+          'document.body.innerHTML = "' + jsStringEscape('<div id="testOuterDiv">' + html + '</div>') + '";';
         var res =
-          b.execute('document.body.innerHTML = "' + jsStringEscape(css + html) + '"');
+          b.execute(cssJS + insertJS);
 
         if (isCreatingSnapshots) {
           res = res.saveScreenshot(getReferenceFilename(t));

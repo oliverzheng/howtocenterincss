@@ -19,11 +19,13 @@ class SeleniumBrowser {
   browserName: string;
   platform: ?string;
   version: ?string;
+  startingPage: string;
 
-  constructor(browserName: string, platform: ?string, version: ?string) {
+  constructor(browserName: string, platform: ?string, version: ?string, startingPage: string) {
     this.browserName = browserName;
     this.platform = platform;
     this.version = version;
+    this.startingPage = startingPage;
   }
 
   // Purposely mixed type. It should be opaque to the caller.
@@ -58,16 +60,24 @@ class SeleniumBrowser {
   static firefox: SeleniumBrowser;
 }
 
-SeleniumBrowser.ie11OnWindows7 = new SeleniumBrowser('internet explorer', 'Windows 7', '11');
-SeleniumBrowser.ie10OnWindows7 = new SeleniumBrowser('internet explorer', 'Windows 7', '10');
-SeleniumBrowser.ie9OnWindows7 = new SeleniumBrowser('internet explorer', 'Windows 7', '9');
-SeleniumBrowser.ie8OnWindowsXP = new SeleniumBrowser('internet explorer', 'Windows XP', '8');
-SeleniumBrowser.ie7OnWindowsXP = new SeleniumBrowser('internet explorer', 'Windows XP', '7');
-SeleniumBrowser.ie6OnWindowsXP = new SeleniumBrowser('internet explorer', 'Windows XP', '6');
-SeleniumBrowser.chromeOnWindows8 = new SeleniumBrowser('chrome', 'Windows 8', null);
-SeleniumBrowser.firefoxOnWindows8 = new SeleniumBrowser('firefox', 'Windows 8', null);
-SeleniumBrowser.chrome = new SeleniumBrowser('chrome', null, null);
-SeleniumBrowser.firefox = new SeleniumBrowser('firefox', null, null);
+// Piece of junk IE adds a 3D border around body that cannot be removed unless
+// the HTML has a doctype as such:
+// http://stackoverflow.com/questions/3923075/how-to-remove-3d-border-in-ie8-with-doctype-xhtml
+// JS can't modify the doctype at runtime, and selenium can't open a page with
+// specified HTML, so we have to have a page with the doctype set already.
+var HTML_DOCTYPE = 'http://dump.oliverzheng.com/doctype_html.html';
+var HTML_ABOUT_BLANK = 'about:blank';
+
+SeleniumBrowser.ie11OnWindows7 = new SeleniumBrowser('internet explorer', 'Windows 7', '11', HTML_ABOUT_BLANK);
+SeleniumBrowser.ie10OnWindows7 = new SeleniumBrowser('internet explorer', 'Windows 7', '10', HTML_ABOUT_BLANK);
+SeleniumBrowser.ie9OnWindows7 = new SeleniumBrowser('internet explorer', 'Windows 7', '9', HTML_DOCTYPE);
+SeleniumBrowser.ie8OnWindowsXP = new SeleniumBrowser('internet explorer', 'Windows XP', '8', HTML_DOCTYPE);
+SeleniumBrowser.ie7OnWindowsXP = new SeleniumBrowser('internet explorer', 'Windows XP', '7', HTML_DOCTYPE);
+SeleniumBrowser.ie6OnWindowsXP = new SeleniumBrowser('internet explorer', 'Windows XP', '6', HTML_DOCTYPE);
+SeleniumBrowser.chromeOnWindows8 = new SeleniumBrowser('chrome', 'Windows 8', null, HTML_ABOUT_BLANK);
+SeleniumBrowser.firefoxOnWindows8 = new SeleniumBrowser('firefox', 'Windows 8', null, HTML_ABOUT_BLANK);
+SeleniumBrowser.chrome = new SeleniumBrowser('chrome', null, null, HTML_ABOUT_BLANK);
+SeleniumBrowser.firefox = new SeleniumBrowser('firefox', null, null, HTML_ABOUT_BLANK);
 
 class SeleniumBrowserMapping {
   browser: ?Options.Browser;
