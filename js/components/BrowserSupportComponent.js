@@ -25,13 +25,9 @@ class BrowserSupportComponent extends React.Component {
   _handleBrowserSupportChange(
     support: { browser: Options.Browser; version: ?string; }
   ) {
-    if (!support.version) {
-      this.state.browserSupport.removeBrowserRequired(support.browser);
-    } else {
-      this.state.browserSupport.addBrowserVersionRequired(
-        new Options.BrowserVersionRequired(support.browser, support.version)
-      );
-    }
+    this.state.browserSupport.addBrowserVersionRequired(
+      new Options.BrowserVersionRequired(support.browser, support.version)
+    );
     this.setState({browserSupport: this.state.browserSupport});
   }
 

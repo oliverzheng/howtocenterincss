@@ -271,7 +271,13 @@ function getTestName(test: Test): string {
   } else {
     name += browserSupport.browserVersionsRequired.map(
       browserVersionRequired => {
-        return browserVersionRequired.browser.shortName + ' minVer=' + browserVersionRequired.minVersion;
+        var name = browserVersionRequired.browser.shortName;
+        if (browserVersionRequired.minVersion) {
+          name += ' minVer=' + browserVersionRequired.minVersion;
+        } else {
+          name += ' no-support';
+        }
+        return name;
       }
     ).join(',');
   }
