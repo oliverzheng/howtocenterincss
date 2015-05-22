@@ -170,21 +170,27 @@ Browser.IE = new Browser(
 
 class BrowserVersionRequired {
   browser: Browser;
-  minVersion: string;
+  minVersion: ?string;
 
-  constructor(browser: Browser, minVersion: string) {
-    invariant(
-      browser.versions.indexOf(minVersion) != -1,
-      'Invalid version %s for browser %s',
-      minVersion,
-      browser.name
-    );
+  constructor(browser: Browser, minVersion: ?string) {
+    if (minVersion) {
+      invariant(
+        browser.versions.indexOf(minVersion) != -1,
+        'Invalid version %s for browser %s',
+        minVersion,
+        browser.name
+      );
+    }
 
     this.browser = browser;
     this.minVersion = minVersion;
   }
 
   getVersionsNeededForSupport(): Array<string> {
+    if (!this.minVersion) {
+      return [];
+    }
+
     var requiredSupportIndex = this.browser.versions.indexOf(
       this.minVersion
     );
@@ -193,15 +199,26 @@ class BrowserVersionRequired {
 
   // Does this browser version requirement imply requiring a later version?
   requiresBrowserVersion(other: BrowserVersionRequired): bool {
+    var otherMinVersion = other.minVersion;
+    if (!otherMinVersion) {
+      return true;
+    }
+
+    if (!this.minVersion) {
+      return false;
+    }
+
     invariant(other.browser === this.browser, 'Must compare the same browser');
     var versions = this.browser.versions;
-    return versions.indexOf(this.minVersion) <= versions.indexOf(other.minVersion);
+    return versions.indexOf(this.minVersion) <= versions.indexOf(otherMinVersion);
   }
 
   static generateAllBrowserVersionsRequired(browser: Browser): Array<BrowserVersionRequired> {
-    return browser.versions.map(
+    var requireds = browser.versions.map(
       version => new BrowserVersionRequired(browser, version)
     );
+    requireds.push(new BrowserVersionRequired(browser, null));
+    return requireds;
   }
 }
 
