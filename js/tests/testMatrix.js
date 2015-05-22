@@ -1,7 +1,7 @@
 /* @flow */
 
 var invariant = require('invariant');
-var Combinatorics = require('js-combinatorics').Combinatorics;
+var Combinatorics = require('js-combinatorics');
 var Options = require('../how/Options');
 
 var FONT_SIZE = 30; // px
