@@ -9,6 +9,8 @@ var React = require('react');
 
 var c = require('../checks');
 
+var IE9 = new Options.BrowserVersionRequired(Options.Browser.IE, '9');
+
 class SingleLineTextLineHeightMethod extends Method {
 
   getName(): string {
@@ -77,6 +79,12 @@ class SingleLineTextLineHeightMethod extends Method {
           containerHeight.multiply(2).
           subtract(fontSize);
         styles.height = containerHeight.toString();
+
+        // For IE9 and below, the container div doesn't automatically hide the
+        // empty part of the line height
+        if (browserSupport.requiresBrowserVersion(IE9)) {
+          styles.overflow = 'hidden';
+        }
       }
     }
     return (
