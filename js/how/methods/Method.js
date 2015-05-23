@@ -6,6 +6,25 @@ var Requirement = require('./Requirement');
 var React = require('react/addons');
 var html = require('html');
 
+// Takem from React.js
+var _uppercasePattern = /([A-Z])/g;
+function hyphenate(string) {
+  return string.replace(_uppercasePattern, '-$1').toLowerCase();
+}
+function createMarkupForStyles(styles) {
+  var styleList = [];
+  var styleNames = Object.keys(styles);
+  // Be consistent
+  styleNames.sort();
+  styleNames.forEach((styleName) => {
+    var styleValue = styles[styleName];
+    if (styleValue != null) {
+      styleList.push(hyphenate(styleName) + ': ' + styleValue + ';');
+    }
+  });
+  return styleList.join('\n');
+}
+
 class Method {
   _addIDs: bool;
   _isTest: bool;
@@ -28,13 +47,13 @@ class Method {
     throw new Error('Must implement method');
   }
 
-  getCode(
+  getCodeElementWithStyles(
     content: Options.Content,
     container: Options.Container,
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): string {
+  ): { parent: ReactElement; child: mixed; } {
     var {parent, child} = this.getCodeElement(
       content,
       container,
@@ -63,6 +82,23 @@ class Method {
       propsForFonts = parent.props;
     }
     this._applyFontStyles(propsForFonts, content);
+    return { parent, child };
+  }
+
+  getCode(
+    content: Options.Content,
+    container: Options.Container,
+    horizontalAlignment: Options.HorizontalAlignment,
+    verticalAlignment: Options.VerticalAlignment,
+    browserSupport: Options.BrowserSupport
+  ): string {
+    var {parent, child} = this.getCodeElementWithStyles(
+      content,
+      container,
+      horizontalAlignment,
+      verticalAlignment,
+      browserSupport
+    );
     var code = React.renderToStaticMarkup(parent);
     var formattedCode = html.prettyPrint(
       code,
@@ -72,6 +108,46 @@ class Method {
       }
     );
     return formattedCode;
+  }
+
+  getCanonicalCode(
+    content: Options.Content,
+    container: Options.Container,
+    horizontalAlignment: Options.HorizontalAlignment,
+    verticalAlignment: Options.VerticalAlignment,
+    browserSupport: Options.BrowserSupport
+  ): { html: string; parentCSS: string; childCSS: string; } {
+    var {parent, child} = this.getCodeElementWithStyles(
+      content,
+      container,
+      horizontalAlignment,
+      verticalAlignment,
+      browserSupport
+    );
+
+    var parentStyles = parent.props.style;
+    parent.props.style = null;
+
+    var childStyles = {};
+    if (React.addons.TestUtils.isElement(child)) {
+      childStyles = (child: any).props.style;
+      (child: any).props.style = null;
+    }
+
+    var code = React.renderToStaticMarkup(parent);
+    var formattedCode = html.prettyPrint(
+      code,
+      {
+        indent_size: 2,
+        max_char: 50,
+      }
+    );
+
+    return {
+      html: formattedCode,
+      parentCSS: createMarkupForStyles(parentStyles),
+      childCSS: createMarkupForStyles(childStyles),
+    };
   }
 
   _applyDimensions(

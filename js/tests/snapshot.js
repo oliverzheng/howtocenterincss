@@ -25,9 +25,14 @@ function getReferenceFilename(test) {
   return SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(test) + '.png';
 }
 
-function getReferenceHTMLFilename(test) {
+function getReferenceTestHTMLFilename(test) {
   var SCREENSHOTS_DIR = __dirname + '/../../screenshots';
-  return SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(test) + '.html';
+  return SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(test) + '_test.html';
+}
+
+function getReferenceCodeFilename(test) {
+  var SCREENSHOTS_DIR = __dirname + '/../../screenshots';
+  return SCREENSHOTS_DIR + '/' + testMatrix.getTestName(test) + '.txt';
 }
 
 wd.configureHttp({
@@ -52,7 +57,7 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
 
 var isCreatingSnapshots = !!process.env.CREATE_SNAPSHOTS;
 var fastTest = !!process.env.FAST_TEST;
-var enumerateAllBrowserSupports = !isCreatingSnapshots && !fastTest;
+var enumerateAllBrowserSupports = isCreatingSnapshots || !fastTest;
 var allTests = testMatrix.generateTestsForSeleniumBrowsers(
   browserMappings,
   enumerateAllBrowserSupports
@@ -140,6 +145,14 @@ allTests.forEach(seleniumTests => {
     });
 
     tests.forEach(t => {
+      // Run in the browser if we are testing, or if we are creating snapshots, only
+      // run in the browser for one of the browser supports. We want to run all the
+      // tests so we can generate the HTML/CSS for comparison, but only create
+      // screenshots for one of them.
+      var runInBrowser =
+        !isCreatingSnapshots ||
+        t.browserSupport.browserVersionsRequired.length === 0;
+
       var testName = testMatrix.getTestName(t);
       var mochaTestName =
         (isCreatingSnapshots ? 'Snapshot ' : 'Compare snapshot ') + testName;
@@ -150,6 +163,28 @@ allTests.forEach(seleniumTests => {
         method.addIDs();
         method.setIsTest();
         var html = method.getCode(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
+        var canonicalCode = method.getCanonicalCode(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
+
+        var codeGenerated =
+          canonicalCode.html +
+          '\n\n#parent {\n' + canonicalCode.parentCSS + '\n}\n\n#child {\n' + canonicalCode.childCSS + '\n}';
+
+        if (isCreatingSnapshots) {
+          fs.writeFileSync(getReferenceTestHTMLFilename(t), '<style>' + css + '</style>' + html);
+          fs.writeFileSync(getReferenceCodeFilename(t), codeGenerated);
+        } else {
+          var referenceCode = fs.readFileSync(getReferenceCodeFilename(t), 'utf8');
+          if (referenceCode !== codeGenerated) {
+            done('Reference code not equal to code generated: ' + codeGenerated);
+            return;
+          }
+        }
+
+        if (!runInBrowser) {
+          done();
+          return;
+        }
+
         invariant(b, 'flow');
         var insertJS =
           'document.body.innerHTML = "' + jsStringEscape('<div id="testOuterDiv">' + html + '</div>') + '";';
@@ -159,7 +194,6 @@ allTests.forEach(seleniumTests => {
         var referenceFilename = getReferenceFilename(t);
         if (isCreatingSnapshots) {
           res = res.saveScreenshot(referenceFilename);
-          fs.writeFileSync(getReferenceHTMLFilename(t), css + html);
         } else {
           var tmpFilename = tmp.tmpNameSync({
             // for finding it easier in Finder
