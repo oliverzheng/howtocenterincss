@@ -58,10 +58,16 @@ class AbsolutePositionMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): ReactElement {
+  ): { parent: ReactElement; child: mixed; } {
     var parentStyles = {};
     parentStyles.position = 'relative';
-    var childStyles = {};
+
+    var child = this.getContentWithDOM(content);
+
+    var childStyles = child.props.styles;
+    if (!childStyles) {
+      childStyles = child.props.styles = {};
+    }
     childStyles.position = 'absolute';
 
     var contentWidth = content.width;
@@ -82,35 +88,14 @@ class AbsolutePositionMethod extends Method {
       childStyles.bottom = '0';
     }
 
-    if (contentWidth) {
-      childStyles.width = contentWidth.toString();
-    }
-    if (contentHeight) {
-      childStyles.height = contentHeight.toString();
-    }
+    // TODO have to wrap the text in an inner div and extend it to 100% width
+    // in order to center or right align.
 
-    var containerWidth = container.width;
-    var containerHeight = container.height;
-    if (containerWidth) {
-      parentStyles.width = containerWidth.toString();
-    }
-    if (containerHeight) {
-      parentStyles.height = containerHeight.toString();
-    }
-
-    var child;
-    if (content.text) {
-      // TODO have to wrap the text in an inner div and extend it to 100% width
-      // in order to center or right align.
-      child = this.getTextContent();
-    } else {
-      child = <div style={childStyles} />;
-    }
-    return (
+    var parent =
       <div style={parentStyles}>
         {child}
-      </div>
-    );
+      </div>;
+    return { parent, child };
   }
 }
 

@@ -148,6 +148,7 @@ allTests.forEach(seleniumTests => {
         var method = findMethod(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
         invariant(method, 'flow');
         method.addIDs();
+        method.setIsTest();
         var html = method.getCode(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
         invariant(b, 'flow');
         var insertJS =

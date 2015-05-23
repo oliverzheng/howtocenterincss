@@ -34,7 +34,7 @@ class FlexMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): ReactElement {
+  ): { parent: ReactElement; child: mixed; } {
     var styles = {};
 
     styles.display = 'flex';
@@ -50,11 +50,12 @@ class FlexMethod extends Method {
       styles.alignItems = 'flex-end';
     }
 
-    return (
+    var child = this.getContent(content);
+    var parent =
       <div style={styles}>
-        {content.text ? this.getTextContent() : this.getContent()}
-      </div>
-    );
+        {child}
+      </div>;
+    return { parent, child };
   }
 }
 

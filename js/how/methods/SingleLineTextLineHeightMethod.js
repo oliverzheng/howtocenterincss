@@ -55,7 +55,7 @@ class SingleLineTextLineHeightMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): ReactElement {
+  ): { parent: ReactElement; child: mixed; } {
     var styles = {};
     if (horizontalAlignment === Options.HorizontalAlignment.CENTER) {
       styles.textAlign = 'center';
@@ -87,11 +87,13 @@ class SingleLineTextLineHeightMethod extends Method {
         }
       }
     }
-    return (
+
+    var child = this.getContent(content);
+    var parent =
       <div style={styles}>
-        {this.getTextContent()}
-      </div>
-    );
+        {child}
+      </div>;
+    return { parent, child };
   }
 }
 

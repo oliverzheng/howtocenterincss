@@ -26,10 +26,12 @@ class TableCellMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): ReactElement {
+  ): { parent: ReactElement; child: mixed; } {
+    var child = this.getContentWithDOM(content);
+    var childStyles = child.props.style;
+
     var tableCellStyles = {};
     tableCellStyles.display = 'table-cell';
-    var childStyles = {};
 
     if (horizontalAlignment === Options.HorizontalAlignment.CENTER) {
       childStyles.marginLeft = 'auto';
@@ -44,17 +46,11 @@ class TableCellMethod extends Method {
       tableCellStyles.verticalAlign = 'bottom';
     }
 
-    var child;
-    if (content.text) {
-      child = <div style={childStyles}>{this.getTextContent()}</div>;
-    } else {
-      child = <div style={childStyles}/>;
-    }
-    return (
+    var parent =
       <div style={tableCellStyles}>
         {child}
-      </div>
-    );
+      </div>;
+    return { parent, child };
   }
 }
 

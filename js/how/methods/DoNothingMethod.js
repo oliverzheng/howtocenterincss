@@ -34,23 +34,20 @@ class DoNothingMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): ReactElement {
+  ): { parent: ReactElement; child: mixed; } {
     var parentStyles = {};
     parentStyles.position = 'relative';
     var childStyles = {};
     childStyles.position = 'absolute';
 
-    var child;
-    if (content.text) {
-      child = this.getTextContent();
-    } else {
-      child = <div />;
-    }
-    return (
+    var child = this.getContent(content);
+
+    var parent =
       <div>
         {child}
-      </div>
-    );
+      </div>;
+
+    return { parent, child };
   }
 }
 

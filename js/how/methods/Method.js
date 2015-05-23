@@ -3,11 +3,12 @@
 var Options = require('../Options');
 var Requirement = require('./Requirement');
 
-var React = require('react');
+var React = require('react/addons');
 var html = require('html');
 
 class Method {
   _addIDs: bool;
+  _isTest: bool;
 
   getName(): string {
     throw new Error('Must implement method');
@@ -23,7 +24,7 @@ class Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): ReactElement {
+  ): { parent: ReactElement; child: mixed; } {
     throw new Error('Must implement method');
   }
 
@@ -34,30 +35,35 @@ class Method {
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
   ): string {
-    var element = this.getCodeElement(
+    var {parent, child} = this.getCodeElement(
       content,
       container,
       horizontalAlignment,
       verticalAlignment,
       browserSupport
     );
-    var styles = element.props.style;
-    if (!styles) {
-      styles = element.props.style = {};
-    }
-    if (!styles.width && container.width) {
-      styles.width = container.width.toString();
-    }
-    if (!styles.height && container.height) {
-      styles.height = container.height.toString();
-    }
-    if (this._addIDs) {
-      element = React.cloneElement(
-        element,
-        {id: 'container'}
+    this._applyDimensions(
+      parent.props,
+      container.width,
+      container.height,
+      this._addIDs ? 'container' : null
+    );
+    var propsForFonts;
+    if (React.addons.TestUtils.isElement(child)) {
+      var props = (child: any).props;
+      this._applyDimensions(
+        props,
+        content.width,
+        content.height,
+        this._addIDs ? 'content' : null
       );
+      propsForFonts = props;
+    } else {
+      // It's a fragment
+      propsForFonts = parent.props;
     }
-    var code = React.renderToStaticMarkup(element);
+    this._applyFontStyles(propsForFonts, content);
+    var code = React.renderToStaticMarkup(parent);
     var formattedCode = html.prettyPrint(
       code,
       {
@@ -68,29 +74,79 @@ class Method {
     return formattedCode;
   }
 
+  _applyDimensions(
+    props: { style: ?{[key: string]: string}; id: ?string },
+    width: ?Options.Length,
+    height: ?Options.Length,
+    id: ?string
+  ) {
+    var styles = props.style;
+    if (!styles) {
+      styles = props.style = {};
+    }
+    if (!styles.width && width) {
+      styles.width = width.toString();
+    }
+    if (!styles.height && height) {
+      styles.height = height.toString();
+    }
+    if (id) {
+      props.id = id;
+    }
+  }
+
+  _applyFontStyles(
+    props: { style: ?{[key: string]: string}; },
+    content: Options.Content
+  ) {
+    var styles = props.style;
+    if (!styles) {
+      styles = props.style = {};
+    }
+    var text = content.text;
+    if (!styles.fontSize && text && text.fontSize) {
+      styles.fontSize = text.fontSize.toString();
+    }
+  }
+
   addIDs(): void {
     this._addIDs = true;
   }
 
-  getContent(): ?ReactElement {
-    var content = <div />;
-    if (this._addIDs) {
-      content.setProps({id: 'content'});
-    }
-    return content;
+  setIsTest(): void {
+    this._isTest = true;
   }
 
-  getTextContent(): mixed {
-    if (this._addIDs) {
+  getContent(content: Options.Content): mixed {
+    if (content.text) {
+      return this.getText();
+    } else {
+      return <div />;
+    }
+  }
+
+  getContentWithDOM(content: Options.Content): ReactElement {
+    // Add styles, since that's why the caller wants a DOM element
+    var styles = {};
+    if (content.text) {
+      return <span style={styles}>{this.getText()}</span>;
+    } else {
+      return <div style={styles} />;
+    }
+  }
+
+  getText(): string {
+    var str = 'Text Content';
+    if (this._isTest) {
       // TODO rename addIDs to "isTest" or something
       // This 'I' has the least variance in font rendering. Even if the fonts
       // shift up and down, the majority of the text still occupy the same
       // space. Only 1 character is used, because Windows and Mac render the
       // same text with different spacing.
       // See http://fmforums.com/forum/topic/79795-cross-platform-fonts-revisited-arial-vs-verdana/
-      return 'I';
+      str = 'I';
     }
-    return 'Text Content';
+    return str;
   }
 }
 
