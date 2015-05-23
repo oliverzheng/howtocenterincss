@@ -264,18 +264,18 @@ function getTestName(test: Test): string {
     browserSupport,
   } = test;
 
-  var name = getSnapshotName(test) + ' ';
+  var name = getSnapshotName(test) + '_';
 
   if (!browserSupport || browserSupport.browserVersionsRequired.length === 0) {
-    name += 'support all browsers';
+    name += 'support_all_browsers';
   } else {
     name += browserSupport.browserVersionsRequired.map(
       browserVersionRequired => {
         var name = browserVersionRequired.browser.shortName;
         if (browserVersionRequired.minVersion) {
-          name += ' minVer=' + browserVersionRequired.minVersion;
+          name += '_minVer_' + browserVersionRequired.minVersion;
         } else {
-          name += ' no-support';
+          name += '_no-support';
         }
         return name;
       }

@@ -83,10 +83,12 @@ class Method {
   getTextContent(): mixed {
     if (this._addIDs) {
       // TODO rename addIDs to "isTest" or something
-      // These IIs have the least variance in font rendering. Even if the fonts
+      // This 'I' has the least variance in font rendering. Even if the fonts
       // shift up and down, the majority of the text still occupy the same
-      // space.
-      return 'IIIIII';
+      // space. Only 1 character is used, because Windows and Mac render the
+      // same text with different spacing.
+      // See http://fmforums.com/forum/topic/79795-cross-platform-fonts-revisited-arial-vs-verdana/
+      return 'I';
     }
     return 'Text Content';
   }

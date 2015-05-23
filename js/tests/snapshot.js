@@ -4,12 +4,12 @@ require('colors');
 var _ = require('underscore');
 var fs = require('fs');
 var wd = require('wd');
-var wdScreenshot = require('wd-screenshot')({
-  tolerance: 0.003, // browser text rendering variances
-});
+var BlinkDiff = require('blink-diff');
 var jsStringEscape = require('js-string-escape')
 var chai = require('chai');
 var invariant = require('invariant');
+var tmp = require('tmp');
+var Q = require('q');
 var chaiAsPromised = require('chai-as-promised');
 var findMethod = require('../how/findMethod');
 
@@ -34,7 +34,6 @@ wd.configureHttp({
   retryDelay: 15000,
   retries: 5
 });
-wdScreenshot.addFunctions(wd);
 
 var remoteConfig = undefined;
 var browserMappings;
@@ -57,6 +56,9 @@ var allTests = testMatrix.generateTestsForSeleniumBrowsers(
   browserMappings,
   enumerateAllBrowserSupports
 );
+
+// browser text rendering variances
+var SCREENSHOT_TOLERANCE = 0.000003;
 
 var WINDOW_WIDTH = 400;
 var WINDOW_HEIGHT = 400;
@@ -152,11 +154,44 @@ allTests.forEach(seleniumTests => {
         var res =
           b.execute(cssJS + insertJS);
 
+        var referenceFilename = getReferenceFilename(t);
         if (isCreatingSnapshots) {
-          res = res.saveScreenshot(getReferenceFilename(t));
+          res = res.saveScreenshot(referenceFilename);
           fs.writeFileSync(getReferenceHTMLFilename(t), css + html);
         } else {
-          res = res.compareWithReferenceScreenshot(getReferenceFilename(t));
+          var tmpFilename = tmp.tmpNameSync({
+            // for finding it easier in Finder
+            prefix: 'screenshot-' + Date.now() + '-' + testName + '-',
+            postfix: '.png',
+          });
+          res = res
+            .saveScreenshot(tmpFilename)
+            .then(() => {
+              var blinkDiff = new BlinkDiff({
+                imageAPath: referenceFilename,
+                imageBPath: tmpFilename,
+                thresholdType: BlinkDiff.THRESHOLD_PERCENT,
+              });
+              return Q.ninvoke(blinkDiff, 'run');
+            })
+            .then(result => {
+              var diff = result.differences / result.dimension;
+              var pass = diff < SCREENSHOT_TOLERANCE;
+              var deferred = Q.defer();
+              if (pass) {
+                fs.unlinkSync(tmpFilename);
+                deferred.resolve(diff);
+              } else {
+                deferred.reject(
+                  tmpFilename +
+                  ' is not equal to reference ' +
+                  referenceFilename +
+                  ', diff: ' + diff +
+                  ', tolerance: ' + SCREENSHOT_TOLERANCE
+                );
+              }
+              return deferred.promise;
+            });
         }
         res.nodeify(done);
       });

@@ -3,7 +3,6 @@ node_js:
   - "0.10"
 before_install:
   - npm install -g bower && bower install
-  - sudo apt-get install -y graphicsmagick
 before_script: npm run build-minify
 deploy:
   provider: s3
