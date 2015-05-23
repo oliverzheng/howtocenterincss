@@ -57,6 +57,7 @@
     "react": "global:React"
   },
   "dependencies": {
+    "blink-diff": "^1.0.10",
     "browserify-shim": "^3.8.3",
     "chai": "^2.3.0",
     "chai-as-promised": "^5.0.0",
