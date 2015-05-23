@@ -18,6 +18,7 @@ chai.should();
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
 var testMatrix = require('./testMatrix');
+var selenium = require('./selenium');
 
 function getReferenceFilename(test) {
   var SCREENSHOTS_DIR = __dirname + '/../../screenshots';
@@ -44,9 +45,9 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
     username: process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
   };
-  browserMappings = testMatrix.sauceLabsBrowserMappings;
+  browserMappings = selenium.sauceLabsBrowserMappings;
 } else {
-  browserMappings = testMatrix.localBrowserMappings;
+  browserMappings = selenium.localBrowserMappings;
 }
 
 var isCreatingSnapshots = !!process.env.CREATE_SNAPSHOTS;
