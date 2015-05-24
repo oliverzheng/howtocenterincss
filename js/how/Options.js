@@ -217,7 +217,7 @@ class BrowserVersionRequired {
     var requireds = browser.versions.map(
       version => new BrowserVersionRequired(browser, version)
     );
-    requireds.push(new BrowserVersionRequired(browser, null));
+    requireds.unshift(new BrowserVersionRequired(browser, null));
     return requireds;
   }
 }

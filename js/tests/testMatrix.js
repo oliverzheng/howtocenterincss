@@ -39,14 +39,9 @@ type Test = {
 };
 
 function generateTests(
-  enumerateAllBrowserSupports: bool
 ): Array<Test> {
-  var browserSupports: Array<Options.BrowserSupport> = [];
-  if (enumerateAllBrowserSupports) {
-    browserSupports = Options.BrowserSupport.generateAllBrowserSupports();
-  } else {
-    browserSupports = [new Options.BrowserSupport([])];
-  }
+  var browserSupports: Array<Options.BrowserSupport> =
+    Options.BrowserSupport.generateAllBrowserSupports();
   return Combinatorics.cartesianProduct(
     contents,
     containers,
@@ -70,10 +65,9 @@ type SeleniumTests = {
 };
 
 function generateTestsForSeleniumBrowsers(
-  browserMappings: Array<selenium.SeleniumBrowserMapping>,
-  enumerateAllBrowserSupports: bool
+  browserMappings: Array<selenium.SeleniumBrowserMapping>
 ): Array<SeleniumTests> {
-  var tests = generateTests(enumerateAllBrowserSupports);
+  var tests = generateTests();
   var seleniumTestsByName: {[key: string]: Array<Test>} = {};
   var seleniumBrowsersByName: {[key: string]: selenium.SeleniumBrowser} = {};
   tests.forEach(test => {

@@ -18,7 +18,6 @@
     "test-build": "jsx --harmony --strip-types js buildtest",
     "snapshot-record": "npm run test-build && CREATE_SNAPSHOTS=1 mocha -u tdd -t 60000 buildtest/tests/",
     "snapshot-test": "npm run test-build && mocha -u tdd -t 60000 buildtest/tests/",
-    "snapshot-test-fast": "npm run test-build && FAST_TEST=1 mocha -u tdd -t 60000 buildtest/tests/",
     "test": "npm run snapshot-test"
   },
   "author": "",

@@ -56,11 +56,8 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
 }
 
 var isCreatingSnapshots = !!process.env.CREATE_SNAPSHOTS;
-var fastTest = !!process.env.FAST_TEST;
-var enumerateAllBrowserSupports = isCreatingSnapshots || !fastTest;
 var allTests = testMatrix.generateTestsForSeleniumBrowsers(
-  browserMappings,
-  enumerateAllBrowserSupports
+  browserMappings
 );
 
 // browser text rendering variances
@@ -92,6 +89,8 @@ var cssJS =
 '  ss1.appendChild(tt1);' +
 '}';
 
+var useBrowser = isCreatingSnapshots || remoteConfig;
+
 allTests.forEach(seleniumTests => {
 
   var browser = seleniumTests.seleniumBrowser;
@@ -102,6 +101,11 @@ allTests.forEach(seleniumTests => {
     var allPassed = true;
 
     global.suiteSetup(done => {
+      if (!useBrowser) {
+        done();
+        return;
+      }
+
       b = wd.promiseChainRemote(remoteConfig);
 
       if (process.env.SNAPSHOT_DEBUG) {
@@ -131,28 +135,27 @@ allTests.forEach(seleniumTests => {
     });
 
     global.suiteTeardown(done => {
-      invariant(b, 'flow');
+      if (!b) {
+        done();
+        return;
+      }
+
       b
         .quit()
         .nodeify(done);
     });
 
     global.setup(done => {
-      invariant(b, 'flow');
+      if (!b) {
+        done();
+        return;
+      }
       b
         .get(browser.startingPage)
         .nodeify(done);
     });
 
     tests.forEach(t => {
-      // Run in the browser if we are testing, or if we are creating snapshots, only
-      // run in the browser for one of the browser supports. We want to run all the
-      // tests so we can generate the HTML/CSS for comparison, but only create
-      // screenshots for one of them.
-      var runInBrowser =
-        !isCreatingSnapshots ||
-        t.browserSupport.browserVersionsRequired.length === 0;
-
       var testName = testMatrix.getTestName(t);
       var mochaTestName =
         (isCreatingSnapshots ? 'Snapshot ' : 'Compare snapshot ') + testName;
@@ -169,20 +172,20 @@ allTests.forEach(seleniumTests => {
           canonicalCode.html +
           '\n\n#parent {\n' + canonicalCode.parentCSS + '\n}\n\n#child {\n' + canonicalCode.childCSS + '\n}';
 
-        if (isCreatingSnapshots) {
-          fs.writeFileSync(getReferenceTestHTMLFilename(t), '<style>' + css + '</style>' + html);
-          fs.writeFileSync(getReferenceCodeFilename(t), codeGenerated);
-        } else {
+        if (!useBrowser) {
+          // We only don't use the browser if we are comparing generated code
           var referenceCode = fs.readFileSync(getReferenceCodeFilename(t), 'utf8');
           if (referenceCode !== codeGenerated) {
             done('Reference code not equal to code generated: ' + codeGenerated);
-            return;
+          } else {
+            done();
           }
+          return;
         }
 
-        if (!runInBrowser) {
-          done();
-          return;
+        if (isCreatingSnapshots) {
+          fs.writeFileSync(getReferenceTestHTMLFilename(t), '<style>' + css + '</style>' + html);
+          fs.writeFileSync(getReferenceCodeFilename(t), codeGenerated);
         }
 
         invariant(b, 'flow');
@@ -192,7 +195,9 @@ allTests.forEach(seleniumTests => {
           b.execute(cssJS + insertJS);
 
         var referenceFilename = getReferenceFilename(t);
-        if (isCreatingSnapshots) {
+        if (isCreatingSnapshots && !fs.existsSync(referenceFilename)) {
+          // Write the image for the first, compare all the ones after it to
+          // this.
           res = res.saveScreenshot(referenceFilename);
         } else {
           var tmpFilename = tmp.tmpNameSync({
