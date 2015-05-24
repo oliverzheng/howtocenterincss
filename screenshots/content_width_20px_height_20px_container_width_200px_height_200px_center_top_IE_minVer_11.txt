@@ -1,0 +1,15 @@
+<div id="container">
+  <div id="content"></div>
+</div>
+
+#parent {
+height: 200px;
+width: 200px;
+}
+
+#child {
+height: 20px;
+margin-left: auto;
+margin-right: auto;
+width: 20px;
+}

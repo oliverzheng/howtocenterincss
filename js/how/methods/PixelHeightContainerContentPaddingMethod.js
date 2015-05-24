@@ -52,8 +52,10 @@ class PixelHeightContainerContentPaddingMethod extends Method {
       }
       invariant(paddingTop, 'typechecker');
       parentStyles.paddingTop = paddingTop.toString();
-    }
 
+      var parentHeight = containerHeight.subtract(paddingTop);
+      parentStyles.height = parentHeight.toString();
+    }
 
     var child;
     if (content.text) {

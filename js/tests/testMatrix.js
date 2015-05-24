@@ -10,6 +10,7 @@ var fontSizeLength = Options.Length.px(FONT_SIZE);
 
 var contents: Array<Options.Content> = [
   Options.Content.text(fontSizeLength, 1, null),
+  new Options.Content(Options.Length.px(20), Options.Length.px(20), null),
 ];
 
 var containers: Array<Options.Container> = [
