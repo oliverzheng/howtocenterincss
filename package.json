@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "js/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oliverzheng/howtocenterincss.git"
+  },
   "scripts": {
     "build": "npm run js-build && npm run css-build && npm run html",
     "build-minify": "npm run js-minify && npm run css-minify && npm run html-minify",
@@ -22,22 +26,6 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "browserify": "^8.1.1",
-    "catw": "^0.2.0",
-    "classnames": "^1.2.0",
-    "envify": "^3.2.0",
-    "html": "0.0.7",
-    "invariant": "^2.0.0",
-    "less": "^2.3.1",
-    "mustache": "^1.1.0",
-    "node-jsx": "^0.13.3",
-    "react": "^0.13.1",
-    "react-router": "^0.13.1",
-    "reactify": "^1.0.0",
-    "uglify-js": "^2.4.19",
-    "watchify": "^2.2.1"
-  },
   "browserify": {
     "transform": [
       [
@@ -56,6 +44,20 @@
     "react": "global:React"
   },
   "dependencies": {
+    "browserify": "^8.1.1",
+    "catw": "^0.2.0",
+    "classnames": "^1.2.0",
+    "envify": "^3.2.0",
+    "html": "0.0.7",
+    "invariant": "^2.0.0",
+    "less": "^2.3.1",
+    "mustache": "^1.1.0",
+    "node-jsx": "^0.13.3",
+    "react": "^0.13.1",
+    "react-router": "^0.13.1",
+    "reactify": "^1.0.0",
+    "uglify-js": "^2.4.19",
+    "watchify": "^2.2.1",
     "blink-diff": "^1.0.10",
     "browserify-shim": "^3.8.3",
     "chai": "^2.3.0",
