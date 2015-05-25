@@ -4,6 +4,7 @@
 
 #parent {
 height: 200px;
+text-align: center;
 width: 200px;
 }
 
