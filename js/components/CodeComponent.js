@@ -1,9 +1,12 @@
 /** @flow */
 
+var invariant = require('invariant');
 var React = require('react');
 var Method = require('../how/methods/Method');
 
 class CodeComponent extends React.Component {
+  _div: ?ReactElement;
+
   state: {
     method: ?Method;
     code: ?string;
@@ -27,6 +30,14 @@ class CodeComponent extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    if (this.state.method && this.state.code) {
+      var element = React.findDOMNode(this._div);
+      invariant(element, 'Should have a wrapper div');
+      element.scrollIntoView();
+    }
+  }
+
   setNoMethod() {
     this.setState({
       method: null,
@@ -45,7 +56,7 @@ class CodeComponent extends React.Component {
       return null;
     }
     return (
-      <div>
+      <div ref={(c) => this._div = c}>
         <h2>Code</h2>
         <p>Method: {method.getName()}</p>
         <pre>
