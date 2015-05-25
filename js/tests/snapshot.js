@@ -68,26 +68,32 @@ var WINDOW_HEIGHT = 400;
 
 var css =
 'body, html { margin: 0; padding: 0; overflow: hidden; border: 0; }' +
-'body { font-size: ' + testMatrix.fontSize + 'px; font-family: arial; }' +
+'body { font-family: arial; }' +
 // For some reason, IE screenshots disregard the height of the body if there is
 // nothing in it. We need a div to be opaquely white.
 '#testOuterDiv { background: white; width: ' + WINDOW_WIDTH + 'px; height: ' + WINDOW_HEIGHT + 'px; }' +
 '#content { background: #f00; }' +
 '#container { background: #0ff; }';
 
+var fontSizeCSS =
+'body { font-siez: ' + testMatrix.fontSize + 'px; }';
+
 // http://www.phpied.com/dynamic-script-and-style-elements-in-ie/
-var cssJS =
-'var ss1 = document.createElement("style");' +
-'var def = "' + jsStringEscape(css) + '";' +
-'ss1.setAttribute("type", "text/css");' +
-'var hh1 = document.getElementsByTagName("head")[0];' +
-'hh1.appendChild(ss1);' +
-'if (ss1.styleSheet) {' /*IE*/ +
-'  ss1.styleSheet.cssText = def;' +
-'} else {' /* errbody else */ +
-'  var tt1 = document.createTextNode(def);' +
-'  ss1.appendChild(tt1);' +
-'}';
+function getJStoInjectCSS(css: string) {
+  return (
+    'var ss1 = document.createElement("style");' +
+    'var def = "' + jsStringEscape(css) + '";' +
+    'ss1.setAttribute("type", "text/css");' +
+    'var hh1 = document.getElementsByTagName("head")[0];' +
+    'hh1.appendChild(ss1);' +
+    'if (ss1.styleSheet) {' /*IE*/ +
+    '  ss1.styleSheet.cssText = def;' +
+    '} else {' /* errbody else */ +
+    '  var tt1 = document.createTextNode(def);' +
+    '  ss1.appendChild(tt1);' +
+    '}'
+  );
+}
 
 var useBrowser = isCreatingSnapshots || remoteConfig;
 
@@ -191,8 +197,16 @@ allTests.forEach(seleniumTests => {
         invariant(b, 'flow');
         var insertJS =
           'document.body.innerHTML = "' + jsStringEscape('<div id="testOuterDiv">' + html + '</div>') + '";';
+        // In quirksmode, IE's box model stretches the height to fit the
+        // font-size. We could set 'overflow:hidden' to it, but it could mess
+        // with the actual generated code. So let's conditionally add font size
+        // when we need it.
+        var cssToInject = css;
+        if (t.content.text) {
+          cssToInject += fontSizeCSS;
+        }
         var res =
-          b.execute(cssJS + insertJS);
+          b.execute(getJStoInjectCSS(cssToInject) + insertJS);
 
         var referenceFilename = getReferenceFilename(t);
         if (isCreatingSnapshots && !fs.existsSync(referenceFilename)) {
