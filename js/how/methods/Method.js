@@ -3,7 +3,7 @@
 var Options = require('../Options');
 var Requirement = require('./Requirement');
 
-var React = require('react/addons');
+var React = require('react');
 var html = require('html');
 
 // Takem from React.js
@@ -68,7 +68,7 @@ class Method {
       this._addIDs ? 'container' : null
     );
     var propsForFonts;
-    if (React.addons.TestUtils.isElement(child)) {
+    if (React.isValidElement(child)) {
       var props = (child: any).props;
       this._applyDimensions(
         props,
@@ -129,7 +129,7 @@ class Method {
     parent.props.style = null;
 
     var childStyles = {};
-    if (React.addons.TestUtils.isElement(child)) {
+    if (React.isValidElement(child)) {
       childStyles = (child: any).props.style;
       (child: any).props.style = null;
     }
