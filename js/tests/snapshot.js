@@ -5,6 +5,7 @@ var _ = require('underscore');
 var fs = require('fs');
 var wd = require('wd');
 var BlinkDiff = require('blink-diff');
+var PNGImage = require('pngjs-image');
 var jsStringEscape = require('js-string-escape')
 var chai = require('chai');
 var invariant = require('invariant');
@@ -69,14 +70,17 @@ var WINDOW_HEIGHT = 400;
 var css =
 'body, html { margin: 0; padding: 0; overflow: hidden; border: 0; }' +
 'body { font-family: arial; }' +
-// For some reason, IE screenshots disregard the height of the body if there is
-// nothing in it. We need a div to be opaquely white.
-'#testOuterDiv { background: white; width: ' + WINDOW_WIDTH + 'px; height: ' + WINDOW_HEIGHT + 'px; }' +
 '#content { background: #f00; }' +
 '#container { background: #0ff; }';
 
 var fontSizeCSS =
-'body { font-siez: ' + testMatrix.fontSize + 'px; }';
+'body { font-size: ' + testMatrix.fontSize + 'px; }';
+
+function getOuterDivCSS(width, height) {
+  // For some reason, IE screenshots disregard the height of the body if there is
+  // nothing in it. We need a div to be opaquely white.
+  return '#testOuterDiv { background: white; width: ' + width + 'px; height: ' + height + 'px;}';
+}
 
 // http://www.phpied.com/dynamic-script-and-style-elements-in-ie/
 function getJStoInjectCSS(css: string) {
@@ -105,6 +109,8 @@ allTests.forEach(seleniumTests => {
   global.suite('using ' + browser.getDisplayName(), () => {
     var b;
     var allPassed = true;
+    var windowWidth = WINDOW_WIDTH + browser.cropBoundary.addX;
+    var windowHeight = WINDOW_HEIGHT + browser.cropBoundary.addY;
 
     global.suiteSetup(done => {
       if (!useBrowser) {
@@ -128,14 +134,14 @@ allTests.forEach(seleniumTests => {
 
       b
         .init(browser.toSeleniumJSON())
-        .setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT)
+        .setWindowSize(windowWidth, windowHeight)
         .elementByTagName('html')
         .getSize()
         .then(size => {
           invariant(b, 'flow');
           // Browser titles/bars short change you, so set it so the document's
           // 400x400.
-          return b.setWindowSize(WINDOW_WIDTH + (WINDOW_WIDTH - size.width), WINDOW_HEIGHT + (WINDOW_HEIGHT - size.height));
+          return b.setWindowSize(windowWidth + (windowWidth - size.width), windowHeight + (windowHeight - size.height));
         })
         .nodeify(done);
     });
@@ -157,7 +163,8 @@ allTests.forEach(seleniumTests => {
         return;
       }
       b
-        .get(browser.startingPage)
+        // Get all the browsers to render in as much standards mode as possible.
+        .get('http://dump.oliverzheng.com/doctype_html5.html')
         .nodeify(done);
     });
 
@@ -205,6 +212,7 @@ allTests.forEach(seleniumTests => {
         if (t.content.text) {
           cssToInject += fontSizeCSS;
         }
+        cssToInject += getOuterDivCSS(windowWidth, windowHeight);
         var res =
           b.execute(getJStoInjectCSS(cssToInject) + insertJS);
 
@@ -222,11 +230,23 @@ allTests.forEach(seleniumTests => {
           res = res
             .saveScreenshot(tmpFilename)
             .then(() => {
-              var blinkDiff = new BlinkDiff({
-                imageAPath: referenceFilename,
-                imageBPath: tmpFilename,
-                thresholdType: BlinkDiff.THRESHOLD_PERCENT,
-              });
+              tmpFilename
+              var blinkDiffOptions = {};
+              blinkDiffOptions.imageAPath = referenceFilename;
+              blinkDiffOptions.thresholdType = BlinkDiff.THRESHOLD_PERCENT;
+              if (browser.hasCropBoundary()) {
+                var image = PNGImage.readImageSync(tmpFilename);
+                image.clip(
+                  browser.cropBoundary.cropX,
+                  browser.cropBoundary.cropY,
+                  WINDOW_WIDTH,
+                  WINDOW_HEIGHT
+                );
+                blinkDiffOptions.imageB = image;
+              } else {
+                blinkDiffOptions.imageBPath = tmpFilename;
+              }
+              var blinkDiff = new BlinkDiff(blinkDiffOptions);
               return Q.ninvoke(blinkDiff, 'run');
             })
             .then(result => {
