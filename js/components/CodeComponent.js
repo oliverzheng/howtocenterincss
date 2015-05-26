@@ -62,6 +62,10 @@ class CodeComponent extends React.Component {
         <pre>
           {code}
         </pre>
+        <p>
+          This assumes standards compliant rendering (i.e. not quirks mode rendering).
+          Add <code>&lt;!DOCTYPE html&gt;</code> to the top of your page.
+        </p>
       </div>
     );
   }
