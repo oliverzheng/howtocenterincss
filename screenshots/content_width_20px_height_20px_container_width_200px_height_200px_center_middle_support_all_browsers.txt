@@ -5,7 +5,6 @@
 #parent {
 height: 110px;
 padding-top: 90px;
-text-align: center;
 width: 200px;
 }
 

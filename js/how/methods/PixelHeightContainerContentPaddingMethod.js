@@ -9,8 +9,6 @@ var invariant = require('invariant');
 
 var c = require('../checks');
 
-var IE9 = new Options.BrowserVersionRequired(Options.Browser.IE, '9');
-
 class PixelHeightContainerContentPaddingMethod extends Method {
 
   getName(): string {
@@ -62,6 +60,11 @@ class PixelHeightContainerContentPaddingMethod extends Method {
     var child;
     if (content.text) {
       child = this.getContent(content);
+      if (horizontalAlignment === Options.HorizontalAlignment.CENTER) {
+        parentStyles.textAlign = 'center';
+      } else if (horizontalAlignment === Options.HorizontalAlignment.RIGHT) {
+        parentStyles.textAlign = 'right';
+      }
     } else {
       child = this.getContentWithDOM(content);
       var childStyles = child.props.style;
@@ -72,20 +75,6 @@ class PixelHeightContainerContentPaddingMethod extends Method {
         }
       }
     }
-
-    // IE quirks doesn't like margin-auto for centering, so we need text-align
-    // in addition to the margin auto :|
-    // See: http://stackoverflow.com/questions/7810326/margin-auto-not-working-in-ie
-    var needTextAlign =
-      !!content.text || browserSupport.requiresBrowserVersion(IE9);
-    if (needTextAlign) {
-      if (horizontalAlignment === Options.HorizontalAlignment.CENTER) {
-        parentStyles.textAlign = 'center';
-      } else if (horizontalAlignment === Options.HorizontalAlignment.RIGHT) {
-        parentStyles.textAlign = 'right';
-      }
-    }
-
     var parent =
       <div style={parentStyles}>
         {child}
