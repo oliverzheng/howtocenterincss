@@ -49,7 +49,7 @@ class BrowserSupportComponent extends React.Component {
           {browser.versions.map(version => {
              var support = { browser, version };
              return (
-               <RadioComponent labelText={version} value={support} />
+               <RadioComponent key={version} labelText={version} value={support} />
              );
            })}
         </RadioListComponent>
