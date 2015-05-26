@@ -34,7 +34,7 @@ class PixelHeightContainerContentPaddingMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): { parent: ReactElement; child: mixed; } {
+  ): { parent: ReactElement; middle: ?ReactElement; child: mixed; } {
     var containerHeight = container.height;
     invariant(containerHeight, 'Require container height');
     var contentHeight = content.height;
@@ -79,7 +79,7 @@ class PixelHeightContainerContentPaddingMethod extends Method {
       <div style={parentStyles}>
         {child}
       </div>;
-    return { parent, child };
+    return { parent: parent, middle: null, child: child };
   }
 }
 

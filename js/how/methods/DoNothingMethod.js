@@ -34,7 +34,7 @@ class DoNothingMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): { parent: ReactElement; child: mixed; } {
+  ): { parent: ReactElement; middle: ?ReactElement; child: mixed; } {
     var parentStyles = {};
     parentStyles.position = 'relative';
     var childStyles = {};
@@ -47,7 +47,7 @@ class DoNothingMethod extends Method {
         {child}
       </div>;
 
-    return { parent, child };
+    return { parent: parent, middle: null, child: child };
   }
 }
 

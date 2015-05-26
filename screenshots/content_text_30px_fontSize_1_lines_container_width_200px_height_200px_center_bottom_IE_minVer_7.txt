@@ -8,7 +8,3 @@ overflow: hidden;
 text-align: center;
 width: 200px;
 }
-
-#child {
-
-}

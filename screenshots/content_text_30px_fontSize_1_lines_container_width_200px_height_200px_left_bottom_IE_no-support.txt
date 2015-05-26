@@ -6,7 +6,3 @@ height: 200px;
 line-height: 370px;
 width: 200px;
 }
-
-#child {
-
-}

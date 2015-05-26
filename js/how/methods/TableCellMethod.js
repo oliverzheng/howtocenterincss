@@ -26,7 +26,7 @@ class TableCellMethod extends Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): { parent: ReactElement; child: mixed; } {
+  ): { parent: ReactElement; middle: ?ReactElement; child: mixed; } {
     var child = this.getContentWithDOM(content);
     var childStyles = child.props.style;
 
@@ -50,7 +50,7 @@ class TableCellMethod extends Method {
       <div style={tableCellStyles}>
         {child}
       </div>;
-    return { parent, child };
+    return { parent: parent, middle: null, child: child };
   }
 }
 

@@ -43,7 +43,7 @@ class Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): { parent: ReactElement; child: mixed; } {
+  ): { parent: ReactElement; middle: ?ReactElement; child: mixed; } {
     throw new Error('Must implement method');
   }
 
@@ -53,8 +53,8 @@ class Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): { parent: ReactElement; child: mixed; } {
-    var {parent, child} = this.getCodeElement(
+  ): { parent: ReactElement; middle: ?ReactElement; child: mixed; } {
+    var {parent, middle, child} = this.getCodeElement(
       content,
       container,
       horizontalAlignment,
@@ -82,7 +82,7 @@ class Method {
       propsForFonts = parent.props;
     }
     this._applyFontStyles(propsForFonts, content);
-    return { parent, child };
+    return { parent, middle, child };
   }
 
   getCode(
@@ -92,7 +92,7 @@ class Method {
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
   ): string {
-    var {parent, child} = this.getCodeElementWithStyles(
+    var {parent, middle, child} = this.getCodeElementWithStyles(
       content,
       container,
       horizontalAlignment,
@@ -116,8 +116,8 @@ class Method {
     horizontalAlignment: Options.HorizontalAlignment,
     verticalAlignment: Options.VerticalAlignment,
     browserSupport: Options.BrowserSupport
-  ): { html: string; parentCSS: string; childCSS: string; } {
-    var {parent, child} = this.getCodeElementWithStyles(
+  ): { html: string; parentCSS: string; middleCSS: string; childCSS: string; } {
+    var {parent, middle, child} = this.getCodeElementWithStyles(
       content,
       container,
       horizontalAlignment,
@@ -134,6 +134,12 @@ class Method {
       (child: any).props.style = null;
     }
 
+    var middleStyles = {};
+    if (middle) {
+      middleStyles = middle.props.style;
+      middle.props.style = null;
+    }
+
     var code = React.renderToStaticMarkup(parent);
     var formattedCode = html.prettyPrint(
       code,
@@ -146,6 +152,7 @@ class Method {
     return {
       html: formattedCode,
       parentCSS: createMarkupForStyles(parentStyles),
+      middleCSS: createMarkupForStyles(middleStyles),
       childCSS: createMarkupForStyles(childStyles),
     };
   }

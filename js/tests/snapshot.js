@@ -181,9 +181,16 @@ allTests.forEach(seleniumTests => {
         var html = method.getCode(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
         var canonicalCode = method.getCanonicalCode(t.content, t.container, t.horizontal, t.vertical, t.browserSupport);
 
-        var codeGenerated =
-          canonicalCode.html +
-          '\n\n#parent {\n' + canonicalCode.parentCSS + '\n}\n\n#child {\n' + canonicalCode.childCSS + '\n}';
+        var codeGenerated = canonicalCode.html;
+        if (canonicalCode.parentCSS) {
+          codeGenerated += '\n\n#parent {\n' + canonicalCode.parentCSS + '\n}';
+        }
+        if (canonicalCode.middleCSS) {
+          codeGenerated += '\n\n#middle {\n' + canonicalCode.middleCSS + '\n}';
+        }
+        if (canonicalCode.childCSS) {
+          codeGenerated += '\n\n#child {\n' + canonicalCode.childCSS + '\n}';
+        }
 
         if (!useBrowser) {
           // We only don't use the browser if we are comparing generated code

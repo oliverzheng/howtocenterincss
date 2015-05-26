@@ -6,7 +6,3 @@ height: 200px;
 text-align: right;
 width: 200px;
 }
-
-#child {
-
-}
