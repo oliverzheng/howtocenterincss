@@ -8,6 +8,7 @@ var SingleLineTextLineHeightMethod =
 var PixelHeightContainerContentPaddingMethod =
   require('./methods/PixelHeightContainerContentPaddingMethod');
 var AbsolutePositionMethod = require('./methods/AbsolutePositionMethod');
+var MarginAutoMethod = require('./methods/MarginAutoMethod');
 var TableCellMethod = require('./methods/TableCellMethod');
 var FlexMethod = require('./methods/FlexMethod');
 var TextAlignMethod = require('./methods/TextAlignMethod');
@@ -18,6 +19,7 @@ var methods = [
   new DoNothingMethod,
   new TextAlignMethod,
   new SingleLineTextLineHeightMethod(),
+  new MarginAutoMethod(),
   new PixelHeightContainerContentPaddingMethod(),
   new FlexMethod,
   new AbsolutePositionMethod,
