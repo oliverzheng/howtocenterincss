@@ -4,23 +4,29 @@ var invariant = require('invariant');
 
 class LengthType {
   cssUnit: string;
+  filenameUnit: string;
 
   static PIXEL: LengthType;
   static PERCENTAGE: LengthType;
   static EM: LengthType;
   static AllTypes: Array<LengthType>;
 
-  constructor(cssUnit: string) {
+  constructor(cssUnit: string, filenameUnit: ?string = null) {
     this.cssUnit = cssUnit;
+    this.filenameUnit = filenameUnit || cssUnit;
   }
 
   toString(): string {
     return this.cssUnit;
   }
+
+  toFilenameString(): string {
+    return this.filenameUnit;
+  }
 }
 
 LengthType.PIXEL = new LengthType('px');
-LengthType.PERCENTAGE = new LengthType('%');
+LengthType.PERCENTAGE = new LengthType('%', 'pct');
 LengthType.EM = new LengthType('em');
 
 LengthType.AllTypes = [
@@ -58,6 +64,10 @@ class Length {
 
   toString(): string {
     return this.value.toString() + this.lengthType.toString();
+  }
+
+  toFilenameString(): string {
+    return this.value.toString() + this.lengthType.toFilenameString();
   }
 
   static px(value: number): Length {

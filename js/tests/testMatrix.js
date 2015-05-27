@@ -166,25 +166,25 @@ function getSnapshotName(test: Test): string {
   if (content.text) {
     name += 'text_';
     if (content.text.fontSize) {
-      name += content.text.fontSize.toString() + '_fontSize_';
+      name += content.text.fontSize.toFilenameString() + '_fontSize_';
     }
     if (content.text.lines != null) {
       name += content.text.lines + '_lines_';
     }
     if (content.text.lineHeight) {
-      name += content.text.lineHeight.toString() + '_lineHeight_';
+      name += content.text.lineHeight.toFilenameString() + '_lineHeight_';
     }
   } else {
     name += 'width_';
     if (content.width) {
-      name += content.width.toString() + '_';
+      name += content.width.toFilenameString() + '_';
     } else {
       name += 'unknown_';
     }
 
     name += 'height_';
     if (content.height) {
-      name += content.height.toString() + '_';
+      name += content.height.toFilenameString() + '_';
     } else {
       name += 'unknown_';
     }
@@ -193,14 +193,14 @@ function getSnapshotName(test: Test): string {
   name += 'container_';
   name += 'width_';
   if (container.width) {
-    name += container.width.toString() + '_';
+    name += container.width.toFilenameString() + '_';
   } else {
     name += 'unknown_';
   }
 
   name += 'height_';
   if (container.height) {
-    name += container.height.toString() + '_';
+    name += container.height.toFilenameString() + '_';
   } else {
     name += 'unknown_';
   }
