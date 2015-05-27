@@ -216,11 +216,19 @@ class Method {
     }
   }
 
-  getContentWithDOM(content: Options.Content): ReactElement {
+  getContentWithDOM(
+    content: Options.Content,
+    requireBlock: bool = false
+  ): ReactElement {
     // Add styles, since that's why the caller wants a DOM element
     var styles = {};
     if (content.text) {
-      return <span style={styles}>{this.getText()}</span>;
+      var text = this.getText();
+      if (requireBlock) {
+        return <div style={styles}>{text}</div>;
+      } else {
+        return <span style={styles}>{text}</span>;
+      }
     } else {
       return <div style={styles} />;
     }

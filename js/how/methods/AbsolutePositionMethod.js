@@ -29,8 +29,11 @@ class AbsolutePositionMethod extends Method {
           ),
         ]),
         new Requirement(
-          'Horizontally right aligned',
-          c.checkHorizontalAlignment(Options.HorizontalAlignment.RIGHT)
+          'Horizontally left or right aligned',
+          c.checkAnyHorizontalAlignment([
+            Options.HorizontalAlignment.LEFT,
+            Options.HorizontalAlignment.RIGHT,
+          ])
         ),
       ]),
       Requirement.any([
@@ -45,8 +48,11 @@ class AbsolutePositionMethod extends Method {
           ),
         ]),
         new Requirement(
-          'Vertically bottom aligned',
-          c.checkVerticalAlignment(Options.VerticalAlignment.BOTTOM)
+          'Vertically top or bottom aligned',
+          c.checkAnyVerticalAlignment([
+            Options.VerticalAlignment.TOP,
+            Options.VerticalAlignment.BOTTOM,
+          ])
         ),
       ]),
     ]);
@@ -62,11 +68,11 @@ class AbsolutePositionMethod extends Method {
     var parentStyles = {};
     parentStyles.position = 'relative';
 
-    var child = this.getContentWithDOM(content);
+    var child = this.getContentWithDOM(content, true /*requireBlock*/);
 
-    var childStyles = child.props.styles;
+    var childStyles = child.props.style;
     if (!childStyles) {
-      childStyles = child.props.styles = {};
+      childStyles = child.props.style = {};
     }
     childStyles.position = 'absolute';
 
