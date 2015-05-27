@@ -67,6 +67,14 @@ class Method {
       container.height,
       this._addIDs ? 'container' : null
     );
+    if (middle) {
+      this._applyDimensions(
+        middle.props,
+        null,
+        null,
+        this._addIDs ? 'middle' : null
+      );
+    }
     var propsForFonts;
     if (React.isValidElement(child)) {
       var props = (child: any).props;
