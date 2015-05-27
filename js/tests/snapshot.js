@@ -70,11 +70,20 @@ var WINDOW_HEIGHT = 400;
 var css =
 'body, html { margin: 0; padding: 0; overflow: hidden; border: 0; }' +
 'body { font-family: arial; }' +
-'#content { background: #f00; }' +
-'#container { background: #0ff; }';
+// The container sizing will get overridden if the options specify it.
+'#content { background: #f00; width: 25px; height: 25px; }' +
+'#container { background: #0ff; width: 300px; height: 300px; }';
 
 var fontSizeCSS =
-'body { font-size: ' + testMatrix.fontSize + 'px; }';
+'body { font-size: ' + testMatrix.fontSize + 'px; }' +
+// By default, the browser has a 1.1-1.2em of line-height. This makes
+// calculating vertical centering different across methods.
+// TODO - this needs to be exposed as a notice to the user, or baked into the
+// code the method generates.
+'#content, #container { line-height: 1em; }' +
+'#content { background: 0 !important; }' +
+// The content sizing will get overridden if the method specifies it.
+'#content { width: auto; height: auto; }';
 
 function getOuterDivCSS(width, height) {
   // For some reason, IE screenshots disregard the height of the body if there is
@@ -203,10 +212,16 @@ allTests.forEach(seleniumTests => {
           return;
         }
 
+        var cssToInject = css;
+        if (t.content.text) {
+          cssToInject += fontSizeCSS;
+        }
+
+        cssToInject += getOuterDivCSS(windowWidth, windowHeight);
         if (isCreatingSnapshots) {
           fs.writeFileSync(getReferenceCodeFilename(t), codeGenerated);
         }
-        fs.writeFileSync(getReferenceTestHTMLFilename(t), '<style>' + css + '</style>' + html);
+        fs.writeFileSync(getReferenceTestHTMLFilename(t), '<style>' + cssToInject + '</style>' + html);
 
         invariant(b, 'flow');
         var insertJS =
@@ -215,11 +230,6 @@ allTests.forEach(seleniumTests => {
         // font-size. We could set 'overflow:hidden' to it, but it could mess
         // with the actual generated code. So let's conditionally add font size
         // when we need it.
-        var cssToInject = css;
-        if (t.content.text) {
-          cssToInject += fontSizeCSS;
-        }
-        cssToInject += getOuterDivCSS(windowWidth, windowHeight);
         var res =
           b.execute(getJStoInjectCSS(cssToInject) + insertJS);
 
