@@ -28,7 +28,7 @@ function getReferenceFilename(test) {
 
 function getReferenceTestHTMLFilename(test) {
   var SCREENSHOTS_DIR = __dirname + '/../../screenshots';
-  return SCREENSHOTS_DIR + '/' + testMatrix.getSnapshotName(test) + '_test.html';
+  return SCREENSHOTS_DIR + '/' + testMatrix.getTestName(test) + '_test.html';
 }
 
 function getReferenceCodeFilename(test) {
@@ -204,9 +204,9 @@ allTests.forEach(seleniumTests => {
         }
 
         if (isCreatingSnapshots) {
-          fs.writeFileSync(getReferenceTestHTMLFilename(t), '<style>' + css + '</style>' + html);
           fs.writeFileSync(getReferenceCodeFilename(t), codeGenerated);
         }
+        fs.writeFileSync(getReferenceTestHTMLFilename(t), '<style>' + css + '</style>' + html);
 
         invariant(b, 'flow');
         var insertJS =
