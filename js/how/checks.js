@@ -30,6 +30,16 @@ function checkContentText(check: (text: Options.Text) => bool): Check {
   };
 }
 
+function checkContentIsText(
+  content: Options.Content,
+  container: Options.Container,
+  horizontalAlignment: Options.HorizontalAlignment,
+  verticalAlignment: Options.VerticalAlignment,
+  browserSupport: Options.BrowserSupport
+): bool {
+  return content.text != null;
+}
+
 function requireLineHeight(
   requirement: (text: Options.Length) => bool
 ): (obj: Options.Text) => bool {
@@ -111,6 +121,7 @@ function checkBrowserSupport(requirementBrowserSupport: Options.BrowserSupport):
 module.exports.checkContent = checkContent;
 module.exports.checkContainer = checkContainer;
 module.exports.checkContentText = checkContentText;
+module.exports.checkContentIsText = checkContentIsText;
 module.exports.requireLineHeight = requireLineHeight;
 module.exports.requireLineHeightExists = requireLineHeightExists;
 module.exports.requireFontSize = requireFontSize;

@@ -10,11 +10,13 @@ var PixelHeightContainerContentPaddingMethod =
 var AbsolutePositionMethod = require('./methods/AbsolutePositionMethod');
 var TableCellMethod = require('./methods/TableCellMethod');
 var FlexMethod = require('./methods/FlexMethod');
+var TextAlignMethod = require('./methods/TextAlignMethod');
 
 // This list is in order of preference. The first applicable method should be
 // used, as it's probably simpler.
 var methods = [
   new DoNothingMethod,
+  new TextAlignMethod,
   new SingleLineTextLineHeightMethod(),
   new PixelHeightContainerContentPaddingMethod(),
   new FlexMethod,
