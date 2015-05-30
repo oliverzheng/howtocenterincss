@@ -1,0 +1,13 @@
+<div id="container">
+  <div id="content"></div>
+</div>
+
+#parent {
+position: relative;
+}
+
+#child {
+bottom: 0;
+position: absolute;
+right: 0;
+}

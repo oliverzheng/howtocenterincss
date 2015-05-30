@@ -11,10 +11,12 @@ var fontSizeLength = Options.Length.px(FONT_SIZE);
 var contents: Array<Options.Content> = [
   Options.Content.text(fontSizeLength, 1, null),
   new Options.Content(Options.Length.px(20), Options.Length.px(20), null),
+  new Options.Content(null, null, null),
 ];
 
 var containers: Array<Options.Container> = [
   new Options.Container(Options.Length.px(200), Options.Length.px(200)),
+  new Options.Container(null, null),
 ];
 
 function generateSeleniumBrowsers(

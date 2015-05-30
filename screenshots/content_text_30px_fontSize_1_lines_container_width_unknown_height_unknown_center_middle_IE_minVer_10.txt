@@ -1,0 +1,20 @@
+<div id="container">
+  <div id="middle">
+    <div id="content">I</div>
+  </div>
+</div>
+
+#parent {
+display: table;
+}
+
+#middle {
+display: table-cell;
+vertical-align: middle;
+}
+
+#child {
+font-size: 30px;
+height: 30px;
+text-align: center;
+}

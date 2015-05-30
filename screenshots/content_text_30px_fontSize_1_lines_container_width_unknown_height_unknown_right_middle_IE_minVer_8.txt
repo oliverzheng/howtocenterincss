@@ -1,0 +1,16 @@
+<div id="container">
+  <div id="content">I</div>
+</div>
+
+#parent {
+position: relative;
+}
+
+#child {
+font-size: 30px;
+height: 30px;
+margin-top: -15px;
+position: absolute;
+right: 0;
+top: 50%;
+}

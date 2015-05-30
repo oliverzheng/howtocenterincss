@@ -1,0 +1,9 @@
+<div id="container">
+  <div id="content"></div>
+</div>
+
+#parent {
+align-items: center;
+display: flex;
+justify-content: flex-end;
+}

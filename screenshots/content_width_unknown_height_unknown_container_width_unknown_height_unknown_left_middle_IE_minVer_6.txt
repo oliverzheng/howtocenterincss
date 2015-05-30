@@ -1,0 +1,14 @@
+<div id="container">
+  <div id="middle">
+    <div id="content"></div>
+  </div>
+</div>
+
+#parent {
+display: table;
+}
+
+#middle {
+display: table-cell;
+vertical-align: middle;
+}

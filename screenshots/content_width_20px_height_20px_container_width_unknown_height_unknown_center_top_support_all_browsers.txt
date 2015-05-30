@@ -1,0 +1,10 @@
+<div id="container">
+  <div id="content"></div>
+</div>
+
+#child {
+height: 20px;
+margin-left: auto;
+margin-right: auto;
+width: 20px;
+}

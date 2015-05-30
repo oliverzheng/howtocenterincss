@@ -1,0 +1,7 @@
+<div id="container">
+  <div id="content"></div>
+</div>
+
+#child {
+margin-left: auto;
+}
