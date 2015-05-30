@@ -10,8 +10,3 @@ React.render(
   <MainComponent />,
   document.getElementById('app')
 );
-
-// Enable react developer tools
-if (typeof window !== 'undefined') {
-  window.React = React;
-}
