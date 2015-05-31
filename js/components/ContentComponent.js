@@ -1,5 +1,7 @@
 /** @flow */
 
+var invariant = require('invariant');
+
 var React = require('react');
 var LengthComponent = require('./LengthComponent');
 var DivSizeComponent = require('./DivSizeComponent');
@@ -25,6 +27,7 @@ class ContentComponent extends React.Component {
     contentType: ?ContentType;
     textLines: ?number;
   };
+  _typeRadioList: ?RadioListComponent<ContentType>;
   _divSize: ?DivSizeComponent;
   _textLines: ?TextLinesComponent;
   _textFontSize: ?TextFontSizeComponent;
@@ -63,6 +66,48 @@ class ContentComponent extends React.Component {
       return null;
     }
     return null;
+  }
+
+  setContent(content: Options.Content) {
+    var contentText = content.text;
+
+    var contentType = contentText ? ContentType.TEXT : ContentType.DIV;
+    var typeRadioList = this._typeRadioList;
+    invariant(typeRadioList, 'should have this');
+    typeRadioList.select(contentType);
+
+    if (contentText) {
+      this.setState({
+        contentType: contentType,
+        textLines: contentText.lines,
+      }, () => {
+        invariant(contentText, 'flow');
+
+        var textLinesComponent = this._textLines;
+        invariant(textLinesComponent, 'should have text lines component');
+        textLinesComponent.setLines(contentText.lines);
+
+        var fontSizeComponent = this._textFontSize;
+        if (fontSizeComponent) {
+          fontSizeComponent.setFontSize(contentText.fontSize);
+        }
+
+        var lineHeightComponent = this._textLineHeight;
+        if (lineHeightComponent) {
+          lineHeightComponent.setLineHeight(contentText.lineHeight);
+        }
+      });
+    } else {
+      this.setState({
+        contentType: contentType,
+      }, () => {
+        var divSizeComponent = this._divSize;
+        invariant(divSizeComponent, 'should have div size component');
+
+        divSizeComponent.setWidth(content.width);
+        divSizeComponent.setHeight(content.height);
+      });
+    }
   }
 
   _handleTypeChange(contentType: ContentType) {
@@ -111,7 +156,9 @@ class ContentComponent extends React.Component {
       <div>
         <h2>Content</h2>
         <p>What do you want to center?</p>
-        <RadioListComponent onChange={this._handleTypeChange.bind(this)}>
+        <RadioListComponent
+          ref={(c) => this._typeRadioList = c}
+          onChange={this._handleTypeChange.bind(this)}>
           <RadioComponent labelText="Text" value={ContentType.TEXT}>
             Just text, or an inline-level block of text and images.
           </RadioComponent>

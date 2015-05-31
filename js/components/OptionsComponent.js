@@ -46,8 +46,21 @@ class OptionsComponent extends React.Component {
     return this._browserSupport.getBrowserSupport();
   }
 
+  setOptions(
+    content: Options.Content,
+    container: Options.Container,
+    horizontalAlignment: Options.HorizontalAlignment,
+    verticalAlignment: Options.VerticalAlignment,
+    browserSupport: Options.BrowserSupport
+  ) {
+    this._content.setContent(content);
+    this._container.setContainer(container);
+    this._alignment.setHorizontalAlignment(horizontalAlignment);
+    this._alignment.setVerticalAlignment(verticalAlignment);
+    this._browserSupport.setBrowserSupport(browserSupport);
+  }
+
   render(): ?ReactElement {
-    // TODO add browser support back in when we need it.
     return (
       <div>
         <ContentComponent ref={(c) => this._content = c} />

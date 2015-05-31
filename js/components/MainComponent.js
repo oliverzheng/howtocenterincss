@@ -4,6 +4,7 @@ var React = require('react');
 var OptionsComponent = require('./OptionsComponent');
 var CodeComponent = require('./CodeComponent');
 
+var Options = require('../how/Options');
 var findMethod = require('../how/findMethod');
 
 class MainComponent extends React.Component {
@@ -35,6 +36,32 @@ class MainComponent extends React.Component {
     } else {
       this._code.setNoMethod();
     }
+
+    if (this.props.onOptionsChange) {
+      this.props.onOptionsChange(
+        content,
+        container,
+        horizontalAlignment,
+        verticalAlignment,
+        browserSupport
+      );
+    }
+  }
+
+  setOptions(
+    content: Options.Content,
+    container: Options.Container,
+    horizontalAlignment: Options.HorizontalAlignment,
+    verticalAlignment: Options.VerticalAlignment,
+    browserSupport: Options.BrowserSupport
+  ) {
+    this._options.setOptions(
+      content,
+      container,
+      horizontalAlignment,
+      verticalAlignment,
+      browserSupport
+    );
   }
 
   render(): ?ReactElement {
@@ -79,5 +106,9 @@ class MainComponent extends React.Component {
     );
   }
 }
+
+MainComponent.propTypes = {
+  onOptionsChange: React.PropTypes.func,
+};
 
 module.exports = MainComponent;

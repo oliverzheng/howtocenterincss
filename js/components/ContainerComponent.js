@@ -15,6 +15,11 @@ class ContainerComponent extends React.Component {
     );
   }
 
+  setContainer(container: Options.Container) {
+    this._divSize.setWidth(container.width);
+    this._divSize.setHeight(container.height);
+  }
+
   render(): ?ReactElement {
     return (
       <div>

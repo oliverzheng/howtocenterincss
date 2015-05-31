@@ -25,6 +25,14 @@ class LengthComponent extends React.Component {
     return new Options.Length(this.state.value, this.state.type);
   }
 
+  setLength(length: Options.Length) {
+    this.setState({
+      value: length.value,
+      type: length.lengthType,
+    });
+    this._radioList.select(length.lengthType);
+  }
+
   selectDefaultType() {
     this._radioList.select(Options.LengthType.PIXEL);
   }

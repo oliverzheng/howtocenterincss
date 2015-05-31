@@ -7,10 +7,20 @@ var RadioComponent = require('./RadioComponent');
 var RadioListComponent = require('./RadioListComponent');
 
 class TextLineHeightComponent extends React.Component {
+  _radioList: RadioListComponent<bool>;
   _lineHeight: LengthComponent;
 
   getLineHeight(): ?Options.Length {
     return this._lineHeight.getLength();
+  }
+
+  setLineHeight(lineHeight: ?Options.Length) {
+    if (lineHeight) {
+      this._radioList.select(true);
+      this._lineHeight.setLength(lineHeight);
+    } else {
+      this._radioList.select(false);
+    }
   }
 
   _handleLineHeightKnownChange(known: bool) {
@@ -28,7 +38,9 @@ class TextLineHeightComponent extends React.Component {
     return (
       <div>
         <p>Do you know the <code>line-height</code> of each line?</p>
-        <RadioListComponent onChange={this._handleLineHeightKnownChange.bind(this)}>
+        <RadioListComponent
+          ref={(c) => this._radioList = c}
+          onChange={this._handleLineHeightKnownChange.bind(this)}>
           <RadioComponent labelText="Yes" value={true}>
             <LengthComponent
               onChange={this.props.onChange}

@@ -14,8 +14,16 @@ class AlignmentComponent extends React.Component {
     return this._horizontal.getValue();
   }
 
+  setHorizontalAlignment(alignment: Options.HorizontalAlignment) {
+    this._horizontal.select(alignment);
+  }
+
   getVerticalAlignment(): ?Options.VerticalAlignment {
     return this._vertical.getValue();
+  }
+
+  setVerticalAlignment(alignment: Options.VerticalAlignment) {
+    this._vertical.select(alignment);
   }
 
   render(): ?ReactElement {

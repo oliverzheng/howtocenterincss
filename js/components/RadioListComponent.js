@@ -38,14 +38,16 @@ class RadioListComponent<T> extends React.Component {
   }
 
   _selectOption(option: ?RadioComponent) {
-    if (this.state.selectedOption) {
-      this.state.selectedOption.setIsSelected(false);
-    }
-    if (option) {
-      option.setIsSelected(true);
-    }
-    this.setState({
-      selectedOption: option,
+    this.setState((prevState, currentProps) => {
+      if (prevState.selectedOption) {
+        prevState.selectedOption.setIsSelected(false);
+      }
+      if (option) {
+        option.setIsSelected(true);
+      }
+      return {
+        selectedOption: option,
+      };
     });
     if (this.props.onChange) {
       this.props.onChange(option ? option.props.value : null);
@@ -61,13 +63,20 @@ class RadioListComponent<T> extends React.Component {
     for (var i = 0; i < childrenRefKeys.length; i++) {
       var child = this.refs[childrenRefKeys[i]];
       if (child instanceof RadioComponent) {
-        if (child.props.value === value) {
+        if (this._compareValues(child.props.value, value)) {
           this._selectOption(child);
           return;
         }
       }
     }
     throw new Error('No value found for ' + value);
+  }
+
+  _compareValues(value1: T, value2: T): bool {
+    if (this.props.compareValues) {
+      return this.props.compareValues(value1, value2);
+    }
+    return value1 === value2;
   }
 
   render(): ?ReactElement {
@@ -93,6 +102,7 @@ class RadioListComponent<T> extends React.Component {
   }
 }
 RadioListComponent.propTypes = {
+  compareValues: React.PropTypes.func,
   onChange: React.PropTypes.func,
   direction: React.PropTypes.oneOf(['vertical', 'horizontal']),
 };

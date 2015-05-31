@@ -7,10 +7,20 @@ var RadioComponent = require('./RadioComponent');
 var RadioListComponent = require('./RadioListComponent');
 
 class TextFontSizeComponent extends React.Component {
+  _radioList: RadioListComponent<bool>;
   _fontSize: LengthComponent;
 
   getFontSize(): ?Options.Length {
     return this._fontSize.getLength();
+  }
+
+  setFontSize(fontSize: ?Options.Length) {
+    if (fontSize) {
+      this._radioList.select(true);
+      this._fontSize.setLength(fontSize);
+    } else {
+      this._radioList.select(false);
+    }
   }
 
   _handleFontSizeKnownChange(known: bool) {
@@ -28,7 +38,9 @@ class TextFontSizeComponent extends React.Component {
     return (
       <div>
         <p>Do you know the <code>font-size</code>?</p>
-        <RadioListComponent onChange={this._handleFontSizeKnownChange.bind(this)}>
+        <RadioListComponent
+          ref={(c) => this._radioList = c}
+          onChange={this._handleFontSizeKnownChange.bind(this)}>
           <RadioComponent labelText="Yes" value={true}>
             <LengthComponent
               onChange={this.props.onChange}

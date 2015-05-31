@@ -164,6 +164,7 @@ class Browser {
   }
 
   static IE: Browser;
+  static AllBrowsers: Array<Browser>;
 }
 Browser.IE = new Browser(
   'Internet Explorer',
@@ -177,6 +178,9 @@ Browser.IE = new Browser(
     '11',
   ]
 );
+Browser.AllBrowsers = [
+  Browser.IE,
+];
 
 class BrowserVersionRequired {
   browser: Browser;

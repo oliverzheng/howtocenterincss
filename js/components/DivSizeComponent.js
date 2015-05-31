@@ -7,6 +7,8 @@ var RadioComponent = require('./RadioComponent');
 var RadioListComponent = require('./RadioListComponent');
 
 class DivSizeComponent extends React.Component {
+  _widthRadioList: RadioListComponent<bool>;
+  _heightRadioList: RadioListComponent<bool>;
   _width: LengthComponent;
   _height: LengthComponent;
 
@@ -14,8 +16,26 @@ class DivSizeComponent extends React.Component {
     return this._width.getLength();
   }
 
+  setWidth(length: ?Options.Length) {
+    if (length) {
+      this._widthRadioList.select(true);
+      this._width.setLength(length);
+    } else {
+      this._widthRadioList.select(false);
+    }
+  }
+
   getHeight(): ?Options.Length {
     return this._height.getLength();
+  }
+
+  setHeight(length: ?Options.Length) {
+    if (length) {
+      this._heightRadioList.select(true);
+      this._height.setLength(length);
+    } else {
+      this._heightRadioList.select(false);
+    }
   }
 
   _handleWidthKnown(known: bool) {
@@ -44,7 +64,9 @@ class DivSizeComponent extends React.Component {
     return (
       <div>
         <h3>Width</h3>
-        <RadioListComponent onChange={this._handleWidthKnown.bind(this)}>
+        <RadioListComponent
+          ref={(c) => this._widthRadioList = c}
+          onChange={this._handleWidthKnown.bind(this)}>
           <RadioComponent labelText="Known" value={true}>
             <LengthComponent
               onChange={this.props.onWidthChange}
@@ -57,7 +79,9 @@ class DivSizeComponent extends React.Component {
         </RadioListComponent>
 
         <h3>Height</h3>
-        <RadioListComponent onChange={this._handleHeightKnown.bind(this)}>
+        <RadioListComponent
+          ref={(c) => this._heightRadioList = c}
+          onChange={this._handleHeightKnown.bind(this)}>
           <RadioComponent labelText="Known" value={true}>
             <LengthComponent
               onChange={this.props.onHeightChange}
