@@ -71,6 +71,41 @@ class MainComponent extends React.Component {
           <h1 className="logo">
             How to <span className="logo-center">Center</span> in CSS
           </h1>
+
+          <form
+            method="post"
+            action="http://howtocenterincss.us11.list-manage.com/subscribe/post?u=a044e184b387dc387feaeeb5e&amp;id=4b3f6562e1"
+            id="mc-embedded-subscribe-form"
+            name="mc-embedded-subscribe-form"
+            className="validate mailinglist"
+            target="_blank"
+            noValidate>
+            <div id="mc_embed_signup_scroll">
+              <label htmlFor="mce-EMAIL" className="label">
+                Get HTML & CSS Tips In Your Inbox.
+              </label>
+              <div className="labelDescription nospam">No Spam.</div>
+              <input
+                type="email"
+                name="EMAIL"
+                className="email text"
+                id="mce-EMAIL"
+                placeholder="email address"
+                required
+              />
+              <div style={{position: 'absolute', left: '-5000px'}}>
+                <input type="text" name="b_a044e184b387dc387feaeeb5e_4b3f6562e1" tabIndex="-1" value="" />
+              </div>
+              <button
+                type="submit"
+                name="subscribe"
+                id="mc-embedded-subscribe"
+                className="button">
+                Subscribe
+              </button>
+            </div>
+          </form>
+
           <p className="socialLogos">
             <a href="http://twitter.com/oliverzheng">
               <img src="./twitter.svg" className="socialLogo" />

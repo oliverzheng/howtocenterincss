@@ -69,7 +69,7 @@ class LengthComponent extends React.Component {
     return (
       <div>
         <input
-          className="numeric"
+          className="numeric text"
           type="number"
           pattern="[0-9]*"
           ref={(c) => this._valueInput = c}

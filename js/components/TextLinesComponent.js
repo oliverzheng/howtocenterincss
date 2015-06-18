@@ -59,7 +59,7 @@ class TextLinesComponent extends React.Component {
           onChange={this._handleTextLinesKnownChange.bind(this)}>
           <RadioComponent labelText="Yes" value={true}>
             <input
-              className="numeric"
+              className="numeric text"
               type="number"
               pattern="[0-9]*"
               ref={(c) => this._linesInput = c}

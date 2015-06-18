@@ -29,10 +29,34 @@
   font-size: 0.72em;
 }
 
+
+/* mailinglist */
+@media (min-width: @screenDesktop) {
+  .mailinglist {
+    width: 150px;
+    margin-top: 210px;
+    position: fixed;
+  }
+}
+.mailinglist {
+  text-align: center;
+}
+
+.mailinglist input.email {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.mailinglist .nospam, .mailinglist input.email, .mailinglist button {
+  margin-top: 0.5em;
+}
+
+
 @media (min-width: @screenDesktop) {
   .socialLogos {
     width: 150px;
-    margin-top: 220px;
+    margin-top: 400px;
     position: fixed;
   }
 }
