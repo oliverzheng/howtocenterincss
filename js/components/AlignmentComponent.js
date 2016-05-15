@@ -10,6 +10,11 @@ class AlignmentComponent extends React.Component {
   _horizontal: RadioListComponent<Options.HorizontalAlignment>;
   _vertical: RadioListComponent<Options.VerticalAlignment>;
 
+  componentDidMount(): void {
+    this.setHorizontalAlignment(Options.HorizontalAlignment.LEFT);
+    this.setVerticalAlignment(Options.VerticalAlignment.TOP);
+  }
+
   getHorizontalAlignment(): ?Options.HorizontalAlignment {
     return this._horizontal.getValue();
   }
