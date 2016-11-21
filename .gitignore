@@ -6,3 +6,4 @@ npm-debug.log
 localenv/*
 .DS_Store
 screenshots/*.html
+yarn.lock
