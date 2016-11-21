@@ -66,76 +66,87 @@ class MainComponent extends React.Component {
 
   render(): ?ReactElement {
     return (
-      <div className="col-group">
-        <div className="header col-2">
-          <h1 className="logo">
-            How to <span className="logo-center">Center</span> in CSS
-          </h1>
+      <div>
+        <div className="col-group">
+          <div className="header col-2">
+            <h1 className="logo">
+              How to <span className="logo-center">Center</span> in CSS
+            </h1>
 
-          <form
-            method="post"
-            action="http://howtocenterincss.us11.list-manage.com/subscribe/post?u=a044e184b387dc387feaeeb5e&amp;id=4b3f6562e1"
-            id="mc-embedded-subscribe-form"
-            name="mc-embedded-subscribe-form"
-            className="validate mailinglist"
-            target="_blank"
-            noValidate>
-            <div id="mc_embed_signup_scroll">
-              <label htmlFor="mce-EMAIL" className="label">
-                Get HTML & CSS Tips In Your Inbox.
-              </label>
-              <div className="labelDescription nospam">No Spam.</div>
-              <input
-                type="email"
-                name="EMAIL"
-                className="email text"
-                id="mce-EMAIL"
-                placeholder="email address"
-                required
-              />
-              <div style={{position: 'absolute', left: '-5000px'}}>
-                <input type="text" name="b_a044e184b387dc387feaeeb5e_4b3f6562e1" tabIndex="-1" value="" />
+            <form
+              method="post"
+              action="http://howtocenterincss.us11.list-manage.com/subscribe/post?u=a044e184b387dc387feaeeb5e&amp;id=4b3f6562e1"
+              id="mc-embedded-subscribe-form"
+              name="mc-embedded-subscribe-form"
+              className="validate mailinglist"
+              target="_blank"
+              noValidate>
+              <div id="mc_embed_signup_scroll">
+                <label htmlFor="mce-EMAIL" className="label">
+                  Get HTML & CSS Tips In Your Inbox.
+                </label>
+                <div className="labelDescription nospam">No Spam.</div>
+                <input
+                  type="email"
+                  name="EMAIL"
+                  className="email text"
+                  id="mce-EMAIL"
+                  placeholder="email address"
+                  required
+                />
+                <div style={{position: 'absolute', left: '-5000px'}}>
+                  <input type="text" name="b_a044e184b387dc387feaeeb5e_4b3f6562e1" tabIndex="-1" value="" />
+                </div>
+                <button
+                  type="submit"
+                  name="subscribe"
+                  id="mc-embedded-subscribe"
+                  className="button">
+                  Subscribe
+                </button>
               </div>
-              <button
-                type="submit"
-                name="subscribe"
-                id="mc-embedded-subscribe"
-                className="button">
-                Subscribe
-              </button>
-            </div>
-          </form>
+            </form>
 
-          <p className="socialLogos">
-            <a href="http://twitter.com/oliverzheng">
-              <img src="./twitter.svg" className="socialLogo" />
-            </a>
-            <a href="http://facebook.com/oliverzheng">
-              <img src="./facebook.svg" className="socialLogo" />
-            </a>
-            <a href="http://github.com/oliverzheng/howtocenterincss">
-              <img src="./github.svg" className="socialLogo" />
-            </a>
-          </p>
+            <p className="socialLogos">
+              <a href="http://twitter.com/oliverzheng">
+                <img src="./twitter.svg" className="socialLogo" />
+              </a>
+              <a href="http://facebook.com/oliverzheng">
+                <img src="./facebook.svg" className="socialLogo" />
+              </a>
+              <a href="http://github.com/oliverzheng/howtocenterincss">
+                <img src="./github.svg" className="socialLogo" />
+              </a>
+            </p>
+          </div>
+          <div className="options col-6 col-offset-1">
+            <h2>Wat</h2>
+            <p>
+              Centering in CSS is a pain in the ass. There seems to be a gazillion
+              ways to do it, depending on a variety of factors. This consolidates
+              them and gives you the code you need for each situation.
+            </p>
+            <p>
+              Select the type of content you want to center in a
+              parent <code>&lt;div&gt;</code> and the size of the parent.
+            </p>
+            <OptionsComponent ref={(c) => this._options = c} />
+            <p>
+              <button className="generate" onClick={this._handleGenerateClick.bind(this)}>
+                Generate Code
+              </button>
+            </p>
+            <CodeComponent ref={(c) => this._code = c} />
+          </div>
         </div>
-        <div className="options col-6 col-offset-1">
-          <h2>Wat</h2>
-          <p>
-            Centering in CSS is a pain in the ass. There seems to be a gazillion
-            ways to do it, depending on a variety of factors. This consolidates
-            them and gives you the code you need for each situation.
+        <div className="footer col-group">
+          <p className="col-12">
+            With <em>&#10084;</em> from <a href="http://oliverzheng.com">
+            Oliver Zheng</a>
+            <br />
+            Follow <a href="https://twitter.com/oliverzheng">@oliverzheng</a> for
+            useful things
           </p>
-          <p>
-            Select the type of content you want to center in a
-            parent <code>&lt;div&gt;</code> and the size of the parent.
-          </p>
-          <OptionsComponent ref={(c) => this._options = c} />
-          <p>
-            <button className="generate" onClick={this._handleGenerateClick.bind(this)}>
-              Generate Code
-            </button>
-          </p>
-          <CodeComponent ref={(c) => this._code = c} />
         </div>
       </div>
     );
